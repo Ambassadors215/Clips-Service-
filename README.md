@@ -24,3 +24,13 @@ Then open `http://localhost:3000`.
 - Submissions are stored to local JSON files under `data/` at runtime.
 - `data/*.json` is gitignored (so real submissions won’t be committed).
 
+## Deploy to Vercel
+
+This repo includes Vercel serverless endpoints:
+
+- `POST /api/booking`
+- `POST /api/contact`
+
+Important: Vercel functions **do not persist files**. The endpoints currently log submissions to function logs.
+If you want real storage (recommended), we can wire Vercel KV/Postgres or email delivery.
+
