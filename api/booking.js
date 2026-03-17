@@ -25,6 +25,15 @@ function safeText(s, max = 5000) {
   return s.trim().slice(0, max);
 }
 
+async function forwardToWebhook(url, payload) {
+  const res = await fetch(url, {
+    method: "POST",
+    headers: { "content-type": "application/json" },
+    body: JSON.stringify(payload)
+  });
+  if (!res.ok) throw new Error(`Webhook failed (${res.status})`);
+}
+
 export default async function handler(req, res) {
   if (req.method !== "POST") {
     res.statusCode = 405;
@@ -79,9 +88,18 @@ export default async function handler(req, res) {
     notes
   };
 
-  // Vercel serverless filesystem is not persistent.
-  // For now, log the record so you can see it in Vercel Function logs.
-  console.log("BOOKING_REQUEST", record);
+  const webhookUrl = process.env.GOOGLE_SHEETS_WEBHOOK_URL;
+  if (webhookUrl) {
+    try {
+      await forwardToWebhook(webhookUrl, { type: "booking", ...record });
+    } catch (e) {
+      console.error("BOOKING_WEBHOOK_ERROR", e);
+      return endJson(res, 502, { ok: false, error: "Upstream webhook failed" });
+    }
+  } else {
+    // Fallback: log only (no storage) if webhook not configured.
+    console.log("BOOKING_REQUEST", record);
+  }
 
   return endJson(res, 200, { ok: true, ref });
 }

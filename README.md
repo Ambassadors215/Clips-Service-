@@ -31,6 +31,15 @@ This repo includes Vercel serverless endpoints:
 - `POST /api/booking`
 - `POST /api/contact`
 
-Important: Vercel functions **do not persist files**. The endpoints currently log submissions to function logs.
-If you want real storage (recommended), we can wire Vercel KV/Postgres or email delivery.
+### Free storage (Google Sheets)
+
+To store submissions for free, use Google Sheets via a Google Apps Script webhook.
+
+1) Create a Google Sheet (e.g. tabs `booking` and `contact`)
+2) In Google Apps Script, deploy a Web App that accepts POST and appends rows
+3) In Vercel project settings → Environment Variables, set:
+
+- `GOOGLE_SHEETS_WEBHOOK_URL` = your Apps Script Web App URL
+
+If `GOOGLE_SHEETS_WEBHOOK_URL` is not set, submissions will still work but will only be logged in Vercel function logs.
 
