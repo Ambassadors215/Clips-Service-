@@ -1,0 +1,15 @@
+{
+  "name": "dimshaircare",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Dimshaircare marketing + booking landing page",
+  "main": "server.js",
+  "type": "module",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node server.js"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}
