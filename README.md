@@ -43,3 +43,38 @@ To store submissions for free, use Google Sheets via a Google Apps Script webhoo
 
 If `GOOGLE_SHEETS_WEBHOOK_URL` is not set, submissions will still work but will only be logged in Vercel function logs.
 
+## Admin backend (free)
+
+This repo includes a lightweight admin dashboard:
+
+- **Admin UI**: `/admin` (static page)
+- **Admin API**: `/api/admin/*` (serverless)
+
+### What you can do in admin
+
+- View bookings + contact messages
+- Search/filter
+- Export CSV
+- Update booking status (`new`, `confirmed`, `completed`, `cancelled`)
+
+### Vercel environment variables (required)
+
+- `ADMIN_TOKEN`: a long random string (keep private)
+- `GOOGLE_SHEETS_ADMIN_API_URL`: your Apps Script Admin API Web App URL
+
+### Google Apps Script Admin API (required)
+
+1) Create a Google Sheet with tabs:
+   - `bookings`
+   - `contacts`
+2) Open Extensions → Apps Script
+3) Paste `apps-script/Code.gs`
+4) Apps Script → Project Settings → Script Properties:
+   - `ADMIN_TOKEN` = same value as Vercel `ADMIN_TOKEN`
+5) Deploy → New deployment → Web app
+   - Execute as: Me
+   - Who has access: Anyone
+6) Copy the Web App URL into Vercel as `GOOGLE_SHEETS_ADMIN_API_URL`
+
+Then open `/admin`, paste the same token, and you’ll see your data.
+

@@ -1,0 +1,611 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Dimshaircare Admin</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500&family=DM+Sans:wght@300;400;500&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        --gold: #b8955a;
+        --ink: #1a1a18;
+        --ink-soft: #7a7a72;
+        --cream: #faf8f3;
+        --sand: #ede8df;
+        --white: #ffffff;
+        --success: #4a7c5c;
+        --danger: #a24b4b;
+        --radius: 14px;
+        --shadow: 0 8px 48px rgba(26, 26, 24, 0.12);
+      }
+      * {
+        box-sizing: border-box;
+      }
+      body {
+        margin: 0;
+        font-family: "DM Sans", sans-serif;
+        color: var(--ink);
+        background: linear-gradient(180deg, var(--cream), #ffffff);
+      }
+      header {
+        position: sticky;
+        top: 0;
+        z-index: 10;
+        background: rgba(250, 248, 243, 0.92);
+        backdrop-filter: blur(10px);
+        border-bottom: 1px solid rgba(184, 149, 90, 0.18);
+      }
+      .wrap {
+        max-width: 1120px;
+        margin: 0 auto;
+        padding: 18px 18px;
+      }
+      .topbar {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 14px;
+      }
+      .brand {
+        display: flex;
+        align-items: baseline;
+        gap: 10px;
+      }
+      .brand h1 {
+        margin: 0;
+        font-family: "Cormorant Garamond", serif;
+        font-weight: 500;
+        letter-spacing: 0.04em;
+        font-size: 22px;
+      }
+      .brand h1 span {
+        color: var(--gold);
+      }
+      .pill {
+        font-size: 12px;
+        border: 1px solid rgba(184, 149, 90, 0.28);
+        padding: 6px 10px;
+        border-radius: 999px;
+        color: var(--ink-soft);
+        background: rgba(184, 149, 90, 0.06);
+        white-space: nowrap;
+      }
+      main .wrap {
+        padding-top: 22px;
+        padding-bottom: 48px;
+      }
+
+      .grid {
+        display: grid;
+        grid-template-columns: 360px 1fr;
+        gap: 18px;
+      }
+      @media (max-width: 980px) {
+        .grid {
+          grid-template-columns: 1fr;
+        }
+      }
+      .card {
+        background: var(--white);
+        border: 1px solid rgba(184, 149, 90, 0.14);
+        border-radius: var(--radius);
+        box-shadow: var(--shadow);
+        overflow: hidden;
+      }
+      .card-head {
+        padding: 16px 16px;
+        background: var(--sand);
+        border-bottom: 1px solid rgba(184, 149, 90, 0.14);
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+      }
+      .card-title {
+        margin: 0;
+        font-size: 13px;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+        color: var(--ink-soft);
+        font-weight: 500;
+      }
+      .card-body {
+        padding: 16px;
+      }
+      .row {
+        display: flex;
+        gap: 10px;
+        align-items: center;
+        flex-wrap: wrap;
+      }
+      .input {
+        width: 100%;
+        border: 1px solid rgba(184, 149, 90, 0.22);
+        border-radius: 12px;
+        padding: 12px 12px;
+        font-size: 14px;
+        background: var(--cream);
+        outline: none;
+      }
+      .input:focus {
+        border-color: var(--gold);
+        box-shadow: 0 0 0 3px rgba(184, 149, 90, 0.14);
+        background: var(--white);
+      }
+      .btn {
+        border: none;
+        border-radius: 999px;
+        padding: 10px 14px;
+        cursor: pointer;
+        font-size: 13px;
+        font-weight: 500;
+        letter-spacing: 0.04em;
+      }
+      .btn-primary {
+        background: var(--gold);
+        color: var(--white);
+      }
+      .btn-ghost {
+        background: transparent;
+        border: 1px solid rgba(26, 26, 24, 0.18);
+        color: var(--ink);
+      }
+      .btn-danger {
+        background: var(--danger);
+        color: var(--white);
+      }
+      .muted {
+        color: var(--ink-soft);
+        font-size: 13px;
+      }
+      .status {
+        font-size: 13px;
+        min-height: 18px;
+      }
+      .status.ok {
+        color: var(--success);
+      }
+      .status.err {
+        color: var(--danger);
+      }
+
+      .tabs {
+        display: flex;
+        gap: 10px;
+      }
+      .tab {
+        border: 1px solid rgba(184, 149, 90, 0.24);
+        background: rgba(184, 149, 90, 0.06);
+        color: var(--ink);
+        padding: 8px 12px;
+        border-radius: 999px;
+        cursor: pointer;
+        font-size: 13px;
+      }
+      .tab.active {
+        background: var(--gold);
+        border-color: var(--gold);
+        color: var(--white);
+      }
+
+      table {
+        width: 100%;
+        border-collapse: collapse;
+      }
+      th,
+      td {
+        text-align: left;
+        padding: 10px 10px;
+        border-bottom: 1px solid rgba(184, 149, 90, 0.12);
+        vertical-align: top;
+        font-size: 13px;
+      }
+      th {
+        font-size: 12px;
+        color: var(--ink-soft);
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        font-weight: 500;
+      }
+      .badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        border-radius: 999px;
+        padding: 6px 10px;
+        border: 1px solid rgba(184, 149, 90, 0.22);
+        background: rgba(184, 149, 90, 0.06);
+        font-size: 12px;
+        white-space: nowrap;
+      }
+      .badge.success {
+        border-color: rgba(74, 124, 92, 0.32);
+        background: rgba(74, 124, 92, 0.08);
+      }
+      .badge.danger {
+        border-color: rgba(162, 75, 75, 0.32);
+        background: rgba(162, 75, 75, 0.08);
+      }
+      .mono {
+        font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New",
+          monospace;
+        font-size: 12px;
+      }
+      .actions {
+        display: flex;
+        gap: 8px;
+        align-items: center;
+        flex-wrap: wrap;
+      }
+      .select {
+        border: 1px solid rgba(184, 149, 90, 0.22);
+        border-radius: 999px;
+        padding: 8px 10px;
+        font-size: 13px;
+        background: var(--white);
+      }
+      .hide {
+        display: none !important;
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <div class="wrap">
+        <div class="topbar">
+          <div class="brand">
+            <h1>Dims<span>haircare</span> Admin</h1>
+            <span class="pill">Bookings · Messages · Status</span>
+          </div>
+          <div class="row">
+            <button class="btn btn-ghost" id="logoutBtn">Log out</button>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <main>
+      <div class="wrap">
+        <div class="grid">
+          <section class="card" id="authCard">
+            <div class="card-head">
+              <h2 class="card-title">Admin Access</h2>
+            </div>
+            <div class="card-body">
+              <p class="muted" style="margin-top: 0">
+                Enter your admin token (stored locally in this browser). Keep it private.
+              </p>
+              <div class="row">
+                <input class="input" id="tokenInput" placeholder="Admin token" type="password" autocomplete="off" />
+                <button class="btn btn-primary" id="saveTokenBtn">Save token</button>
+              </div>
+              <div class="status" id="authStatus"></div>
+              <hr style="border: none; border-top: 1px solid rgba(184, 149, 90, 0.15); margin: 16px 0" />
+              <div class="row">
+                <button class="btn btn-ghost" id="testAuthBtn">Test connection</button>
+              </div>
+              <p class="muted" style="margin-bottom: 0">
+                If this fails, ensure Vercel env vars are set: <span class="mono">ADMIN_TOKEN</span> and
+                <span class="mono">GOOGLE_SHEETS_ADMIN_API_URL</span>.
+              </p>
+            </div>
+          </section>
+
+          <section class="card" id="dataCard">
+            <div class="card-head">
+              <div class="row" style="justify-content: space-between; width: 100%">
+                <div class="tabs" role="tablist">
+                  <button class="tab active" data-tab="bookings">Bookings</button>
+                  <button class="tab" data-tab="contacts">Messages</button>
+                </div>
+                <div class="row">
+                  <input class="input" id="searchInput" placeholder="Search (name, email, ref…)" style="width: 260px" />
+                  <button class="btn btn-ghost" id="refreshBtn">Refresh</button>
+                  <button class="btn btn-ghost" id="exportBtn">Export CSV</button>
+                </div>
+              </div>
+            </div>
+            <div class="card-body">
+              <div class="status" id="dataStatus"></div>
+
+              <div id="bookingsView">
+                <table>
+                  <thead>
+                    <tr>
+                      <th>Ref</th>
+                      <th>Created</th>
+                      <th>Client</th>
+                      <th>Service</th>
+                      <th>Slot</th>
+                      <th>Status</th>
+                      <th>Actions</th>
+                    </tr>
+                  </thead>
+                  <tbody id="bookingsTbody"></tbody>
+                </table>
+              </div>
+
+              <div id="contactsView" class="hide">
+                <table>
+                  <thead>
+                    <tr>
+                      <th>Created</th>
+                      <th>From</th>
+                      <th>Message</th>
+                    </tr>
+                  </thead>
+                  <tbody id="contactsTbody"></tbody>
+                </table>
+              </div>
+            </div>
+          </section>
+        </div>
+      </div>
+    </main>
+
+    <script>
+      const STORAGE_KEY = "dhc_admin_token_v1";
+
+      const state = {
+        tab: "bookings",
+        token: localStorage.getItem(STORAGE_KEY) || "",
+        bookings: [],
+        contacts: []
+      };
+
+      const el = {
+        tokenInput: document.getElementById("tokenInput"),
+        saveTokenBtn: document.getElementById("saveTokenBtn"),
+        testAuthBtn: document.getElementById("testAuthBtn"),
+        authStatus: document.getElementById("authStatus"),
+        logoutBtn: document.getElementById("logoutBtn"),
+        refreshBtn: document.getElementById("refreshBtn"),
+        exportBtn: document.getElementById("exportBtn"),
+        searchInput: document.getElementById("searchInput"),
+        dataStatus: document.getElementById("dataStatus"),
+        bookingsTbody: document.getElementById("bookingsTbody"),
+        contactsTbody: document.getElementById("contactsTbody"),
+        bookingsView: document.getElementById("bookingsView"),
+        contactsView: document.getElementById("contactsView")
+      };
+
+      el.tokenInput.value = state.token;
+
+      function setStatus(target, msg, kind) {
+        target.textContent = msg || "";
+        target.classList.remove("ok", "err");
+        if (kind) target.classList.add(kind);
+      }
+
+      function getToken() {
+        return state.token;
+      }
+
+      async function api(path, options = {}) {
+        const token = getToken();
+        const res = await fetch(path, {
+          ...options,
+          headers: {
+            "content-type": "application/json",
+            ...(options.headers || {}),
+            "x-admin-token": token
+          }
+        });
+        const data = await res.json().catch(() => ({}));
+        if (!res.ok) throw new Error(data.error || `Request failed (${res.status})`);
+        return data;
+      }
+
+      function csvEscape(v) {
+        const s = String(v ?? "");
+        if (/[",\n]/.test(s)) return `"${s.replaceAll('"', '""')}"`;
+        return s;
+      }
+
+      function downloadCsv(filename, rows) {
+        const csv = rows.map((r) => r.map(csvEscape).join(",")).join("\n");
+        const blob = new Blob([csv], { type: "text/csv;charset=utf-8" });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement("a");
+        a.href = url;
+        a.download = filename;
+        document.body.appendChild(a);
+        a.click();
+        a.remove();
+        URL.revokeObjectURL(url);
+      }
+
+      function filterRows(list) {
+        const q = el.searchInput.value.trim().toLowerCase();
+        if (!q) return list;
+        return list.filter((x) => JSON.stringify(x).toLowerCase().includes(q));
+      }
+
+      function render() {
+        // tabs
+        document.querySelectorAll(".tab").forEach((t) => {
+          t.classList.toggle("active", t.dataset.tab === state.tab);
+        });
+        el.bookingsView.classList.toggle("hide", state.tab !== "bookings");
+        el.contactsView.classList.toggle("hide", state.tab !== "contacts");
+
+        // bookings
+        const bookings = filterRows(state.bookings);
+        el.bookingsTbody.innerHTML = bookings
+          .map((b) => {
+            const client = `${b.firstName || ""} ${b.lastName || ""}`.trim();
+            const status = b.status || "new";
+            const badgeClass = status === "confirmed" ? "success" : status === "cancelled" ? "danger" : "";
+            return `
+              <tr>
+                <td class="mono">${b.ref || "—"}</td>
+                <td>${b.createdAt ? new Date(b.createdAt).toLocaleString() : "—"}</td>
+                <td>
+                  <div style="font-weight:500">${client || "—"}</div>
+                  <div class="muted">${b.email || ""}</div>
+                  <div class="muted">${b.phone || ""}</div>
+                </td>
+                <td>
+                  <div style="font-weight:500">${b.service || "—"}</div>
+                  <div class="muted">£${b.price || "—"} · ${b.dur || ""}</div>
+                </td>
+                <td>
+                  <div style="font-weight:500">${b.date || "—"}</div>
+                  <div class="muted">${b.time || ""}</div>
+                </td>
+                <td><span class="badge ${badgeClass}">${status}</span></td>
+                <td>
+                  <div class="actions">
+                    <select class="select" data-ref="${b.ref}" data-action="status">
+                      ${["new", "confirmed", "completed", "cancelled"]
+                        .map((s) => `<option value="${s}" ${s === status ? "selected" : ""}>${s}</option>`)
+                        .join("")}
+                    </select>
+                    <button class="btn btn-ghost" data-ref="${b.ref}" data-action="save">Save</button>
+                  </div>
+                </td>
+              </tr>
+            `;
+          })
+          .join("");
+
+        // contacts
+        const contacts = filterRows(state.contacts);
+        el.contactsTbody.innerHTML = contacts
+          .map((c) => {
+            return `
+              <tr>
+                <td>${c.createdAt ? new Date(c.createdAt).toLocaleString() : "—"}</td>
+                <td>
+                  <div style="font-weight:500">${c.name || "—"}</div>
+                  <div class="muted">${c.email || ""}</div>
+                </td>
+                <td style="white-space:pre-wrap">${c.message || ""}</td>
+              </tr>
+            `;
+          })
+          .join("");
+      }
+
+      async function refreshAll() {
+        setStatus(el.dataStatus, "Loading…");
+        try {
+          const [bookings, contacts] = await Promise.all([
+            api("/api/admin/bookings"),
+            api("/api/admin/contacts")
+          ]);
+          state.bookings = bookings.items || [];
+          state.contacts = contacts.items || [];
+          setStatus(el.dataStatus, `Loaded ${state.bookings.length} bookings · ${state.contacts.length} messages`, "ok");
+          render();
+        } catch (e) {
+          setStatus(el.dataStatus, e?.message || "Failed to load", "err");
+        }
+      }
+
+      async function testAuth() {
+        setStatus(el.authStatus, "Testing…");
+        try {
+          await api("/api/admin/ping");
+          setStatus(el.authStatus, "Connected.", "ok");
+        } catch (e) {
+          setStatus(el.authStatus, e?.message || "Connection failed", "err");
+        }
+      }
+
+      el.saveTokenBtn.addEventListener("click", () => {
+        state.token = el.tokenInput.value.trim();
+        localStorage.setItem(STORAGE_KEY, state.token);
+        setStatus(el.authStatus, "Token saved.", "ok");
+      });
+
+      el.testAuthBtn.addEventListener("click", async () => {
+        await testAuth();
+        await refreshAll();
+      });
+
+      el.logoutBtn.addEventListener("click", () => {
+        localStorage.removeItem(STORAGE_KEY);
+        state.token = "";
+        el.tokenInput.value = "";
+        setStatus(el.authStatus, "Logged out.", "ok");
+      });
+
+      el.refreshBtn.addEventListener("click", refreshAll);
+      el.searchInput.addEventListener("input", render);
+
+      document.querySelectorAll(".tab").forEach((t) => {
+        t.addEventListener("click", () => {
+          state.tab = t.dataset.tab;
+          render();
+        });
+      });
+
+      el.exportBtn.addEventListener("click", () => {
+        if (state.tab === "bookings") {
+          const rows = [
+            ["ref", "createdAt", "status", "service", "price", "dur", "date", "time", "firstName", "lastName", "phone", "email", "notes"],
+            ...filterRows(state.bookings).map((b) => [
+              b.ref,
+              b.createdAt,
+              b.status || "new",
+              b.service,
+              b.price,
+              b.dur,
+              b.date,
+              b.time,
+              b.firstName,
+              b.lastName,
+              b.phone,
+              b.email,
+              b.notes
+            ])
+          ];
+          downloadCsv(`bookings-${new Date().toISOString().slice(0, 10)}.csv`, rows);
+        } else {
+          const rows = [
+            ["createdAt", "name", "email", "message"],
+            ...filterRows(state.contacts).map((c) => [c.createdAt, c.name, c.email, c.message])
+          ];
+          downloadCsv(`contacts-${new Date().toISOString().slice(0, 10)}.csv`, rows);
+        }
+      });
+
+      // booking row actions
+      el.bookingsTbody.addEventListener("click", async (e) => {
+        const btn = e.target.closest("button[data-action='save']");
+        if (!btn) return;
+        const ref = btn.dataset.ref;
+        const select = el.bookingsTbody.querySelector(`select[data-action='status'][data-ref='${ref}']`);
+        const status = select?.value;
+        if (!ref || !status) return;
+        btn.disabled = true;
+        btn.textContent = "Saving…";
+        try {
+          await api("/api/admin/update-booking", { method: "POST", body: JSON.stringify({ ref, status }) });
+          const i = state.bookings.findIndex((b) => b.ref === ref);
+          if (i >= 0) state.bookings[i] = { ...state.bookings[i], status };
+          setStatus(el.dataStatus, "Saved.", "ok");
+          render();
+        } catch (err) {
+          setStatus(el.dataStatus, err?.message || "Save failed", "err");
+        } finally {
+          btn.disabled = false;
+          btn.textContent = "Save";
+        }
+      });
+
+      // init
+      render();
+      if (state.token) {
+        testAuth().then(refreshAll);
+      }
+    </script>
+  </body>
+</html>
+
