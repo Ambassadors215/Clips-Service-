@@ -4,6 +4,17 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Clip Services — Manchester's Local Service Marketplace</title>
+<meta name="description" content="Book verified local runners, cleaners, handymen, dog walkers and more in Salford Quays & MediaCityUK. Real people. Real service. Done today.">
+<meta name="theme-color" content="#07101F">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect rx='20' width='100' height='100' fill='%2307101F'/><text x='50' y='68' text-anchor='middle' font-size='52' font-family='sans-serif' font-weight='800' fill='%2300C8F0'>CS</text></svg>">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Clip Services — Local Service Marketplace">
+<meta property="og:description" content="Book verified runners, cleaners, handymen, dog walkers and more in Salford Quays. Real people. Real service.">
+<meta property="og:url" content="https://clips-service.vercel.app">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Clip Services — Local Service Marketplace">
+<meta name="twitter:description" content="Book verified local service providers in Salford Quays & MediaCityUK.">
+<link rel="canonical" href="https://clips-service.vercel.app">
 <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
 <style>
 :root {
@@ -642,23 +653,23 @@ footer{background:var(--navy2);border-top:1px solid var(--border);padding:56px 5
       <h3>Provider Application</h3>
       <p>Free to apply. Takes 3 minutes. We review every application personally.</p>
 
-      <form onsubmit="handleApply(event)">
+      <form id="applyForm" onsubmit="handleApply(event)">
         <div class="form-grid">
           <div class="form-group">
             <label>Your full name</label>
-            <input type="text" placeholder="First and last name" required>
+            <input type="text" id="af-name" placeholder="First and last name" required>
           </div>
           <div class="form-group">
             <label>WhatsApp number</label>
-            <input type="tel" placeholder="+44 7700 000 000" required>
+            <input type="tel" id="af-phone" placeholder="+44 7700 000 000" required>
           </div>
           <div class="form-group">
             <label>Email address</label>
-            <input type="email" placeholder="you@email.com" required>
+            <input type="email" id="af-email" placeholder="you@email.com" required>
           </div>
           <div class="form-group">
             <label>Your postcode</label>
-            <input type="text" placeholder="e.g. M50 3XP" required>
+            <input type="text" id="af-postcode" placeholder="e.g. M50 3XP" required>
           </div>
 
           <div class="form-group form-full">
@@ -698,7 +709,7 @@ footer{background:var(--navy2);border-top:1px solid var(--border);padding:56px 5
 
           <div class="form-group form-full">
             <label>Tell us about yourself & your experience</label>
-            <textarea placeholder="How long have you been offering this service? Any relevant experience, qualifications, or tools you have? Why would customers love working with you?" style="min-height:110px;"></textarea>
+            <textarea id="af-experience" placeholder="How long have you been offering this service? Any relevant experience, qualifications, or tools you have? Why would customers love working with you?" style="min-height:110px;"></textarea>
           </div>
 
           <div class="form-group form-full">
@@ -715,7 +726,7 @@ footer{background:var(--navy2);border-top:1px solid var(--border);padding:56px 5
 
           <div class="form-group form-full">
             <label>Do you have your own transport?</label>
-            <select>
+            <select id="af-transport">
               <option value="">Select...</option>
               <option>Yes — car</option>
               <option>Yes — van</option>
@@ -727,7 +738,7 @@ footer{background:var(--navy2);border-top:1px solid var(--border);padding:56px 5
 
           <div class="form-group form-full">
             <label>How did you hear about Clip Services?</label>
-            <select>
+            <select id="af-source">
               <option value="">Select...</option>
               <option>TikTok</option>
               <option>Instagram</option>
@@ -740,7 +751,11 @@ footer{background:var(--navy2);border-top:1px solid var(--border);padding:56px 5
           </div>
 
           <div class="form-full" style="margin-top:8px;">
-            <button type="submit" class="btn-p" style="width:100%;justify-content:center;padding:18px;">Submit my application →</button>
+            <div style="display:flex;align-items:flex-start;gap:10px;margin-bottom:14px;">
+              <input type="checkbox" id="af-consent" required style="width:auto;margin-top:3px;">
+              <label for="af-consent" style="font-size:12px;color:var(--muted);text-transform:none;letter-spacing:0;line-height:1.5;cursor:pointer;">I confirm the information provided is accurate. I agree to Clip Services' <a href="/terms" target="_blank" style="color:var(--cyan);">Terms</a> and <a href="/privacy-policy" target="_blank" style="color:var(--cyan);">Privacy Policy</a>.</label>
+            </div>
+            <button type="submit" class="btn-p" id="applyBtn" style="width:100%;justify-content:center;padding:18px;">Submit my application →</button>
             <div class="form-note" style="text-align:center;margin-top:12px;">We review every application personally and respond within 48 hours via WhatsApp. Free to apply — no commitment required.</div>
           </div>
         </div>
@@ -798,32 +813,55 @@ footer{background:var(--navy2);border-top:1px solid var(--border);padding:56px 5
       <h4>Stats</h4>
       <div class="modal-stats" id="m-stats"></div>
       <h4>Book this provider</h4>
-      <form class="booking-form" onsubmit="handleBook(event)">
-        <div>
-          <label>Your name</label>
-          <input type="text" placeholder="Full name" required>
+      <form class="booking-form" id="bookingForm" onsubmit="handleBook(event)">
+        <input type="hidden" id="bf-provider" value="">
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;">
+          <div>
+            <label>First name</label>
+            <input type="text" id="bf-first" placeholder="First name" required>
+          </div>
+          <div>
+            <label>Last name</label>
+            <input type="text" id="bf-last" placeholder="Last name" required>
+          </div>
         </div>
-        <div>
-          <label>Your WhatsApp</label>
-          <input type="tel" placeholder="+44 7700 000 000" required>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;">
+          <div>
+            <label>WhatsApp number</label>
+            <input type="tel" id="bf-phone" placeholder="+44 7700 000 000" required>
+          </div>
+          <div>
+            <label>Email address</label>
+            <input type="email" id="bf-email" placeholder="you@email.com" required>
+          </div>
         </div>
         <div>
           <label>Service needed</label>
-          <input type="text" placeholder="e.g. Weekly flat clean, 2-bed apartment" required>
+          <input type="text" id="bf-service" placeholder="e.g. Weekly flat clean, 2-bed apartment" required>
         </div>
-        <div>
-          <label>Preferred date & time</label>
-          <input type="datetime-local" required>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;">
+          <div>
+            <label>Preferred date</label>
+            <input type="date" id="bf-date" required>
+          </div>
+          <div>
+            <label>Preferred time</label>
+            <input type="time" id="bf-time" required>
+          </div>
         </div>
         <div>
           <label>Your address / flat number</label>
-          <input type="text" placeholder="Flat 12A, Clippers Quays, M50 3XP" required>
+          <input type="text" id="bf-address" placeholder="Flat 12A, Clippers Quays, M50 3XP" required>
         </div>
         <div>
           <label>Any extra details</label>
-          <textarea placeholder="Any specific requirements, access codes, or notes for the provider..."></textarea>
+          <textarea id="bf-notes" placeholder="Any specific requirements, access codes, or notes for the provider..."></textarea>
         </div>
-        <button type="submit" class="btn-p" style="width:100%;justify-content:center;">Confirm Booking Request →</button>
+        <div style="display:flex;align-items:flex-start;gap:10px;margin-top:4px;">
+          <input type="checkbox" id="bf-consent" required style="width:auto;margin-top:3px;">
+          <label for="bf-consent" style="font-size:12px;color:var(--muted);text-transform:none;letter-spacing:0;line-height:1.5;cursor:pointer;">I agree to Clip Services' <a href="/terms" target="_blank" style="color:var(--cyan);">Terms of Service</a> and <a href="/privacy-policy" target="_blank" style="color:var(--cyan);">Privacy Policy</a>. I consent to receiving booking confirmations via WhatsApp and email.</label>
+        </div>
+        <button type="submit" class="btn-p" id="bookBtn" style="width:100%;justify-content:center;">Confirm Booking Request →</button>
         <p style="font-size:12px;color:var(--faint);text-align:center;margin-top:8px;">We'll confirm via WhatsApp within 30 minutes. Clip Services platform fee (15%) added at checkout.</p>
       </form>
     </div>
@@ -861,7 +899,7 @@ footer{background:var(--navy2);border-top:1px solid var(--border);padding:56px 5
     </div>
   </div>
   <div class="footer-bottom">
-    <p>© 2025 Clip Services, Clippers Quays, Salford M50. All rights reserved.</p>
+    <p>© 2026 Clip Services, Clippers Quays, Salford M50. All rights reserved. · <a href="/privacy-policy" style="color:var(--faint);text-decoration:none;">Privacy Policy</a> · <a href="/terms" style="color:var(--faint);text-decoration:none;">Terms of Service</a></p>
     <p style="color:var(--cyan);font-family:'Syne',sans-serif;font-size:13px;font-weight:700;">15% platform fee · Providers keep 85%</p>
   </div>
 </footer>
@@ -1003,6 +1041,8 @@ function openModal(id) {
     <div class="mstat"><span class="mstat-num">${p.rating}</span><span class="mstat-lbl">Rating</span></div>
     <div class="mstat"><span class="mstat-num">${p.responseTime}</span><span class="mstat-lbl">Response</span></div>
   `;
+  document.getElementById('bf-provider').value = p.name + ' — ' + p.role;
+  document.getElementById('bf-service').value = '';
   document.getElementById('modalOverlay').classList.add('open');
   document.body.style.overflow='hidden';
 }
@@ -1014,27 +1054,119 @@ function closeModal(e) {
   }
 }
 
-function handleBook(e) {
+async function handleBook(e) {
   e.preventDefault();
-  document.getElementById('modalOverlay').classList.remove('open');
-  document.body.style.overflow='';
-  showToast('✓ Booking request sent! We\'ll confirm via WhatsApp in under 30 minutes.');
+  const btn = document.getElementById('bookBtn');
+  const origText = btn.textContent;
+  btn.disabled = true;
+  btn.textContent = 'Submitting…';
+
+  const provider = document.getElementById('bf-provider').value;
+  const address = document.getElementById('bf-address').value;
+  const notes = document.getElementById('bf-notes').value;
+  const fullNotes = `Provider: ${provider}\nAddress: ${address}${notes ? '\n' + notes : ''}`;
+
+  const payload = {
+    service: document.getElementById('bf-service').value,
+    price: '',
+    dur: '',
+    date: document.getElementById('bf-date').value,
+    time: document.getElementById('bf-time').value,
+    firstName: document.getElementById('bf-first').value,
+    lastName: document.getElementById('bf-last').value,
+    phone: document.getElementById('bf-phone').value,
+    email: document.getElementById('bf-email').value,
+    notes: fullNotes,
+    consent: document.getElementById('bf-consent').checked
+  };
+
+  try {
+    const res = await fetch('/api/booking', {
+      method: 'POST',
+      headers: { 'content-type': 'application/json' },
+      body: JSON.stringify(payload)
+    });
+    const data = await res.json();
+    if (data.ok) {
+      document.getElementById('modalOverlay').classList.remove('open');
+      document.body.style.overflow = '';
+      document.getElementById('bookingForm').reset();
+      showToast(`✓ Booking request sent! Ref: ${data.ref} — We'll confirm via WhatsApp within 30 minutes.`);
+    } else {
+      showToast('⚠ ' + (data.error || 'Something went wrong. Please try again.'));
+    }
+  } catch {
+    showToast('⚠ Network error — please try again or message us on WhatsApp.');
+  } finally {
+    btn.disabled = false;
+    btn.textContent = origText;
+  }
 }
 
-// Provider form
 function toggleTag(el) {
   el.classList.toggle('selected');
 }
 function selectRate(el, val) {
   document.querySelectorAll('.rate-opt').forEach(r=>r.classList.remove('active'));
   el.classList.add('active');
+  el.dataset.selectedRate = val;
 }
-function handleApply(e) {
+
+async function handleApply(e) {
   e.preventDefault();
-  showToast('✓ Application received! Sonia will review and WhatsApp you within 48 hours.');
-  e.target.reset();
-  document.querySelectorAll('.char-tag').forEach(t=>t.classList.remove('selected'));
-  document.querySelectorAll('.rate-opt').forEach(r=>r.classList.remove('active'));
+  const btn = document.getElementById('applyBtn');
+  const origText = btn.textContent;
+  btn.disabled = true;
+  btn.textContent = 'Submitting…';
+
+  const services = [...document.querySelectorAll('#serviceTags .char-tag.selected input')]
+    .map(i => i.value).join(', ');
+  const availability = [...document.querySelectorAll('#applyForm .char-tags:last-of-type .char-tag.selected')]
+    .map(t => t.textContent.trim()).join(', ');
+  const rateEl = document.querySelector('.rate-opt.active');
+  const rate = rateEl ? rateEl.dataset.selectedRate || rateEl.textContent.trim() : '';
+
+  const name = document.getElementById('af-name').value;
+  const phone = document.getElementById('af-phone').value;
+  const email = document.getElementById('af-email').value;
+  const postcode = document.getElementById('af-postcode').value;
+  const experience = document.getElementById('af-experience').value;
+  const transport = document.getElementById('af-transport').value;
+  const source = document.getElementById('af-source').value;
+
+  const message = [
+    `[PROVIDER APPLICATION]`,
+    `Phone: ${phone}`,
+    `Postcode: ${postcode}`,
+    `Services: ${services || 'Not specified'}`,
+    `Rate: ${rate || 'Not specified'}`,
+    `Availability: ${availability || 'Not specified'}`,
+    `Transport: ${transport || 'Not specified'}`,
+    `Heard about us: ${source || 'Not specified'}`,
+    `Experience: ${experience}`
+  ].join('\n');
+
+  try {
+    const res = await fetch('/api/contact', {
+      method: 'POST',
+      headers: { 'content-type': 'application/json' },
+      body: JSON.stringify({ name, email, message })
+    });
+    const data = await res.json();
+    if (data.ok) {
+      showToast('✓ Application received! We\'ll review and WhatsApp you within 48 hours.');
+      e.target.reset();
+      document.querySelectorAll('.char-tag').forEach(t => t.classList.remove('selected'));
+      document.querySelectorAll('.rate-opt').forEach(r => r.classList.remove('active'));
+    } else {
+      showToast('⚠ ' + (data.error || 'Something went wrong. Please try again.'));
+    }
+  } catch {
+    showToast('⚠ Network error — please try again or message us on WhatsApp.');
+  } finally {
+    btn.disabled = false;
+    btn.textContent = origText;
+  }
 }
 
 // View switching
