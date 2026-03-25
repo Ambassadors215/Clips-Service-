@@ -283,6 +283,43 @@ footer{background:var(--navy2);border-top:1px solid var(--border);padding:56px 5
 .toast{position:fixed;bottom:28px;left:50%;transform:translateX(-50%) translateY(70px);background:var(--card);border:1px solid var(--cyan);color:var(--white);padding:14px 22px;font-size:13px;border-radius:4px;z-index:9000;opacity:0;transition:all .3s;white-space:nowrap;}
 .toast.show{transform:translateX(-50%) translateY(0);opacity:1;}
 
+/* PAYMENT SECTION */
+.pay-methods{display:grid;grid-template-columns:repeat(3,1fr);gap:2px;margin-bottom:36px;}
+.pay-card{background:var(--card);border:1px solid var(--border);padding:28px 24px;text-align:center;transition:border-color .2s;}
+.pay-card:hover{border-color:var(--cyan);}
+.pay-card.recommended{border-color:var(--green);position:relative;}
+.pay-card.recommended::after{content:'RECOMMENDED';position:absolute;top:0;left:50%;transform:translateX(-50%) translateY(-50%);background:var(--green);color:var(--navy);font-size:9px;letter-spacing:.1em;font-weight:600;padding:3px 10px;border-radius:20px;}
+.pay-icon{font-size:36px;margin-bottom:14px;display:block;}
+.pay-name{font-family:'Syne',sans-serif;font-size:17px;font-weight:700;margin-bottom:6px;}
+.pay-desc{font-size:12px;color:var(--muted);line-height:1.6;margin-bottom:14px;}
+.pay-detail{font-size:11px;color:var(--faint);line-height:1.6;}
+.pay-badge{display:inline-block;font-size:10px;padding:3px 10px;border-radius:20px;margin-top:10px;}
+.pb-free{background:rgba(16,185,129,.12);color:#6EE7B7;border:1px solid rgba(16,185,129,.2);}
+.pb-fast{background:rgba(0,200,240,.12);color:#67E8F9;border:1px solid rgba(0,200,240,.2);}
+.pb-soon{background:rgba(139,92,246,.12);color:#C4B5FD;border:1px solid rgba(139,92,246,.2);}
+
+.pay-flow{display:grid;grid-template-columns:repeat(5,1fr);gap:0;margin:36px 0;}
+.pf-step{background:var(--surface);border:1px solid var(--border);padding:20px 16px;text-align:center;position:relative;}
+.pf-step::after{content:'→';position:absolute;right:-10px;top:50%;transform:translateY(-50%);color:var(--faint);font-size:18px;z-index:2;}
+.pf-step:last-child::after{display:none;}
+.pf-num{font-family:'Syne',sans-serif;font-size:32px;font-weight:800;color:var(--border);margin-bottom:8px;}
+.pf-step h4{font-family:'Syne',sans-serif;font-size:13px;font-weight:700;margin-bottom:4px;}
+.pf-step p{font-size:11px;color:var(--muted);line-height:1.5;}
+
+.pay-breakdown{background:var(--card);border:1px solid var(--border);padding:28px 32px;max-width:480px;margin:28px 0;}
+.pb-row{display:flex;justify-content:space-between;padding:10px 0;border-bottom:1px solid var(--border);font-size:14px;}
+.pb-row:last-child{border-bottom:none;}
+.pb-label{color:var(--muted);}
+.pb-val{font-family:'Syne',sans-serif;font-weight:600;}
+.pb-val.cyan{color:var(--cyan);}
+.pb-val.green{color:var(--green);}
+.pb-total{border-top:2px solid var(--cyan);margin-top:4px;padding-top:14px;}
+
+.pay-trust{display:grid;grid-template-columns:repeat(4,1fr);gap:2px;margin-top:36px;}
+.pt{background:var(--surface);border:1px solid var(--border);padding:20px;text-align:center;}
+.pt-icon{font-size:24px;margin-bottom:8px;display:block;}
+.pt-label{font-size:11px;color:var(--muted);line-height:1.5;}
+
 /* STATUS BAR */
 .sbar{background:var(--cyan);color:var(--navy);text-align:center;font-size:12px;font-weight:500;letter-spacing:.05em;padding:8px;display:flex;align-items:center;justify-content:center;gap:14px;}
 .sbar-close{background:none;border:none;color:var(--navy);cursor:pointer;font-size:16px;padding:0 4px;}
@@ -308,6 +345,10 @@ footer{background:var(--navy2);border-top:1px solid var(--border);padding:56px 5
   .commission-banner{grid-template-columns:1fr;margin:0 20px;}
   .cat-cards{grid-template-columns:repeat(2,1fr);}
   .modal-stats{grid-template-columns:repeat(3,1fr);}
+  .pay-methods{grid-template-columns:1fr;}
+  .pay-flow{grid-template-columns:1fr;}
+  .pf-step::after{display:none;}
+  .pay-trust{grid-template-columns:repeat(2,1fr);}
 }
 </style>
 </head>
@@ -329,6 +370,7 @@ footer{background:var(--navy2);border-top:1px solid var(--border);padding:56px 5
     <a href="#" onclick="switchView('customer')">Find a Service</a>
     <a href="#" onclick="switchView('provider')">Offer Your Service</a>
     <a href="#how-c">How It Works</a>
+    <a href="#payment" onclick="switchView('customer')">Payment</a>
     <a href="#" onclick="switchView('provider')" class="nav-btn">Join as Provider</a>
   </div>
   <button class="nav-toggle" onclick="toggleMobileMenu()">☰</button>
@@ -452,8 +494,101 @@ footer{background:var(--navy2);border-top:1px solid var(--border);padding:56px 5
     </div>
   </section>
 
+  <!-- PAYMENT METHODS -->
+  <section class="divbg" id="payment">
+    <div class="eyebrow">Transparent pricing</div>
+    <h2 class="stitle r">How <em>payment</em> works</h2>
+    <p class="sdesc r">No hidden fees. No surprise charges. You see exactly what you pay and how it breaks down before confirming any booking.</p>
+
+    <div class="pay-methods r">
+      <div class="pay-card recommended">
+        <span class="pay-icon">🏦</span>
+        <div class="pay-name">Bank Transfer</div>
+        <div class="pay-desc">Pay directly via bank transfer after your booking is confirmed. Sonia sends you the payment details via WhatsApp.</div>
+        <div class="pay-detail">Instant via Faster Payments. Sort code and account number shared securely after booking confirmation.</div>
+        <span class="pay-badge pb-free">Zero fees</span>
+      </div>
+      <div class="pay-card">
+        <span class="pay-icon">💳</span>
+        <div class="pay-name">Payment Link</div>
+        <div class="pay-desc">Receive a secure payment link via WhatsApp. Tap to pay instantly from your bank app — no card details needed.</div>
+        <div class="pay-detail">Monzo.me or similar payment link. Opens in your banking app. Funds arrive instantly.</div>
+        <span class="pay-badge pb-fast">Instant</span>
+      </div>
+      <div class="pay-card">
+        <span class="pay-icon">💎</span>
+        <div class="pay-name">Card Payment</div>
+        <div class="pay-desc">Pay by debit or credit card through a secure Stripe checkout page. Automatic receipt sent to your email.</div>
+        <div class="pay-detail">Stripe-powered secure checkout. All major cards accepted. Coming in our next platform update.</div>
+        <span class="pay-badge pb-soon">Coming soon</span>
+      </div>
+    </div>
+
+    <h3 style="font-family:'Syne',sans-serif;font-size:18px;font-weight:700;margin:40px 0 8px;">Payment flow</h3>
+    <p style="color:var(--muted);font-size:14px;margin-bottom:8px;max-width:520px;">Every payment goes through Clip Services. You never pay a provider directly. This protects both you and the provider.</p>
+
+    <div class="pay-flow r">
+      <div class="pf-step">
+        <div class="pf-num">01</div>
+        <h4>Book</h4>
+        <p>Submit your booking request through the website</p>
+      </div>
+      <div class="pf-step">
+        <div class="pf-num">02</div>
+        <h4>Confirm</h4>
+        <p>Sonia confirms via WhatsApp with a price breakdown</p>
+      </div>
+      <div class="pf-step">
+        <div class="pf-num">03</div>
+        <h4>Pay</h4>
+        <p>Pay via bank transfer or payment link before the job</p>
+      </div>
+      <div class="pf-step">
+        <div class="pf-num">04</div>
+        <h4>Service</h4>
+        <p>Provider arrives and completes the service</p>
+      </div>
+      <div class="pf-step">
+        <div class="pf-num">05</div>
+        <h4>Done</h4>
+        <p>Provider paid within 24hrs. You leave a review</p>
+      </div>
+    </div>
+
+    <h3 style="font-family:'Syne',sans-serif;font-size:18px;font-weight:700;margin:40px 0 8px;">Price breakdown example</h3>
+    <p style="color:var(--muted);font-size:14px;margin-bottom:8px;max-width:520px;">Here's exactly what a 3-hour cleaning booking looks like. The provider sets their rate. We add a 15% platform fee on top.</p>
+
+    <div class="pay-breakdown r">
+      <div class="pb-row"><span class="pb-label">Provider rate (cleaning)</span><span class="pb-val">£15.00/hr</span></div>
+      <div class="pb-row"><span class="pb-label">Duration</span><span class="pb-val">3 hours</span></div>
+      <div class="pb-row"><span class="pb-label">Subtotal</span><span class="pb-val">£45.00</span></div>
+      <div class="pb-row"><span class="pb-label">Platform fee (15%)</span><span class="pb-val cyan">£6.75</span></div>
+      <div class="pb-row pb-total"><span class="pb-label" style="color:var(--white);font-weight:500;">You pay</span><span class="pb-val cyan" style="font-size:20px;">£51.75</span></div>
+      <div class="pb-row"><span class="pb-label">Provider receives</span><span class="pb-val green">£45.00</span></div>
+    </div>
+
+    <div class="pay-trust r">
+      <div class="pt">
+        <span class="pt-icon">🔒</span>
+        <div class="pt-label">Pay before<br>service starts</div>
+      </div>
+      <div class="pt">
+        <span class="pt-icon">🧾</span>
+        <div class="pt-label">Full breakdown<br>before you pay</div>
+      </div>
+      <div class="pt">
+        <span class="pt-icon">🛡</span>
+        <div class="pt-label">Refund policy<br>if things go wrong</div>
+      </div>
+      <div class="pt">
+        <span class="pt-icon">📱</span>
+        <div class="pt-label">WhatsApp<br>confirmation</div>
+      </div>
+    </div>
+  </section>
+
   <!-- SERVICE CATEGORIES -->
-  <section class="divbg" id="categories">
+  <section id="categories">
     <div class="eyebrow">Browse by category</div>
     <h2 class="stitle r">All the help<br><em>you need.</em></h2>
     <p class="sdesc r">From everyday errands to specialist services — Clip Services connects you with local experts for everything.</p>
@@ -537,6 +672,22 @@ footer{background:var(--navy2);border-top:1px solid var(--border);padding:56px 5
       <div class="faq-item">
         <button class="faq-q" onclick="toggleFaq(this)">Can I book the same provider regularly? <span class="faq-icon">+</span></button>
         <div class="faq-a"><p>Yes — and we encourage it. Regular bookings with the same provider build trust and often result in better rates. You can message your preferred provider directly via our platform once you've made a first booking.</p></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)">What payment methods do you accept? <span class="faq-icon">+</span></button>
+        <div class="faq-a"><p>We currently accept bank transfers (Faster Payments) and payment links (Monzo.me or similar). You'll receive payment details via WhatsApp after your booking is confirmed. Card payments via Stripe are coming soon. All payments go through Clip Services — never directly to a provider.</p></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)">When do I pay — before or after the service? <span class="faq-icon">+</span></button>
+        <div class="faq-a"><p>You pay before the service starts. Once your booking is confirmed via WhatsApp, we send a price breakdown and payment instructions. Payment must be received before the provider arrives. This protects both you and the provider — if anything goes wrong, we mediate and issue refunds from the amount held.</p></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)">What does the 15% platform fee cover? <span class="faq-icon">+</span></button>
+        <div class="faq-a"><p>The 15% fee covers provider verification, booking management, dispute resolution, payment protection, WhatsApp support, and marketing. It's added on top of the provider's stated rate — so when a provider says £15/hr, you pay £17.25/hr and the provider keeps the full £15. No hidden charges.</p></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)">Can I get a refund? <span class="faq-icon">+</span></button>
+        <div class="faq-a"><p>Yes. If you cancel more than 2 hours before the booking, you get a full refund. If you cancel within 2 hours, 50% goes to the provider as compensation. If the service quality is unsatisfactory, message us on WhatsApp immediately — we'll arrange a redo or issue a refund of the platform fee.</p></div>
       </div>
     </div>
   </section>
@@ -788,6 +939,14 @@ footer{background:var(--navy2);border-top:1px solid var(--border);padding:56px 5
         <button class="faq-q" onclick="toggleFaq(this)">What if a customer doesn't answer or cancels last minute? <span class="faq-icon">+</span></button>
         <div class="faq-a"><p>Customers pay a non-refundable deposit on all bookings. If they cancel within 2 hours of the scheduled time, you receive 50% of the booking fee as compensation. We protect your time.</p></div>
       </div>
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)">How does payment work for providers? <span class="faq-icon">+</span></button>
+        <div class="faq-a"><p>Clip Services collects the full payment from the customer before the job starts. Your share (100% of your stated rate) is transferred to your bank account within 24 hours of job completion. You never need to chase customers, create invoices, or handle money on-site. We handle everything.</p></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)">Do I need a business bank account? <span class="faq-icon">+</span></button>
+        <div class="faq-a"><p>No — a personal bank account works fine. We transfer your earnings to whichever UK bank account you provide. Most of our providers use their regular current account. If you earn over £1,000 per year, we recommend registering as self-employed with HMRC for tax purposes.</p></div>
+      </div>
     </div>
   </section>
 
@@ -877,10 +1036,11 @@ footer{background:var(--navy2);border-top:1px solid var(--border);padding:56px 5
     </div>
     <div class="fcol">
       <h4>For customers</h4>
-      <a href="#" onclick="filterCat('runner',null)">Runner services</a>
-      <a href="#" onclick="filterCat('cleaning',null)">Cleaning</a>
-      <a href="#" onclick="filterCat('handyman',null)">Handyman</a>
-      <a href="#" onclick="filterCat('beauty',null)">Beauty</a>
+      <a href="#" onclick="switchView('customer');filterCat('runner',null)">Runner services</a>
+      <a href="#" onclick="switchView('customer');filterCat('cleaning',null)">Cleaning</a>
+      <a href="#" onclick="switchView('customer');filterCat('handyman',null)">Handyman</a>
+      <a href="#" onclick="switchView('customer');filterCat('beauty',null)">Beauty</a>
+      <a href="#payment" onclick="switchView('customer')">Payment</a>
       <a href="#faq-c">FAQ</a>
     </div>
     <div class="fcol">
@@ -893,9 +1053,9 @@ footer{background:var(--navy2);border-top:1px solid var(--border);padding:56px 5
     <div class="fcol">
       <h4>Contact</h4>
       <a href="https://wa.me/447700000000" target="_blank">WhatsApp</a>
-      <a href="#">Instagram @buildwithsonia</a>
-      <a href="#">TikTok @buildwithsonia</a>
-      <a href="#">Email</a>
+      <a href="https://instagram.com/buildwithsonia" target="_blank">Instagram @buildwithsonia</a>
+      <a href="https://tiktok.com/@buildwithsonia" target="_blank">TikTok @buildwithsonia</a>
+      <a href="mailto:hello@clipservices.co.uk">hello@clipservices.co.uk</a>
     </div>
   </div>
   <div class="footer-bottom">
