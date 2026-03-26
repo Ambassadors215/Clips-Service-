@@ -36,8 +36,8 @@
   --purple: #8B5CF6;
 }
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
-html{scroll-behavior:smooth;}
-body{background:var(--navy);color:var(--white);font-family:'DM Sans',sans-serif;font-weight:300;line-height:1.7;overflow-x:hidden;}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%;}
+body{background:var(--navy);color:var(--white);font-family:'DM Sans',sans-serif;font-weight:300;line-height:1.7;overflow-x:hidden;-webkit-tap-highlight-color:transparent;}
 
 /* GRID BG */
 .grid-bg{position:fixed;inset:0;background-image:linear-gradient(rgba(0,200,240,0.025) 1px,transparent 1px),linear-gradient(90deg,rgba(0,200,240,0.025) 1px,transparent 1px);background-size:56px 56px;pointer-events:none;z-index:0;}
@@ -196,8 +196,9 @@ h2.stitle em{font-style:italic;color:var(--cyan);}
 
 /* BOOKING FORM */
 .booking-form{display:flex;flex-direction:column;gap:14px;margin-top:8px;}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
 label{display:block;font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--faint);margin-bottom:7px;}
-input,select,textarea{width:100%;background:var(--surface);border:1px solid var(--border);color:var(--white);padding:12px 15px;font-size:14px;font-family:'DM Sans',sans-serif;font-weight:300;outline:none;border-radius:3px;transition:border-color .2s;appearance:none;}
+input,select,textarea{width:100%;background:var(--surface);border:1px solid var(--border);color:var(--white);padding:12px 15px;font-size:16px;font-family:'DM Sans',sans-serif;font-weight:300;outline:none;border-radius:3px;transition:border-color .2s;appearance:none;}
 select{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='%238A9DC0' viewBox='0 0 16 16'%3E%3Cpath d='M8 11L3 6h10z'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 12px center;padding-right:36px;cursor:pointer;}
 input:focus,select:focus,textarea:focus{border-color:var(--cyan);}
 input::placeholder,textarea::placeholder{color:var(--faint);}
@@ -325,6 +326,7 @@ footer{background:var(--navy2);border-top:1px solid var(--border);padding:56px 5
 .sbar{background:var(--cyan);color:var(--navy);text-align:center;font-size:12px;font-weight:500;letter-spacing:.05em;padding:8px;display:flex;align-items:center;justify-content:center;gap:14px;}
 .sbar-close{background:none;border:none;color:var(--navy);cursor:pointer;font-size:16px;padding:0 4px;}
 
+/* ===== TABLET (max 900px) ===== */
 @media(max-width:900px){
   nav{padding:14px 20px;}
   nav.scrolled{padding:10px 20px;}
@@ -332,25 +334,84 @@ footer{background:var(--navy2);border-top:1px solid var(--border);padding:56px 5
   .nav-links.mobile-open{display:flex!important;flex-direction:column;position:fixed;top:120px;right:20px;background:var(--card);border:1px solid var(--border);padding:20px;border-radius:4px;gap:16px;z-index:300;}
   .nav-toggle{display:block;}
   .mode-bar{padding:0 20px;}
+  .mode-tab{padding:12px 16px;font-size:12px;}
   section{padding:64px 20px;}
   .c-hero,.p-hero{padding:60px 20px;}
+  .c-hero{min-height:auto;padding-top:40px;padding-bottom:40px;}
+  .search-hero{flex-wrap:wrap;padding:16px;gap:10px;}
+  .search-hero input{min-width:100%;order:1;}
+  .search-hero select{flex:1;min-width:0;order:2;}
+  .search-btn{order:3;}
+  .search-icon{order:0;}
   .how-grid,.provider-how{grid-template-columns:1fr 1fr;}
-  .benefits-grid,.plans-grid{grid-template-columns:1fr;}
+  .benefits-grid{grid-template-columns:1fr;}
   .form-grid{grid-template-columns:1fr;}
-  .footer-grid{grid-template-columns:1fr 1fr;}
+  .form-row{grid-template-columns:1fr;}
+  .rate-options{grid-template-columns:repeat(2,1fr);}
+  .footer-grid{grid-template-columns:1fr 1fr;gap:28px;}
+  footer{padding:40px 20px 28px;}
   .providers-grid{grid-template-columns:1fr;}
-  .modal-head{padding:28px 24px 20px;}
-  .modal-body{padding:24px;}
-  .modal-foot{padding:20px 24px;}
+  .modal-overlay{padding:20px 12px;}
+  .modal-head{padding:28px 20px 20px;}
+  .modal-body{padding:20px;}
+  .modal-foot{padding:20px;}
+  .modal-title{font-size:20px;}
   .app-form-wrap{padding:28px 20px;}
   .earnings-display{flex-direction:column;}
-  .commission-banner{grid-template-columns:1fr;margin:0 20px;}
+  .earn-num{font-size:32px;}
+  .earn-card{padding:20px 24px;}
+  .commission-banner{grid-template-columns:1fr;margin:0 20px;padding:32px 24px;}
+  .cb-title{font-size:22px;}
   .cat-cards{grid-template-columns:repeat(2,1fr);}
   .modal-stats{grid-template-columns:repeat(3,1fr);}
   .pay-methods{grid-template-columns:1fr;}
   .pay-flow{grid-template-columns:1fr;}
   .pf-step::after{display:none;}
   .pay-trust{grid-template-columns:repeat(2,1fr);}
+  .pay-breakdown{max-width:100%;}
+  .toast{white-space:normal;max-width:90vw;text-align:center;}
+  .sbar{font-size:11px;padding:6px 12px;gap:8px;}
+  .wa{width:50px;height:50px;font-size:22px;bottom:20px;right:20px;}
+}
+
+/* ===== SMALL PHONE (max 480px) ===== */
+@media(max-width:480px){
+  .mode-tab{padding:10px 12px;font-size:11px;}
+  .c-hero h1{font-size:clamp(32px,10vw,44px);}
+  .hero-badge{font-size:10px;padding:5px 10px;}
+  .search-hero select,.search-btn{width:100%;}
+  .cats{gap:6px;}
+  .cat{padding:7px 12px;font-size:12px;}
+  .how-grid,.provider-how{grid-template-columns:1fr;}
+  .footer-grid{grid-template-columns:1fr;}
+  .cat-cards{grid-template-columns:1fr;}
+  .pay-trust{grid-template-columns:repeat(2,1fr);}
+  .commission-banner{margin:0 10px;padding:24px 18px;}
+  .commission-pills{gap:8px;}
+  .cpill{padding:10px 14px;}
+  .cpill-pct{font-size:22px;}
+  .modal-stats{grid-template-columns:1fr;}
+  .mstat{padding:12px;}
+  .sbar{font-size:10px;gap:6px;flex-wrap:wrap;}
+  .earn-num{font-size:28px;}
+  .earn-lbl{font-size:10px;}
+  .footer-bottom{flex-direction:column;text-align:center;gap:10px;}
+  .p-hero h1{font-size:clamp(32px,10vw,40px);}
+  h2.stitle{font-size:clamp(24px,6vw,30px);}
+  .sdesc{font-size:14px;}
+  .benefit{padding:24px 20px;}
+  .phow{padding:20px;}
+  .how-step{padding:24px 20px;}
+  .how-num{font-size:40px;}
+  .phow-num{font-size:36px;}
+  .pf-num{font-size:24px;}
+  .pf-step{padding:16px 12px;}
+  .pb-row{font-size:13px;}
+  .app-form-wrap{padding:20px 16px;}
+  .app-form-wrap h3{font-size:22px;}
+  .rate-options{grid-template-columns:repeat(3,1fr);gap:6px;}
+  .rate-opt{padding:10px 8px;}
+  .rate-opt-val{font-size:16px;}
 }
 </style>
 </head>
@@ -976,7 +1037,7 @@ footer{background:var(--navy2);border-top:1px solid var(--border);padding:56px 5
       <h4>Book this provider</h4>
       <form class="booking-form" id="bookingForm" onsubmit="handleBook(event)">
         <input type="hidden" id="bf-provider" value="">
-        <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;">
+        <div class="form-row">
           <div>
             <label>First name</label>
             <input type="text" id="bf-first" placeholder="First name" required>
@@ -986,7 +1047,7 @@ footer{background:var(--navy2);border-top:1px solid var(--border);padding:56px 5
             <input type="text" id="bf-last" placeholder="Last name" required>
           </div>
         </div>
-        <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;">
+        <div class="form-row">
           <div>
             <label>WhatsApp number</label>
             <input type="tel" id="bf-phone" placeholder="+44 7700 000 000" required>
@@ -1000,7 +1061,7 @@ footer{background:var(--navy2);border-top:1px solid var(--border);padding:56px 5
           <label>Service needed</label>
           <input type="text" id="bf-service" placeholder="e.g. Weekly flat clean, 2-bed apartment" required>
         </div>
-        <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;">
+        <div class="form-row">
           <div>
             <label>Preferred date</label>
             <input type="date" id="bf-date" required>
