@@ -198,6 +198,7 @@ h2.stitle em{font-style:italic;color:var(--cyan);}
 .booking-form{display:flex;flex-direction:column;gap:14px;margin-top:8px;}
 label{display:block;font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--faint);margin-bottom:7px;}
 input,select,textarea{width:100%;background:var(--surface);border:1px solid var(--border);color:var(--white);padding:12px 15px;font-size:14px;font-family:'DM Sans',sans-serif;font-weight:300;outline:none;border-radius:3px;transition:border-color .2s;appearance:none;}
+select{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='%238A9DC0' viewBox='0 0 16 16'%3E%3Cpath d='M8 11L3 6h10z'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 12px center;padding-right:36px;cursor:pointer;}
 input:focus,select:focus,textarea:focus{border-color:var(--cyan);}
 input::placeholder,textarea::placeholder{color:var(--faint);}
 textarea{resize:vertical;min-height:80px;}
@@ -252,7 +253,7 @@ textarea{resize:vertical;min-height:80px;}
 .faq-icon{color:var(--faint);font-size:18px;flex-shrink:0;transition:transform .3s,color .2s;}
 .faq-item.open .faq-icon{transform:rotate(45deg);color:var(--cyan);}
 .faq-a{max-height:0;overflow:hidden;transition:max-height .3s ease,padding .3s;}
-.faq-item.open .faq-a{max-height:200px;padding-bottom:18px;}
+.faq-item.open .faq-a{max-height:500px;padding-bottom:18px;}
 .faq-a p{color:var(--muted);font-size:13px;line-height:1.7;}
 
 /* MARQUEE */
@@ -327,7 +328,8 @@ footer{background:var(--navy2);border-top:1px solid var(--border);padding:56px 5
 @media(max-width:900px){
   nav{padding:14px 20px;}
   nav.scrolled{padding:10px 20px;}
-  .nav-links{display:none;}
+  .nav-links{display:none!important;}
+  .nav-links.mobile-open{display:flex!important;flex-direction:column;position:fixed;top:120px;right:20px;background:var(--card);border:1px solid var(--border);padding:20px;border-radius:4px;gap:16px;z-index:300;}
   .nav-toggle{display:block;}
   .mode-bar{padding:0 20px;}
   section{padding:64px 20px;}
@@ -367,11 +369,11 @@ footer{background:var(--navy2);border-top:1px solid var(--border);padding:56px 5
 <nav id="nav">
   <a href="#" class="logo"><span class="logo-c">Clip</span>Services <span class="pulse"></span></a>
   <div class="nav-links">
-    <a href="#" onclick="switchView('customer')">Find a Service</a>
-    <a href="#" onclick="switchView('provider')">Offer Your Service</a>
-    <a href="#how-c">How It Works</a>
-    <a href="#payment" onclick="switchView('customer')">Payment</a>
-    <a href="#" onclick="switchView('provider')" class="nav-btn">Join as Provider</a>
+    <a href="#" onclick="switchView('customer');return false;">Find a Service</a>
+    <a href="#" onclick="switchView('provider');return false;">Offer Your Service</a>
+    <a href="#" onclick="switchView('customer','how-c');return false;">How It Works</a>
+    <a href="#" onclick="switchView('customer','payment');return false;">Payment</a>
+    <a href="#" onclick="switchView('provider');return false;" class="nav-btn">Join as Provider</a>
   </div>
   <button class="nav-toggle" onclick="toggleMobileMenu()">☰</button>
 </nav>
@@ -402,7 +404,7 @@ footer{background:var(--navy2);border-top:1px solid var(--border);padding:56px 5
     <div class="search-hero r rd2">
       <span class="search-icon">🔍</span>
       <input type="text" placeholder="What service do you need? e.g. grocery run, cleaning..." id="searchInput" oninput="filterProviders()">
-      <select id="catFilter" onchange="filterProviders()">
+      <select id="catFilter" onchange="filterCat(this.value,null)">
         <option value="">All categories</option>
         <option value="runner">Runner</option>
         <option value="cleaning">Cleaning</option>
@@ -413,18 +415,18 @@ footer{background:var(--navy2);border-top:1px solid var(--border);padding:56px 5
         <option value="beauty">Beauty</option>
         <option value="tech">Tech Help</option>
       </select>
-      <button class="search-btn" onclick="filterProviders()">Search</button>
+      <button class="search-btn" onclick="filterProviders();scrollToProviders()">Search</button>
     </div>
 
     <div class="cats r rd3" id="catPills">
-      <div class="cat active" onclick="filterCat('',this)">All</div>
-      <div class="cat" onclick="filterCat('runner',this)">🏃 Runner</div>
-      <div class="cat" onclick="filterCat('cleaning',this)">🧹 Cleaning</div>
-      <div class="cat" onclick="filterCat('handyman',this)">🔧 Handyman</div>
-      <div class="cat" onclick="filterCat('dog',this)">🐕 Dog Walking</div>
-      <div class="cat" onclick="filterCat('grocery',this)">🛒 Grocery</div>
-      <div class="cat" onclick="filterCat('beauty',this)">💅 Beauty</div>
-      <div class="cat" onclick="filterCat('tech',this)">💻 Tech Help</div>
+      <div class="cat active" data-cat="" onclick="filterCat('',this)">All</div>
+      <div class="cat" data-cat="runner" onclick="filterCat('runner',this)">🏃 Runner</div>
+      <div class="cat" data-cat="cleaning" onclick="filterCat('cleaning',this)">🧹 Cleaning</div>
+      <div class="cat" data-cat="handyman" onclick="filterCat('handyman',this)">🔧 Handyman</div>
+      <div class="cat" data-cat="dog" onclick="filterCat('dog',this)">🐕 Dog Walking</div>
+      <div class="cat" data-cat="grocery" onclick="filterCat('grocery',this)">🛒 Grocery</div>
+      <div class="cat" data-cat="beauty" onclick="filterCat('beauty',this)">💅 Beauty</div>
+      <div class="cat" data-cat="tech" onclick="filterCat('tech',this)">💻 Tech Help</div>
     </div>
   </div>
 
@@ -956,7 +958,7 @@ footer{background:var(--navy2);border-top:1px solid var(--border);padding:56px 5
 <!-- BOOKING MODAL -->
 <div class="modal-overlay" id="modalOverlay" onclick="closeModal(event)">
   <div class="modal">
-    <button class="modal-close" onclick="document.getElementById('modalOverlay').classList.remove('open')">✕</button>
+    <button class="modal-close" onclick="document.getElementById('modalOverlay').classList.remove('open');document.body.style.overflow=''">✕</button>
     <div class="modal-head">
       <div class="modal-avatar" id="m-avatar"></div>
       <div>
@@ -1036,18 +1038,18 @@ footer{background:var(--navy2);border-top:1px solid var(--border);padding:56px 5
     </div>
     <div class="fcol">
       <h4>For customers</h4>
-      <a href="#" onclick="switchView('customer');filterCat('runner',null)">Runner services</a>
-      <a href="#" onclick="switchView('customer');filterCat('cleaning',null)">Cleaning</a>
-      <a href="#" onclick="switchView('customer');filterCat('handyman',null)">Handyman</a>
-      <a href="#" onclick="switchView('customer');filterCat('beauty',null)">Beauty</a>
-      <a href="#payment" onclick="switchView('customer')">Payment</a>
-      <a href="#faq-c">FAQ</a>
+      <a href="#" onclick="switchView('customer');setTimeout(()=>{filterCat('runner',null);scrollToProviders()},100);return false;">Runner services</a>
+      <a href="#" onclick="switchView('customer');setTimeout(()=>{filterCat('cleaning',null);scrollToProviders()},100);return false;">Cleaning</a>
+      <a href="#" onclick="switchView('customer');setTimeout(()=>{filterCat('handyman',null);scrollToProviders()},100);return false;">Handyman</a>
+      <a href="#" onclick="switchView('customer');setTimeout(()=>{filterCat('beauty',null);scrollToProviders()},100);return false;">Beauty</a>
+      <a href="#" onclick="switchView('customer','payment');return false;">Payment</a>
+      <a href="#" onclick="switchView('customer','faq-c');return false;">FAQ</a>
     </div>
     <div class="fcol">
       <h4>For providers</h4>
-      <a href="#" onclick="switchView('provider')">Join the platform</a>
-      <a href="#apply">Apply now</a>
-      <a href="#faq-p">Provider FAQ</a>
+      <a href="#" onclick="switchView('provider');return false;">Join the platform</a>
+      <a href="#" onclick="switchView('provider','apply');return false;">Apply now</a>
+      <a href="#" onclick="switchView('provider','faq-p');return false;">Provider FAQ</a>
       <a href="https://wa.me/447700000000" target="_blank">WhatsApp us</a>
     </div>
     <div class="fcol">
@@ -1166,9 +1168,8 @@ function renderProviders(list) {
 
 function filterProviders() {
   const q = document.getElementById('searchInput').value.toLowerCase();
-  const cat = document.getElementById('catFilter').value || activeCategory;
   const filtered = providers.filter(p =>
-    (!cat || p.category === cat) &&
+    (!activeCategory || p.category === activeCategory) &&
     (!q || p.name.toLowerCase().includes(q) || p.role.toLowerCase().includes(q) ||
      p.bio.toLowerCase().includes(q) || p.services.some(s=>s.toLowerCase().includes(q)))
   );
@@ -1179,15 +1180,20 @@ function filterCat(cat, el) {
   activeCategory = cat;
   document.getElementById('catFilter').value = cat;
   document.querySelectorAll('.cat').forEach(c=>c.classList.remove('active'));
-  if(el) el.classList.add('active');
+  if (el) {
+    el.classList.add('active');
+  } else {
+    const match = document.querySelector('.cat[data-cat="'+cat+'"]');
+    if (match) match.classList.add('active');
+  }
   filterProviders();
 }
 
 function scrollToProviders() {
-  document.querySelector('#view-customer section').scrollIntoView({behavior:'smooth'});
+  const grid = document.getElementById('providersGrid');
+  if (grid) grid.scrollIntoView({behavior:'smooth',block:'start'});
 }
 
-// Modal
 function openModal(id) {
   const p = providers.find(x=>x.id===id);
   if(!p) return;
@@ -1203,6 +1209,11 @@ function openModal(id) {
   `;
   document.getElementById('bf-provider').value = p.name + ' — ' + p.role;
   document.getElementById('bf-service').value = '';
+  const dateInput = document.getElementById('bf-date');
+  dateInput.min = new Date().toISOString().split('T')[0];
+  dateInput.value = '';
+  document.getElementById('bookingForm').reset();
+  document.getElementById('bf-provider').value = p.name + ' — ' + p.role;
   document.getElementById('modalOverlay').classList.add('open');
   document.body.style.overflow='hidden';
 }
@@ -1330,28 +1341,32 @@ async function handleApply(e) {
   }
 }
 
-// View switching
-function switchView(v) {
+function switchView(v, anchor) {
   document.querySelectorAll('.view').forEach(el=>el.classList.remove('active'));
   document.getElementById('view-'+v).classList.add('active');
   document.querySelectorAll('.mode-tab').forEach(t=>t.classList.remove('active'));
   document.getElementById('tab-'+v).classList.add('active');
-  window.scrollTo({top:0,behavior:'smooth'});
+  closeMobileMenu();
+  if (anchor) {
+    setTimeout(()=>{
+      const el = document.getElementById(anchor);
+      if (el) el.scrollIntoView({behavior:'smooth'});
+    }, 60);
+  } else {
+    window.scrollTo({top:0,behavior:'smooth'});
+  }
 }
 
-// Nav scroll
 window.addEventListener('scroll',()=>{
   document.getElementById('nav').classList.toggle('scrolled',window.scrollY>40);
 });
 
-// Toast
 function showToast(msg){
   const t=document.getElementById('toast');
   t.textContent=msg;t.classList.add('show');
   setTimeout(()=>t.classList.remove('show'),4500);
 }
 
-// FAQ
 function toggleFaq(btn){
   const item=btn.closest('.faq-item');
   const was=item.classList.contains('open');
@@ -1359,29 +1374,18 @@ function toggleFaq(btn){
   if(!was)item.classList.add('open');
 }
 
-// Reveal
 const ro=new IntersectionObserver(entries=>{
   entries.forEach(e=>{if(e.isIntersecting)e.target.classList.add('v');});
 },{threshold:0.1});
 document.querySelectorAll('.r').forEach(el=>ro.observe(el));
 
-// Mobile menu
 function toggleMobileMenu(){
-  const nl=document.querySelector('.nav-links');
-  nl.style.display=nl.style.display==='flex'?'none':'flex';
-  nl.style.flexDirection='column';
-  nl.style.position='fixed';
-  nl.style.top='120px';
-  nl.style.right='20px';
-  nl.style.background='var(--card)';
-  nl.style.border='1px solid var(--border)';
-  nl.style.padding='20px';
-  nl.style.borderRadius='4px';
-  nl.style.gap='16px';
-  nl.style.zIndex='300';
+  document.querySelector('.nav-links').classList.toggle('mobile-open');
+}
+function closeMobileMenu(){
+  document.querySelector('.nav-links').classList.remove('mobile-open');
 }
 
-// Init
 renderProviders(providers);
 </script>
 </body>
