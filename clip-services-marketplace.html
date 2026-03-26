@@ -266,7 +266,7 @@ textarea{resize:vertical;min-height:80px;}
 
 /* FOOTER */
 footer{background:var(--navy2);border-top:1px solid var(--border);padding:56px 56px 36px;position:relative;z-index:1;}
-.footer-grid{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:40px;margin-bottom:40px;}
+.footer-grid{display:grid;grid-template-columns:2fr 1fr 1fr 1fr 1fr;gap:32px;margin-bottom:40px;}
 .footer-brand p{color:var(--faint);font-size:13px;margin-top:12px;line-height:1.7;max-width:240px;}
 .fcol h4{font-size:10px;letter-spacing:.15em;text-transform:uppercase;color:var(--faint);margin-bottom:16px;}
 .fcol a{display:block;color:var(--muted);text-decoration:none;font-size:13px;margin-bottom:8px;transition:color .2s;}
@@ -967,7 +967,7 @@ footer{background:var(--navy2);border-top:1px solid var(--border);padding:56px 5
           <div class="form-full" style="margin-top:8px;">
             <div style="display:flex;align-items:flex-start;gap:10px;margin-bottom:14px;">
               <input type="checkbox" id="af-consent" required style="width:auto;margin-top:3px;">
-              <label for="af-consent" style="font-size:12px;color:var(--muted);text-transform:none;letter-spacing:0;line-height:1.5;cursor:pointer;">I confirm the information provided is accurate. I agree to Clip Services' <a href="/terms" target="_blank" style="color:var(--cyan);">Terms</a> and <a href="/privacy-policy" target="_blank" style="color:var(--cyan);">Privacy Policy</a>.</label>
+              <label for="af-consent" style="font-size:12px;color:var(--muted);text-transform:none;letter-spacing:0;line-height:1.5;cursor:pointer;">I confirm the information provided is accurate. I agree to Clip Services' <a href="/terms" target="_blank" rel="noopener noreferrer" style="color:var(--cyan);">Terms</a>, <a href="/privacy-policy" target="_blank" rel="noopener noreferrer" style="color:var(--cyan);">Privacy Policy</a>, and <a href="/disclaimer" target="_blank" rel="noopener noreferrer" style="color:var(--cyan);">Disclaimer</a>.</label>
             </div>
             <button type="submit" class="btn-p" id="applyBtn" style="width:100%;justify-content:center;padding:18px;">Submit my application →</button>
             <div class="form-note" style="text-align:center;margin-top:12px;">We review every application personally and respond within 48 hours via WhatsApp. Free to apply — no commitment required.</div>
@@ -1081,7 +1081,7 @@ footer{background:var(--navy2);border-top:1px solid var(--border);padding:56px 5
         </div>
         <div style="display:flex;align-items:flex-start;gap:10px;margin-top:4px;">
           <input type="checkbox" id="bf-consent" required style="width:auto;margin-top:3px;">
-          <label for="bf-consent" style="font-size:12px;color:var(--muted);text-transform:none;letter-spacing:0;line-height:1.5;cursor:pointer;">I agree to Clip Services' <a href="/terms" target="_blank" style="color:var(--cyan);">Terms of Service</a> and <a href="/privacy-policy" target="_blank" style="color:var(--cyan);">Privacy Policy</a>. I consent to receiving booking confirmations via WhatsApp and email.</label>
+          <label for="bf-consent" style="font-size:12px;color:var(--muted);text-transform:none;letter-spacing:0;line-height:1.5;cursor:pointer;">I agree to Clip Services' <a href="/terms" target="_blank" rel="noopener noreferrer" style="color:var(--cyan);">Terms of Service</a>, <a href="/privacy-policy" target="_blank" rel="noopener noreferrer" style="color:var(--cyan);">Privacy Policy</a>, and <a href="/disclaimer" target="_blank" rel="noopener noreferrer" style="color:var(--cyan);">Disclaimer</a>. I consent to receiving booking confirmations via WhatsApp and email.</label>
         </div>
         <button type="submit" class="btn-p" id="bookBtn" style="width:100%;justify-content:center;">Confirm Booking Request →</button>
         <p style="font-size:12px;color:var(--faint);text-align:center;margin-top:8px;">We'll confirm via WhatsApp within 30 minutes. Clip Services platform fee (15%) added at checkout.</p>
@@ -1111,7 +1111,13 @@ footer{background:var(--navy2);border-top:1px solid var(--border);padding:56px 5
       <a href="#" onclick="switchView('provider');return false;">Join the platform</a>
       <a href="#" onclick="switchView('provider','apply');return false;">Apply now</a>
       <a href="#" onclick="switchView('provider','faq-p');return false;">Provider FAQ</a>
-      <a href="https://wa.me/447487588706" target="_blank">WhatsApp us</a>
+      <a href="https://wa.me/447487588706" target="_blank" rel="noopener noreferrer">WhatsApp us</a>
+    </div>
+    <div class="fcol">
+      <h4>Legal</h4>
+      <a href="/privacy-policy">Privacy Policy</a>
+      <a href="/terms">Terms of Service</a>
+      <a href="/disclaimer">Disclaimer</a>
     </div>
     <div class="fcol">
       <h4>Contact</h4>
