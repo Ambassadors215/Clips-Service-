@@ -1,5 +1,6 @@
 import Stripe from "stripe";
 import { addBooking } from "../lib/kv-store.js";
+import { notifyCheckoutStartedAdmin, notifyCheckoutStartedCustomer } from "../lib/notify.js";
 
 function readBody(req, limitBytes = 1024 * 1024) {
   return new Promise((resolve, reject) => {
@@ -143,6 +144,11 @@ export default async function handler(req, res) {
     if (!session.url) {
       return endJson(res, 500, { ok: false, error: "No checkout URL returned" });
     }
+
+    void Promise.allSettled([
+      notifyCheckoutStartedCustomer(record, session.url),
+      notifyCheckoutStartedAdmin(record),
+    ]);
 
     return endJson(res, 200, { ok: true, url: session.url, ref });
   } catch (e) {

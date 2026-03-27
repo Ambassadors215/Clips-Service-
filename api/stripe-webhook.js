@@ -1,5 +1,6 @@
 import Stripe from "stripe";
-import { patchBooking } from "../lib/kv-store.js";
+import { getBookingByRef, patchBooking } from "../lib/kv-store.js";
+import { notifyPaymentSucceededAdmin, notifyPaymentSucceededCustomer } from "../lib/notify.js";
 
 function readBody(req, limitBytes = 512 * 1024) {
   return new Promise((resolve, reject) => {
@@ -72,6 +73,13 @@ export default async function handler(req, res) {
           stripeSessionId: session.id,
           stripePaymentIntent: session.payment_intent ? String(session.payment_intent) : "",
         });
+        const booking = await getBookingByRef(String(ref));
+        if (booking) {
+          void Promise.allSettled([
+            notifyPaymentSucceededCustomer(booking),
+            notifyPaymentSucceededAdmin(booking),
+          ]);
+        }
       } catch (e) {
         console.error("WEBHOOK_PATCH", e);
       }

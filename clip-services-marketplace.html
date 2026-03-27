@@ -15,6 +15,11 @@
 <meta name="twitter:title" content="Clip Services — Local Service Marketplace">
 <meta name="twitter:description" content="Book verified local service providers in Salford Quays & MediaCityUK.">
 <link rel="canonical" href="https://clips-service.vercel.app">
+<link rel="manifest" href="/manifest.webmanifest">
+<link rel="apple-touch-icon" href="/icons/icon-192.svg">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
 <style>
 :root {
@@ -326,6 +331,23 @@ footer{background:var(--navy2);border-top:1px solid var(--border);padding:56px 5
 .sbar{background:var(--cyan);color:var(--navy);text-align:center;font-size:12px;font-weight:500;letter-spacing:.05em;padding:8px;display:flex;align-items:center;justify-content:center;gap:14px;}
 .sbar-close{background:none;border:none;color:var(--navy);cursor:pointer;font-size:16px;padding:0 4px;}
 
+/* PWA install + push prompts */
+.pwa-bar{position:fixed;bottom:0;left:0;right:0;z-index:480;background:var(--card);border-top:1px solid var(--border);padding:12px 16px;padding-bottom:max(12px,env(safe-area-inset-bottom));display:flex;align-items:center;gap:12px;flex-wrap:wrap;font-size:13px;box-shadow:0 -8px 32px rgba(0,0,0,.35);}
+.pwa-bar[hidden]{display:none!important;}
+.pwa-bar span{flex:1;min-width:140px;color:var(--muted);}
+.pwa-bar-btn{background:var(--cyan);color:var(--navy);border:none;padding:10px 18px;border-radius:4px;font-weight:600;font-size:13px;cursor:pointer;font-family:'DM Sans',sans-serif;}
+.pwa-bar-close{background:none;border:none;color:var(--muted);font-size:22px;line-height:1;cursor:pointer;padding:4px 8px;}
+.push-bar{bottom:56px;border-bottom:1px solid var(--border);}
+
+/* Modal: mobile-first scroll + sticky actions */
+.modal{display:flex;flex-direction:column;max-height:min(94vh,900px);}
+.modal-body{flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch;overscroll-behavior:contain;}
+.book-fieldset{border:1px solid var(--border);border-radius:8px;padding:18px 16px;margin-bottom:16px;background:rgba(0,200,240,.04);}
+.book-fieldset legend{font-family:'Syne',sans-serif;font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--cyan);padding:0 10px;}
+.field-error{font-size:11px;color:var(--red);margin-top:6px;display:none;}
+.field-error.show{display:block;}
+input.user-invalid,select.user-invalid,textarea.user-invalid{border-color:var(--red)!important;}
+
 /* ===== TABLET (max 900px) ===== */
 @media(max-width:900px){
   nav{padding:14px 20px;}
@@ -371,7 +393,7 @@ footer{background:var(--navy2);border-top:1px solid var(--border);padding:56px 5
   .pay-breakdown{max-width:100%;}
   .toast{white-space:normal;max-width:90vw;text-align:center;}
   .sbar{font-size:11px;padding:6px 12px;gap:8px;}
-  .wa{width:50px;height:50px;font-size:22px;bottom:20px;right:20px;}
+  .wa{width:50px;height:50px;font-size:22px;bottom:calc(72px + env(safe-area-inset-bottom));right:16px;}
 }
 
 /* ===== SMALL PHONE (max 480px) ===== */
@@ -424,6 +446,17 @@ footer{background:var(--navy2);border-top:1px solid var(--border);padding:56px 5
   <span>🟢</span>
   <span>Clip Services is live — Clippers Quays & Salford Quays · Manchester</span>
   <button class="sbar-close" onclick="document.getElementById('sbar').style.display='none'">×</button>
+</div>
+
+<div id="push-prompt" class="pwa-bar push-bar" hidden>
+  <span>Get booking &amp; payment alerts on this device</span>
+  <button type="button" class="pwa-bar-btn" id="push-enable-btn">Enable alerts</button>
+  <button type="button" class="pwa-bar-close" id="push-dismiss" aria-label="Dismiss">×</button>
+</div>
+<div id="pwa-bar" class="pwa-bar" hidden>
+  <span>Install Clip Services on your phone — book in one tap</span>
+  <button type="button" class="pwa-bar-btn" id="pwa-install-btn">Install</button>
+  <button type="button" class="pwa-bar-close" id="pwa-bar-dismiss" aria-label="Dismiss">×</button>
 </div>
 
 <!-- NAV -->
@@ -1035,55 +1068,71 @@ footer{background:var(--navy2);border-top:1px solid var(--border);padding:56px 5
       <h4>Stats</h4>
       <div class="modal-stats" id="m-stats"></div>
       <h4>Book this provider</h4>
-      <form class="booking-form" id="bookingForm" onsubmit="handleBook(event)">
+      <form class="booking-form" id="bookingForm" onsubmit="handleBook(event)" novalidate>
         <input type="hidden" id="bf-provider" value="">
-        <div class="form-row">
+        <fieldset class="book-fieldset">
+          <legend>Step 1 · Your details</legend>
+          <div class="form-row">
+            <div>
+              <label for="bf-first">First name</label>
+              <input type="text" id="bf-first" placeholder="First name" required autocomplete="given-name" minlength="1">
+              <div class="field-error" id="bf-err-first">Please enter your first name.</div>
+            </div>
+            <div>
+              <label for="bf-last">Last name</label>
+              <input type="text" id="bf-last" placeholder="Last name" required autocomplete="family-name" minlength="1">
+              <div class="field-error" id="bf-err-last">Please enter your last name.</div>
+            </div>
+          </div>
+          <div class="form-row">
+            <div>
+              <label for="bf-phone">WhatsApp number</label>
+              <input type="tel" id="bf-phone" placeholder="+44 7xxx xxxxxx" required autocomplete="tel" inputmode="tel" maxlength="22">
+              <p class="form-note">We’ll confirm on WhatsApp — use the number you use for WhatsApp.</p>
+              <div class="field-error" id="bf-err-phone">Enter a valid phone number (at least 10 digits).</div>
+            </div>
+            <div>
+              <label for="bf-email">Email address</label>
+              <input type="email" id="bf-email" placeholder="you@email.com" required autocomplete="email">
+              <div class="field-error" id="bf-err-email">Enter a valid email address.</div>
+            </div>
+          </div>
+        </fieldset>
+        <fieldset class="book-fieldset">
+          <legend>Step 2 · Service &amp; payment</legend>
           <div>
-            <label>First name</label>
-            <input type="text" id="bf-first" placeholder="First name" required>
+            <label for="bf-service">Service needed</label>
+            <input type="text" id="bf-service" placeholder="e.g. Weekly flat clean, 2-bed apartment" required>
+            <div class="field-error" id="bf-err-service">Describe the service you’re booking.</div>
           </div>
           <div>
-            <label>Last name</label>
-            <input type="text" id="bf-last" placeholder="Last name" required>
+            <label for="bf-subtotal">Agreed service total (£)</label>
+            <input type="number" id="bf-subtotal" name="subtotal" min="5" max="5000" step="0.01" inputmode="decimal" placeholder="e.g. 45.00" required>
+            <p class="form-note" id="bf-pay-summary">Enter the price you agreed with the provider (their rate only). We add 15% platform fee at checkout.</p>
+            <div class="field-error" id="bf-err-subtotal">Enter an amount between £5 and £5,000.</div>
           </div>
-        </div>
-        <div class="form-row">
-          <div>
-            <label>WhatsApp number</label>
-            <input type="tel" id="bf-phone" placeholder="+44 7700 000 000" required>
-          </div>
-          <div>
-            <label>Email address</label>
-            <input type="email" id="bf-email" placeholder="you@email.com" required>
-          </div>
-        </div>
-        <div>
-          <label>Service needed</label>
-          <input type="text" id="bf-service" placeholder="e.g. Weekly flat clean, 2-bed apartment" required>
-        </div>
-        <div>
-          <label>Agreed service total (£)</label>
-          <input type="number" id="bf-subtotal" name="subtotal" min="5" max="5000" step="0.01" inputmode="decimal" placeholder="e.g. 45.00" required>
-          <p class="form-note" id="bf-pay-summary" style="margin-top:8px;">Enter the price you agreed with the provider (their rate only). We add 15% platform fee at checkout.</p>
-        </div>
-        <div class="form-row">
-          <div>
-            <label>Preferred date</label>
-            <input type="date" id="bf-date" required>
+          <div class="form-row">
+            <div>
+              <label for="bf-date">Preferred date</label>
+              <input type="date" id="bf-date" required>
+              <div class="field-error" id="bf-err-date">Choose a date.</div>
+            </div>
+            <div>
+              <label for="bf-time">Preferred time</label>
+              <input type="time" id="bf-time" required>
+              <div class="field-error" id="bf-err-time">Choose a time.</div>
+            </div>
           </div>
           <div>
-            <label>Preferred time</label>
-            <input type="time" id="bf-time" required>
+            <label for="bf-address">Your address / flat number</label>
+            <input type="text" id="bf-address" placeholder="Flat 12A, Clippers Quays, M50 3XP" required autocomplete="street-address">
+            <div class="field-error" id="bf-err-address">We need your address for the visit.</div>
           </div>
-        </div>
-        <div>
-          <label>Your address / flat number</label>
-          <input type="text" id="bf-address" placeholder="Flat 12A, Clippers Quays, M50 3XP" required>
-        </div>
-        <div>
-          <label>Any extra details</label>
-          <textarea id="bf-notes" placeholder="Any specific requirements, access codes, or notes for the provider..."></textarea>
-        </div>
+          <div>
+            <label for="bf-notes">Any extra details</label>
+            <textarea id="bf-notes" placeholder="Access codes, parking, pets, materials…" rows="3"></textarea>
+          </div>
+        </fieldset>
         <div style="display:flex;align-items:flex-start;gap:10px;margin-top:4px;">
           <input type="checkbox" id="bf-consent" required style="width:auto;margin-top:3px;">
           <label for="bf-consent" style="font-size:12px;color:var(--muted);text-transform:none;letter-spacing:0;line-height:1.5;cursor:pointer;">I agree to Clip Services' <a href="/terms" target="_blank" rel="noopener noreferrer" style="color:var(--cyan);">Terms of Service</a>, <a href="/privacy-policy" target="_blank" rel="noopener noreferrer" style="color:var(--cyan);">Privacy Policy</a>, and <a href="/disclaimer" target="_blank" rel="noopener noreferrer" style="color:var(--cyan);">Disclaimer</a>. I consent to receiving booking confirmations via WhatsApp and email.</label>
@@ -1289,6 +1338,7 @@ function openModal(id) {
   const sub = document.getElementById('bf-subtotal');
   if (sub) sub.value = '';
   updateBookingPaySummary();
+  clearBookingFieldErrors();
   document.getElementById('modalOverlay').classList.add('open');
   document.body.style.overflow='hidden';
 }
@@ -1314,8 +1364,46 @@ function closeModal(e) {
   }
 }
 
+function clearBookingFieldErrors() {
+  document.querySelectorAll('#bookingForm .field-error').forEach((el) => el.classList.remove('show'));
+  document.querySelectorAll('#bookingForm input, #bookingForm textarea').forEach((el) => el.classList.remove('user-invalid'));
+}
+
+function validateBookingForm() {
+  clearBookingFieldErrors();
+  let ok = true;
+  function bad(id, errId) {
+    document.getElementById(errId)?.classList.add('show');
+    document.getElementById(id)?.classList.add('user-invalid');
+    ok = false;
+  }
+  if (!document.getElementById('bf-first').value.trim()) bad('bf-first', 'bf-err-first');
+  if (!document.getElementById('bf-last').value.trim()) bad('bf-last', 'bf-err-last');
+  const phone = document.getElementById('bf-phone').value.replace(/\D/g, '');
+  if (phone.length < 10) bad('bf-phone', 'bf-err-phone');
+  const em = document.getElementById('bf-email').value.trim();
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(em)) bad('bf-email', 'bf-err-email');
+  if (!document.getElementById('bf-service').value.trim()) bad('bf-service', 'bf-err-service');
+  const st = parseFloat(document.getElementById('bf-subtotal').value);
+  if (Number.isNaN(st) || st < 5 || st > 5000) bad('bf-subtotal', 'bf-err-subtotal');
+  if (!document.getElementById('bf-date').value) bad('bf-date', 'bf-err-date');
+  if (!document.getElementById('bf-time').value) bad('bf-time', 'bf-err-time');
+  if (!document.getElementById('bf-address').value.trim()) bad('bf-address', 'bf-err-address');
+  if (!document.getElementById('bf-consent').checked) {
+    showToast('⚠ Please agree to the Terms, Privacy Policy, and Disclaimer.');
+    ok = false;
+  }
+  if (!ok) {
+    const first = document.querySelector('#bookingForm .user-invalid');
+    first?.focus();
+    first?.closest('.modal-body')?.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
+  }
+  return ok;
+}
+
 async function handleBook(e) {
   e.preventDefault();
+  if (!validateBookingForm()) return;
   const btn = document.getElementById('bookBtn');
   const origText = btn.textContent;
   btn.disabled = true;
@@ -1327,13 +1415,6 @@ async function handleBook(e) {
   const fullNotes = `Provider: ${provider}\nAddress: ${address}${notes ? '\n' + notes : ''}`;
 
   const subtotal = parseFloat(document.getElementById('bf-subtotal').value);
-  if (Number.isNaN(subtotal) || subtotal < 5) {
-    showToast('⚠ Enter a valid service total (minimum £5).');
-    btn.disabled = false;
-    btn.textContent = origText;
-    return;
-  }
-
   const fee = Math.round(subtotal * 0.15 * 100) / 100;
   const total = Math.round((subtotal + fee) * 100) / 100;
 
@@ -1532,6 +1613,102 @@ document.getElementById('bf-subtotal')?.addEventListener('input', updateBookingP
     history.replaceState({}, '', location.pathname);
   }
 })();
+
+function urlBase64ToUint8Array(base64String) {
+  const padding = '='.repeat((4 - (base64String.length % 4)) % 4);
+  const base64 = (base64String + padding).replace(/-/g, '+').replace(/_/g, '/');
+  const rawData = atob(base64);
+  const outputArray = new Uint8Array(rawData.length);
+  for (let i = 0; i < rawData.length; ++i) outputArray[i] = rawData.charCodeAt(i);
+  return outputArray;
+}
+
+async function registerClipServiceWorker() {
+  if (!('serviceWorker' in navigator)) return null;
+  try {
+    return await navigator.serviceWorker.register('/sw.js', { scope: '/' });
+  } catch (e) {
+    console.warn('SW register failed', e);
+    return null;
+  }
+}
+
+async function subscribeCustomerPush() {
+  try {
+    const reg = await navigator.serviceWorker.ready;
+    const v = await fetch('/api/push-vapid').then((r) => r.json());
+    if (!v.configured || !v.publicKey) {
+      showToast('Push isn’t configured yet — we’ll email you instead.');
+      return;
+    }
+    const permission = await Notification.requestPermission();
+    if (permission !== 'granted') {
+      showToast('Notifications blocked — you can allow them in browser settings.');
+      return;
+    }
+    const sub = await reg.pushManager.subscribe({
+      userVisibleOnly: true,
+      applicationServerKey: urlBase64ToUint8Array(v.publicKey)
+    });
+    const res = await fetch('/api/push-subscribe', {
+      method: 'POST',
+      headers: { 'content-type': 'application/json' },
+      body: JSON.stringify({ role: 'customer', subscription: sub.toJSON() })
+    });
+    const data = await res.json();
+    if (data.ok) showToast('✓ Booking & payment alerts enabled on this device.');
+    else showToast('⚠ Could not save alert subscription.');
+  } catch (e) {
+    console.warn(e);
+    showToast('⚠ Could not enable alerts.');
+  }
+}
+
+let deferredInstallPrompt;
+window.addEventListener('beforeinstallprompt', (e) => {
+  e.preventDefault();
+  deferredInstallPrompt = e;
+  const bar = document.getElementById('pwa-bar');
+  if (bar && !localStorage.getItem('cs_pwa_dismiss')) bar.hidden = false;
+});
+
+document.getElementById('pwa-install-btn')?.addEventListener('click', async () => {
+  if (!deferredInstallPrompt) return;
+  deferredInstallPrompt.prompt();
+  await deferredInstallPrompt.userChoice;
+  deferredInstallPrompt = null;
+  const bar = document.getElementById('pwa-bar');
+  if (bar) bar.hidden = true;
+});
+
+document.getElementById('pwa-bar-dismiss')?.addEventListener('click', () => {
+  localStorage.setItem('cs_pwa_dismiss', '1');
+  const bar = document.getElementById('pwa-bar');
+  if (bar) bar.hidden = true;
+});
+
+document.getElementById('push-enable-btn')?.addEventListener('click', () => {
+  subscribeCustomerPush();
+  const p = document.getElementById('push-prompt');
+  if (p) p.hidden = true;
+});
+
+document.getElementById('push-dismiss')?.addEventListener('click', () => {
+  localStorage.setItem('cs_push_dismiss', '1');
+  const p = document.getElementById('push-prompt');
+  if (p) p.hidden = true;
+});
+
+registerClipServiceWorker().then(() => {
+  setTimeout(async () => {
+    if (!('Notification' in window) || Notification.permission !== 'default') return;
+    if (localStorage.getItem('cs_push_dismiss')) return;
+    const v = await fetch('/api/push-vapid').then((r) => r.json());
+    if (!v.configured) return;
+    const pr = document.getElementById('push-prompt');
+    if (pr) pr.hidden = false;
+  }, 12000);
+});
 </script>
 </body>
 </html>

@@ -1,4 +1,5 @@
 import { addContact } from "../lib/kv-store.js";
+import { notifyProviderApplicationAdmin, notifyProviderApplicationApplicant } from "../lib/notify.js";
 
 function readBody(req, limitBytes = 1024 * 1024) {
   return new Promise((resolve, reject) => {
@@ -58,6 +59,13 @@ export default async function handler(req, res) {
 
   try {
     await addContact(record);
+    const isProviderApp = message.includes("[PROVIDER APPLICATION]");
+    if (isProviderApp) {
+      void Promise.allSettled([
+        notifyProviderApplicationApplicant(name, email.trim()),
+        notifyProviderApplicationAdmin(record),
+      ]);
+    }
     return endJson(res, 200, { ok: true });
   } catch (e) {
     console.error("CONTACT_KV_ERROR", e);

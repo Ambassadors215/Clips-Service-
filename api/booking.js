@@ -1,4 +1,5 @@
 import { addBooking } from "../lib/kv-store.js";
+import { notifyBookingSubmittedAdmin, notifyBookingSubmittedCustomer } from "../lib/notify.js";
 
 function readBody(req, limitBytes = 1024 * 1024) {
   return new Promise((resolve, reject) => {
@@ -51,7 +52,7 @@ export default async function handler(req, res) {
   }
 
   const service = safeText(payload?.service, 120);
-  const price = safeText(String(payload?.price ?? ""), 20);
+  const price = safeText(String(payload?.price ?? ""), 120);
   const dur = safeText(payload?.dur, 60);
   const date = safeText(payload?.date, 80);
   const time = safeText(payload?.time, 40);
@@ -88,6 +89,10 @@ export default async function handler(req, res) {
 
   try {
     await addBooking(record);
+    void Promise.allSettled([
+      notifyBookingSubmittedCustomer(record),
+      notifyBookingSubmittedAdmin(record),
+    ]);
     return endJson(res, 200, { ok: true, ref });
   } catch (e) {
     console.error("BOOKING_KV_ERROR", e);

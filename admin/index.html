@@ -3,6 +3,9 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#faf8f3" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <link rel="manifest" href="/manifest.webmanifest" />
     <title>Clip Services Admin</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -294,8 +297,16 @@
                 <button class="btn btn-ghost" id="testAuthBtn">Test connection</button>
               </div>
               <p class="muted" style="margin-bottom: 0">
-                If this fails, ensure Vercel has <span class="mono">ADMIN_TOKEN</span> and <span class="mono">KV_REDIS_URL</span> set. For card payments: <span class="mono">STRIPE_SECRET_KEY</span>, <span class="mono">STRIPE_WEBHOOK_SECRET</span>, and <span class="mono">SITE_URL</span> (e.g. https://clips-service.vercel.app).
+                If this fails, ensure Vercel has <span class="mono">ADMIN_TOKEN</span> and <span class="mono">KV_REDIS_URL</span> set. For card payments: <span class="mono">STRIPE_SECRET_KEY</span>, <span class="mono">STRIPE_WEBHOOK_SECRET</span>, and <span class="mono">SITE_URL</span> (e.g. https://clips-service.vercel.app). For push: <span class="mono">VAPID_PUBLIC_KEY</span> / <span class="mono">VAPID_PRIVATE_KEY</span>.
               </p>
+              <hr style="border: none; border-top: 1px solid rgba(184, 149, 90, 0.15); margin: 16px 0" />
+              <p class="muted" style="margin-top: 0">
+                Optional: browser push for new bookings, awaiting payment, paid, and provider applications (same device only).
+              </p>
+              <div class="row">
+                <button class="btn btn-primary" type="button" id="adminPushBtn">Enable push alerts</button>
+              </div>
+              <div class="status" id="pushStatus"></div>
             </div>
           </section>
 
@@ -366,6 +377,8 @@
         saveTokenBtn: document.getElementById("saveTokenBtn"),
         testAuthBtn: document.getElementById("testAuthBtn"),
         authStatus: document.getElementById("authStatus"),
+        pushStatus: document.getElementById("pushStatus"),
+        adminPushBtn: document.getElementById("adminPushBtn"),
         logoutBtn: document.getElementById("logoutBtn"),
         refreshBtn: document.getElementById("refreshBtn"),
         exportBtn: document.getElementById("exportBtn"),
@@ -609,6 +622,66 @@
           btn.textContent = "Save";
         }
       });
+
+      function urlBase64ToUint8Array(base64String) {
+        const padding = "=".repeat((4 - (base64String.length % 4)) % 4);
+        const base64 = (base64String + padding).replace(/-/g, "+").replace(/_/g, "/");
+        const rawData = atob(base64);
+        const outputArray = new Uint8Array(rawData.length);
+        for (let i = 0; i < rawData.length; ++i) outputArray[i] = rawData.charCodeAt(i);
+        return outputArray;
+      }
+
+      async function registerAdminServiceWorker() {
+        if (!("serviceWorker" in navigator)) return null;
+        try {
+          return await navigator.serviceWorker.register("/sw.js", { scope: "/" });
+        } catch (e) {
+          console.warn("SW register failed", e);
+          return null;
+        }
+      }
+
+      async function subscribeAdminPush() {
+        const token = getToken();
+        if (!token) {
+          setStatus(el.pushStatus, "Save your admin token first, then try again.", "err");
+          return;
+        }
+        setStatus(el.pushStatus, "Requesting permission…");
+        try {
+          await registerAdminServiceWorker();
+          const reg = await navigator.serviceWorker.ready;
+          const v = await fetch("/api/push-vapid").then((r) => r.json());
+          if (!v.configured || !v.publicKey) {
+            setStatus(el.pushStatus, "Push not configured on server (VAPID keys).", "err");
+            return;
+          }
+          const permission = await Notification.requestPermission();
+          if (permission !== "granted") {
+            setStatus(el.pushStatus, "Notifications blocked — allow them in browser settings.", "err");
+            return;
+          }
+          const sub = await reg.pushManager.subscribe({
+            userVisibleOnly: true,
+            applicationServerKey: urlBase64ToUint8Array(v.publicKey)
+          });
+          const res = await fetch("/api/push-subscribe", {
+            method: "POST",
+            headers: { "content-type": "application/json" },
+            body: JSON.stringify({ role: "admin", adminToken: token, subscription: sub.toJSON() })
+          });
+          const data = await res.json().catch(() => ({}));
+          if (res.ok && data.ok) setStatus(el.pushStatus, "Push alerts enabled on this device.", "ok");
+          else setStatus(el.pushStatus, data.error || "Subscribe failed — check token.", "err");
+        } catch (e) {
+          console.warn(e);
+          setStatus(el.pushStatus, e?.message || "Could not enable push.", "err");
+        }
+      }
+
+      el.adminPushBtn?.addEventListener("click", subscribeAdminPush);
+      registerAdminServiceWorker();
 
       // init
       render();
