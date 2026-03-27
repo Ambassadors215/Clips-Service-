@@ -2,6 +2,10 @@ import Stripe from "stripe";
 import { getBookingByRef, patchBooking } from "../lib/kv-store.js";
 import { notifyPaymentSucceededAdmin, notifyPaymentSucceededCustomer } from "../lib/notify.js";
 
+export const config = {
+  api: { bodyParser: false },
+};
+
 function readBody(req, limitBytes = 512 * 1024) {
   return new Promise((resolve, reject) => {
     const chunks = [];

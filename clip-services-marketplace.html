@@ -337,7 +337,8 @@ footer{background:var(--navy2);border-top:1px solid var(--border);padding:56px 5
 .pwa-bar span{flex:1;min-width:140px;color:var(--muted);}
 .pwa-bar-btn{background:var(--cyan);color:var(--navy);border:none;padding:10px 18px;border-radius:4px;font-weight:600;font-size:13px;cursor:pointer;font-family:'DM Sans',sans-serif;}
 .pwa-bar-close{background:none;border:none;color:var(--muted);font-size:22px;line-height:1;cursor:pointer;padding:4px 8px;}
-.push-bar{bottom:56px;border-bottom:1px solid var(--border);}
+.push-bar{bottom:0;border-bottom:none;}
+#pwa-bar:not([hidden]) ~ .push-bar{bottom:56px;border-bottom:1px solid var(--border);}
 
 /* Modal: mobile-first scroll + sticky actions */
 .modal{display:flex;flex-direction:column;max-height:min(94vh,900px);}
@@ -483,15 +484,15 @@ input[type="checkbox"]{min-width:20px;min-height:20px;}
   <button class="sbar-close" onclick="document.getElementById('sbar').style.display='none'">×</button>
 </div>
 
-<div id="push-prompt" class="pwa-bar push-bar" hidden>
-  <span>Get booking &amp; payment alerts on this device</span>
-  <button type="button" class="pwa-bar-btn" id="push-enable-btn">Enable alerts</button>
-  <button type="button" class="pwa-bar-close" id="push-dismiss" aria-label="Dismiss">×</button>
-</div>
 <div id="pwa-bar" class="pwa-bar" hidden>
   <span>Install Clip Services on your phone — book in one tap</span>
   <button type="button" class="pwa-bar-btn" id="pwa-install-btn">Install</button>
   <button type="button" class="pwa-bar-close" id="pwa-bar-dismiss" aria-label="Dismiss">×</button>
+</div>
+<div id="push-prompt" class="pwa-bar push-bar" hidden>
+  <span>Get booking &amp; payment alerts on this device</span>
+  <button type="button" class="pwa-bar-btn" id="push-enable-btn">Enable alerts</button>
+  <button type="button" class="pwa-bar-close" id="push-dismiss" aria-label="Dismiss">×</button>
 </div>
 
 <!-- NAV -->
@@ -1370,15 +1371,13 @@ function openModal(id) {
     <div class="mstat"><span class="mstat-num">${p.rating}</span><span class="mstat-lbl">Rating</span></div>
     <div class="mstat"><span class="mstat-num">${p.responseTime}</span><span class="mstat-lbl">Response</span></div>
   `;
-  document.getElementById('bf-provider').value = p.name + ' — ' + p.role;
-  document.getElementById('bf-service').value = '';
-  const dateInput = document.getElementById('bf-date');
-  dateInput.min = new Date().toISOString().split('T')[0];
-  dateInput.value = '';
   document.getElementById('bookingForm').reset();
   document.getElementById('bf-provider').value = p.name + ' — ' + p.role;
-  const sub = document.getElementById('bf-subtotal');
-  if (sub) sub.value = '';
+  const dateInput = document.getElementById('bf-date');
+  const tomorrow = new Date();
+  tomorrow.setDate(tomorrow.getDate() + 1);
+  dateInput.min = tomorrow.toISOString().split('T')[0];
+  dateInput.value = '';
   updateBookingPaySummary();
   clearBookingFieldErrors();
   document.getElementById('modalOverlay').classList.add('open');
@@ -1437,8 +1436,10 @@ function validateBookingForm() {
   }
   if (!ok) {
     const first = document.querySelector('#bookingForm .user-invalid');
-    first?.focus();
-    first?.closest('.modal-body')?.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
+    if (first) {
+      first.scrollIntoView({ block: 'center', behavior: 'smooth' });
+      setTimeout(() => first.focus(), 350);
+    }
   }
   return ok;
 }
@@ -1555,14 +1556,11 @@ function validateApplyForm() {
     if (el) el.classList.toggle('user-invalid', !f.valid);
     if (!f.valid) ok = false;
   });
-  if (!consent) {
-    showToast('Please agree to the Terms, Privacy Policy, and Disclaimer.');
-    ok = false;
-  }
+  if (!consent) ok = false;
   if (!ok) {
     const first = document.querySelector('#applyForm .user-invalid');
-    if (first) { first.focus(); first.scrollIntoView({ block: 'center', behavior: 'smooth' }); }
-    showToast('Please fill in all required fields.');
+    if (first) { first.scrollIntoView({ block: 'center', behavior: 'smooth' }); setTimeout(() => first.focus(), 350); }
+    showToast(!consent && fields.every(f => f.valid) ? 'Please agree to the Terms, Privacy Policy, and Disclaimer.' : 'Please fill in all required fields.');
   }
   return ok;
 }
