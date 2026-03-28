@@ -696,7 +696,7 @@
         setStatus(el.connectResult, "Creating Stripe account…");
         el.connectProviderBtn.disabled = true;
         try {
-          const data = await api("/api/connect-onboard", {
+          const data = await api("/api/connect", {
             method: "POST",
             body: JSON.stringify({ providerId, providerName, providerEmail })
           });
@@ -728,7 +728,7 @@
           btn.disabled = true;
           btn.textContent = "Checking…";
           try {
-            const data = await api(`/api/connect-status?id=${encodeURIComponent(providerId)}`);
+            const data = await api(`/api/connect?id=${encodeURIComponent(providerId)}`);
             if (data.onboarded) {
               state.providers[providerId] = { ...state.providers[providerId], onboarded: true };
               setStatus(el.providersStatus, `Provider ${providerId}: fully connected and ready for payouts.`, "ok");
@@ -751,7 +751,7 @@
           btn.textContent = "Creating…";
           try {
             const p = state.providers[providerId];
-            const data = await api("/api/connect-onboard", {
+            const data = await api("/api/connect", {
               method: "POST",
               body: JSON.stringify({ providerId, providerName: p?.name || "", providerEmail: p?.email || "" })
             });
