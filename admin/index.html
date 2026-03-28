@@ -315,7 +315,8 @@
               <div class="row" style="justify-content: space-between; width: 100%">
                 <div class="tabs" role="tablist">
                   <button class="tab active" data-tab="bookings">Bookings</button>
-                  <button class="tab" data-tab="contacts">Provider Applications</button>
+                  <button class="tab" data-tab="contacts">Applications</button>
+                  <button class="tab" data-tab="providers">Providers (Stripe)</button>
                 </div>
                 <div class="row">
                   <input class="input" id="searchInput" placeholder="Search (name, email, ref…)" style="width: 260px" />
@@ -356,6 +357,34 @@
                   <tbody id="contactsTbody"></tbody>
                 </table>
               </div>
+
+              <div id="providersView" class="hide">
+                <p class="muted" style="margin-top:0;margin-bottom:16px;">
+                  Connect each provider's bank account via Stripe Express. Once connected, their share is sent automatically when a customer pays.
+                </p>
+                <div id="providersStatus" class="status"></div>
+                <table>
+                  <thead>
+                    <tr>
+                      <th>ID</th>
+                      <th>Provider</th>
+                      <th>Email</th>
+                      <th>Stripe Status</th>
+                      <th>Actions</th>
+                    </tr>
+                  </thead>
+                  <tbody id="providersTbody"></tbody>
+                </table>
+                <hr style="border:none;border-top:1px solid rgba(184,149,90,.15);margin:24px 0 16px" />
+                <h3 style="font-size:15px;margin-bottom:12px;">Add new provider to Stripe Connect</h3>
+                <div class="row" style="flex-wrap:wrap;gap:8px;">
+                  <input class="input" id="cpId" placeholder="Provider ID (e.g. 1)" style="width:80px" />
+                  <input class="input" id="cpName" placeholder="Provider name" style="width:180px" />
+                  <input class="input" id="cpEmail" placeholder="Provider email" style="width:220px" type="email" />
+                  <button class="btn btn-primary" id="connectProviderBtn">Connect to Stripe</button>
+                </div>
+                <div id="connectResult" class="status" style="margin-top:12px;"></div>
+              </div>
             </div>
           </section>
         </div>
@@ -369,7 +398,8 @@
         tab: "bookings",
         token: localStorage.getItem(STORAGE_KEY) || "",
         bookings: [],
-        contacts: []
+        contacts: [],
+        providers: {}
       };
 
       const el = {
@@ -387,7 +417,12 @@
         bookingsTbody: document.getElementById("bookingsTbody"),
         contactsTbody: document.getElementById("contactsTbody"),
         bookingsView: document.getElementById("bookingsView"),
-        contactsView: document.getElementById("contactsView")
+        contactsView: document.getElementById("contactsView"),
+        providersView: document.getElementById("providersView"),
+        providersTbody: document.getElementById("providersTbody"),
+        providersStatus: document.getElementById("providersStatus"),
+        connectProviderBtn: document.getElementById("connectProviderBtn"),
+        connectResult: document.getElementById("connectResult")
       };
 
       el.tokenInput.value = state.token;
@@ -449,6 +484,7 @@
         });
         el.bookingsView.classList.toggle("hide", state.tab !== "bookings");
         el.contactsView.classList.toggle("hide", state.tab !== "contacts");
+        el.providersView.classList.toggle("hide", state.tab !== "providers");
 
         // bookings
         const bookings = filterRows(state.bookings);
@@ -513,18 +549,43 @@
             `;
           })
           .join("");
+
+        // providers
+        const provEntries = Object.entries(state.providers);
+        el.providersTbody.innerHTML = provEntries.length === 0
+          ? '<tr><td colspan="5" class="muted" style="text-align:center;padding:24px">No providers connected yet. Use the form below to connect a provider to Stripe.</td></tr>'
+          : provEntries.map(([id, p]) => {
+            const statusBadge = p.onboarded
+              ? '<span class="badge success">Connected</span>'
+              : '<span class="badge warn">Pending onboarding</span>';
+            return `
+              <tr>
+                <td class="mono">${id}</td>
+                <td style="font-weight:500">${p.name || "—"}</td>
+                <td class="muted">${p.email || "—"}</td>
+                <td>${statusBadge}</td>
+                <td>
+                  <button class="btn btn-ghost" data-provider-id="${id}" data-action="check-status" style="font-size:12px">Check status</button>
+                  ${!p.onboarded ? `<button class="btn btn-ghost" data-provider-id="${id}" data-action="resend-link" style="font-size:12px">New link</button>` : ''}
+                </td>
+              </tr>
+            `;
+          }).join("");
       }
 
       async function refreshAll() {
         setStatus(el.dataStatus, "Loading…");
         try {
-          const [bookings, contacts] = await Promise.all([
+          const [bookings, contacts, provData] = await Promise.all([
             api("/api/admin/bookings"),
-            api("/api/admin/contacts")
+            api("/api/admin/contacts"),
+            api("/api/admin/providers").catch(() => ({ providers: {} }))
           ]);
           state.bookings = bookings.items || [];
           state.contacts = contacts.items || [];
-          setStatus(el.dataStatus, `Loaded ${state.bookings.length} bookings · ${state.contacts.length} messages`, "ok");
+          state.providers = provData.providers || {};
+          const provCount = Object.keys(state.providers).length;
+          setStatus(el.dataStatus, `Loaded ${state.bookings.length} bookings · ${state.contacts.length} applications · ${provCount} providers`, "ok");
           render();
         } catch (e) {
           setStatus(el.dataStatus, e?.message || "Failed to load", "err");
@@ -622,6 +683,105 @@
           btn.textContent = "Save";
         }
       });
+
+      // Provider Stripe Connect handlers
+      el.connectProviderBtn.addEventListener("click", async () => {
+        const providerId = document.getElementById("cpId").value.trim();
+        const providerName = document.getElementById("cpName").value.trim();
+        const providerEmail = document.getElementById("cpEmail").value.trim();
+        if (!providerId || !providerName || !providerEmail) {
+          setStatus(el.connectResult, "Fill in all fields: ID, name, and email.", "err");
+          return;
+        }
+        setStatus(el.connectResult, "Creating Stripe account…");
+        el.connectProviderBtn.disabled = true;
+        try {
+          const data = await api("/api/connect-onboard", {
+            method: "POST",
+            body: JSON.stringify({ providerId, providerName, providerEmail })
+          });
+          if (data.ok && data.url) {
+            setStatus(el.connectResult, "Account created. Send the onboarding link to the provider:", "ok");
+            const linkEl = document.createElement("div");
+            linkEl.style.cssText = "margin-top:8px;word-break:break-all;font-size:12px;padding:12px;background:var(--sand);border-radius:8px;";
+            linkEl.innerHTML = `<a href="${data.url}" target="_blank" rel="noopener">${data.url}</a>`;
+            el.connectResult.after(linkEl);
+            await refreshProviders();
+          } else {
+            setStatus(el.connectResult, data.error || "Failed", "err");
+          }
+        } catch (e) {
+          setStatus(el.connectResult, e.message || "Error creating account", "err");
+        } finally {
+          el.connectProviderBtn.disabled = false;
+        }
+      });
+
+      el.providersTbody.addEventListener("click", async (e) => {
+        const btn = e.target.closest("button");
+        if (!btn) return;
+        const providerId = btn.dataset.providerId;
+        const action = btn.dataset.action;
+        if (!providerId) return;
+
+        if (action === "check-status") {
+          btn.disabled = true;
+          btn.textContent = "Checking…";
+          try {
+            const data = await api(`/api/connect-status?id=${encodeURIComponent(providerId)}`);
+            if (data.onboarded) {
+              state.providers[providerId] = { ...state.providers[providerId], onboarded: true };
+              setStatus(el.providersStatus, `Provider ${providerId}: fully connected and ready for payouts.`, "ok");
+            } else if (data.connected) {
+              setStatus(el.providersStatus, `Provider ${providerId}: account created but onboarding not complete. Send them the onboarding link.`, "err");
+            } else {
+              setStatus(el.providersStatus, `Provider ${providerId}: not connected yet.`, "err");
+            }
+            render();
+          } catch (err) {
+            setStatus(el.providersStatus, err.message || "Check failed", "err");
+          } finally {
+            btn.disabled = false;
+            btn.textContent = "Check status";
+          }
+        }
+
+        if (action === "resend-link") {
+          btn.disabled = true;
+          btn.textContent = "Creating…";
+          try {
+            const p = state.providers[providerId];
+            const data = await api("/api/connect-onboard", {
+              method: "POST",
+              body: JSON.stringify({ providerId, providerName: p?.name || "", providerEmail: p?.email || "" })
+            });
+            if (data.ok && data.url) {
+              setStatus(el.providersStatus, `New onboarding link for provider ${providerId}:`, "ok");
+              const linkEl = document.createElement("div");
+              linkEl.style.cssText = "margin-top:8px;word-break:break-all;font-size:12px;padding:12px;background:var(--sand);border-radius:8px;";
+              linkEl.innerHTML = `<a href="${data.url}" target="_blank" rel="noopener">${data.url}</a>`;
+              el.providersStatus.after(linkEl);
+            } else {
+              setStatus(el.providersStatus, data.error || "Failed", "err");
+            }
+          } catch (err) {
+            setStatus(el.providersStatus, err.message || "Error", "err");
+          } finally {
+            btn.disabled = false;
+            btn.textContent = "New link";
+          }
+        }
+      });
+
+      async function refreshProviders() {
+        try {
+          const data = await api("/api/admin/providers");
+          state.providers = data.providers || {};
+          render();
+        } catch (e) {
+          console.warn("Could not load providers", e);
+        }
+      }
 
       function urlBase64ToUint8Array(base64String) {
         const padding = "=".repeat((4 - (base64String.length % 4)) % 4);

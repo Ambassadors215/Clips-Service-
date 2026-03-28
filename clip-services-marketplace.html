@@ -1102,11 +1102,11 @@ input[type="checkbox"]{min-width:20px;min-height:20px;}
       </div>
       <div class="faq-item">
         <button class="faq-q" onclick="toggleFaq(this)">How does payment work for providers? <span class="faq-icon">+</span></button>
-        <div class="faq-a"><p>Clip Services collects the full payment from the customer before the job starts. Your share (100% of your stated rate) is transferred to your bank account within 24 hours of job completion. You never need to chase customers, create invoices, or handle money on-site. We handle everything.</p></div>
+        <div class="faq-a"><p>Payments are fully automated via Stripe. When a customer pays, your share (100% of your stated rate) is sent directly to your bank account by Stripe. You never need to chase customers, create invoices, or handle money on-site. Payouts typically arrive within 2-3 business days.</p></div>
       </div>
       <div class="faq-item">
         <button class="faq-q" onclick="toggleFaq(this)">Do I need a business bank account? <span class="faq-icon">+</span></button>
-        <div class="faq-a"><p>No — a personal bank account works fine. We transfer your earnings to whichever UK bank account you provide. Most of our providers use their regular current account. If you earn over £1,000 per year, we recommend registering as self-employed with HMRC for tax purposes.</p></div>
+        <div class="faq-a"><p>No — a personal bank account works fine. During Stripe onboarding, you link your bank account (Monzo, Barclays, any UK bank) and Stripe pays you directly. Most of our providers use their regular current account. If you earn over £1,000 per year, we recommend registering as self-employed with HMRC for tax purposes.</p></div>
       </div>
     </div>
   </section>
@@ -1135,6 +1135,7 @@ input[type="checkbox"]{min-width:20px;min-height:20px;}
       <h4>Book this provider</h4>
       <form class="booking-form" id="bookingForm" onsubmit="handleBook(event)" novalidate>
         <input type="hidden" id="bf-provider" value="">
+        <input type="hidden" id="bf-provider-id" value="">
         <div class="form-progress" id="formProgress">
           <div class="form-progress-step active" data-step="1">1 · Your details</div>
           <div class="form-progress-step" data-step="2">2 · Service &amp; payment</div>
@@ -1402,6 +1403,7 @@ function openModal(id) {
   `;
   document.getElementById('bookingForm').reset();
   document.getElementById('bf-provider').value = p.name + ' — ' + p.role;
+  document.getElementById('bf-provider-id').value = p.id;
   const dateInput = document.getElementById('bf-date');
   const tomorrow = new Date();
   tomorrow.setDate(tomorrow.getDate() + 1);
@@ -1500,7 +1502,8 @@ async function handleBook(e) {
     email: document.getElementById('bf-email').value,
     notes: fullNotes,
     consent: document.getElementById('bf-consent').checked,
-    subtotalGBP: subtotal
+    subtotalGBP: subtotal,
+    providerId: document.getElementById('bf-provider-id').value
   };
 
   try {

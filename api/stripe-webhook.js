@@ -1,5 +1,5 @@
 import Stripe from "stripe";
-import { getBookingByRef, patchBooking } from "../lib/kv-store.js";
+import { getBookingByRef, patchBooking, getProviders, upsertProvider } from "../lib/kv-store.js";
 import { notifyPaymentSucceededAdmin, notifyPaymentSucceededCustomer } from "../lib/notify.js";
 
 export const config = {
@@ -86,6 +86,24 @@ export default async function handler(req, res) {
         }
       } catch (e) {
         console.error("WEBHOOK_PATCH", e);
+      }
+    }
+  }
+
+  if (event.type === "account.updated") {
+    const account = event.data.object;
+    if (account.charges_enabled && account.payouts_enabled) {
+      try {
+        const providers = await getProviders();
+        for (const [id, p] of Object.entries(providers)) {
+          if (p.stripeAccountId === account.id && !p.onboarded) {
+            await upsertProvider(id, { onboarded: true });
+            console.log(`CONNECT: Provider ${id} onboarding complete (${account.id})`);
+            break;
+          }
+        }
+      } catch (e) {
+        console.error("WEBHOOK_ACCOUNT_UPDATED", e);
       }
     }
   }

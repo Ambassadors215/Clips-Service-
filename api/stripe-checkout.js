@@ -1,5 +1,5 @@
 import Stripe from "stripe";
-import { addBooking } from "../lib/kv-store.js";
+import { addBooking, getProvider } from "../lib/kv-store.js";
 import { notifyCheckoutStartedAdmin, notifyCheckoutStartedCustomer } from "../lib/notify.js";
 
 function readBody(req, limitBytes = 1024 * 1024) {
@@ -72,6 +72,7 @@ export default async function handler(req, res) {
   const notes = safeText(payload?.notes, 3000);
   const consent = Boolean(payload?.consent);
   const subtotalGBP = Number(payload?.subtotalGBP);
+  const providerId = payload?.providerId ? String(payload.providerId) : "";
 
   if (!service || !date || !time) return endJson(res, 400, { ok: false, error: "Missing service/date/time" });
   if (!firstName || !lastName) return endJson(res, 400, { ok: false, error: "Missing name" });
@@ -112,8 +113,33 @@ export default async function handler(req, res) {
   const origin = siteOrigin();
   const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
 
+  let connectedAccountId = null;
+  if (providerId) {
+    try {
+      const providerRecord = await getProvider(providerId);
+      if (providerRecord?.stripeAccountId && providerRecord?.onboarded) {
+        connectedAccountId = providerRecord.stripeAccountId;
+      }
+    } catch (e) {
+      console.warn("PROVIDER_LOOKUP", e.message);
+    }
+  }
+
   try {
     await addBooking(record);
+
+    const providerSharePence = Math.round(subtotalGBP * 100);
+
+    const paymentIntentData = {
+      metadata: { bookingRef: ref },
+    };
+
+    if (connectedAccountId) {
+      paymentIntentData.transfer_data = {
+        destination: connectedAccountId,
+        amount: providerSharePence,
+      };
+    }
 
     const session = await stripe.checkout.sessions.create({
       mode: "payment",
@@ -136,9 +162,7 @@ export default async function handler(req, res) {
       customer_email: email.trim(),
       client_reference_id: ref,
       metadata: { bookingRef: ref },
-      payment_intent_data: {
-        metadata: { bookingRef: ref },
-      },
+      payment_intent_data: paymentIntentData,
     });
 
     if (!session.url) {
@@ -153,6 +177,6 @@ export default async function handler(req, res) {
     return endJson(res, 200, { ok: true, url: session.url, ref });
   } catch (e) {
     console.error("STRIPE_CHECKOUT_ERROR", e);
-    return endJson(res, 500, { ok: false, error: "Could not start payment. Try again or use WhatsApp." });
+    return endJson(res, 500, { ok: false, error: "Could not start payment. Please try again." });
   }
 }
