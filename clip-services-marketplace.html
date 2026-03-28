@@ -237,6 +237,20 @@ textarea{resize:vertical;min-height:80px;}
 .char-tag{background:var(--surface);border:1px solid var(--border);color:var(--muted);padding:7px 14px;border-radius:3px;font-size:12px;cursor:pointer;transition:all .2s;display:flex;align-items:center;gap:6px;}
 .char-tag.selected{background:rgba(0,200,240,.1);border-color:var(--cyan);color:var(--cyan);}
 .char-tag input{display:none;}
+.kyc-divider{grid-column:1/-1;border:none;border-top:1px solid var(--border);margin:20px 0 8px;}
+.kyc-heading{grid-column:1/-1;font-family:'Syne',sans-serif;font-size:18px;font-weight:700;margin:0 0 4px;display:flex;align-items:center;gap:10px;}
+.kyc-heading .kyc-badge{font-size:9px;letter-spacing:.1em;font-weight:600;background:var(--cyan);color:var(--navy);padding:3px 10px;border-radius:20px;text-transform:uppercase;}
+.kyc-note{grid-column:1/-1;font-size:12px;color:var(--muted);line-height:1.6;margin:-4px 0 8px;}
+.upload-zone{border:2px dashed var(--border);border-radius:6px;padding:28px 20px;text-align:center;cursor:pointer;transition:border-color .2s,background .2s;position:relative;}
+.upload-zone:hover,.upload-zone.dragover{border-color:var(--cyan);background:rgba(0,200,240,.04);}
+.upload-zone input[type="file"]{position:absolute;inset:0;opacity:0;cursor:pointer;}
+.upload-zone .uz-icon{font-size:28px;margin-bottom:8px;}
+.upload-zone .uz-label{font-size:13px;font-weight:500;margin-bottom:4px;}
+.upload-zone .uz-hint{font-size:11px;color:var(--faint);}
+.upload-preview{margin-top:10px;display:none;position:relative;}
+.upload-preview img{max-width:100%;max-height:160px;border-radius:4px;border:1px solid var(--border);}
+.upload-preview .up-name{font-size:11px;color:var(--muted);margin-top:4px;}
+.upload-preview .up-remove{position:absolute;top:4px;right:4px;background:var(--navy);border:1px solid var(--border);color:var(--white);border-radius:50%;width:22px;height:22px;font-size:14px;cursor:pointer;display:flex;align-items:center;justify-content:center;}
 .rate-options{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;}
 .rate-opt{background:var(--surface);border:1px solid var(--border);padding:14px;text-align:center;border-radius:3px;cursor:pointer;transition:all .2s;}
 .rate-opt:hover,.rate-opt.active{border-color:var(--cyan);background:rgba(0,200,240,.07);}
@@ -1024,6 +1038,91 @@ input[type="checkbox"]{min-width:20px;min-height:20px;}
             <textarea id="af-experience" placeholder="How long have you been offering this service? Any relevant experience, qualifications, or tools you have? Why would customers love working with you?" style="min-height:110px;"></textarea>
           </div>
 
+          <hr class="kyc-divider">
+          <div class="kyc-heading">Identity Verification <span class="kyc-badge">Required</span></div>
+          <p class="kyc-note">We verify every provider before they're listed. This information is kept private and used only for verification purposes.</p>
+
+          <div class="form-group">
+            <label>Date of birth</label>
+            <input type="date" id="af-dob" required>
+            <div class="form-note">You must be 18 or over to provide services.</div>
+          </div>
+          <div class="form-group">
+            <label>Government-issued ID type</label>
+            <select id="af-id-type" required>
+              <option value="">Select...</option>
+              <option value="passport">UK/Foreign Passport</option>
+              <option value="driving-licence">UK Driving Licence</option>
+              <option value="brp">Biometric Residence Permit (BRP)</option>
+              <option value="national-id">National Identity Card (EU/EEA)</option>
+            </select>
+          </div>
+
+          <div class="form-group form-full">
+            <label>Upload a photo of your ID (front side)</label>
+            <div class="upload-zone" id="uzId">
+              <input type="file" id="af-id-file" accept="image/*,.pdf" aria-label="Upload ID photo">
+              <div class="uz-icon">📄</div>
+              <div class="uz-label">Tap or drag to upload your ID</div>
+              <div class="uz-hint">Passport, driving licence, or BRP — clear photo, all corners visible. Max 5 MB.</div>
+            </div>
+            <div class="upload-preview" id="previewId">
+              <img id="previewIdImg" alt="ID preview">
+              <button type="button" class="up-remove" onclick="clearUpload('Id')">&times;</button>
+              <div class="up-name" id="previewIdName"></div>
+            </div>
+          </div>
+
+          <div class="form-group form-full">
+            <label>Upload a selfie holding your ID</label>
+            <div class="upload-zone" id="uzSelfie">
+              <input type="file" id="af-selfie-file" accept="image/*" aria-label="Upload selfie with ID">
+              <div class="uz-icon">🤳</div>
+              <div class="uz-label">Tap or drag to upload your selfie</div>
+              <div class="uz-hint">A clear photo of you holding the same ID. Face and ID must be visible.</div>
+            </div>
+            <div class="upload-preview" id="previewSelfie">
+              <img id="previewSelfieImg" alt="Selfie preview">
+              <button type="button" class="up-remove" onclick="clearUpload('Selfie')">&times;</button>
+              <div class="up-name" id="previewSelfieName"></div>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label>Right to work in the UK</label>
+            <select id="af-right-to-work" required>
+              <option value="">Select...</option>
+              <option value="british-citizen">British citizen</option>
+              <option value="settled-status">EU Settled Status</option>
+              <option value="pre-settled">EU Pre-Settled Status</option>
+              <option value="visa-work">Work visa / Skilled Worker</option>
+              <option value="student-visa">Student visa (limited hours)</option>
+              <option value="other-right">Other right to work</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>DBS check status</label>
+            <select id="af-dbs" required>
+              <option value="">Select...</option>
+              <option value="have-basic">I have a valid Basic DBS</option>
+              <option value="have-enhanced">I have a valid Enhanced DBS</option>
+              <option value="willing">I don't have one but I'm willing to get one</option>
+              <option value="not-applicable">Not applicable to my service</option>
+            </select>
+            <div class="form-note">Required for in-home services (cleaning, childcare, pet sitting). We can help you apply.</div>
+          </div>
+
+          <div class="form-group">
+            <label>Emergency contact name</label>
+            <input type="text" id="af-emergency-name" placeholder="Full name" required>
+          </div>
+          <div class="form-group">
+            <label>Emergency contact number</label>
+            <input type="tel" id="af-emergency-phone" placeholder="+44 7xxx xxxxxx" required inputmode="tel" maxlength="22">
+          </div>
+
+          <hr class="kyc-divider">
+
           <div class="form-group form-full">
             <label>Your availability</label>
             <div class="char-tags" id="availTags">
@@ -1538,29 +1637,121 @@ function selectRate(el, val) {
   el.dataset.selectedRate = val;
 }
 
+function compressImage(file, maxWidth = 1200, quality = 0.7) {
+  return new Promise((resolve) => {
+    if (file.type === 'application/pdf') {
+      const reader = new FileReader();
+      reader.onload = () => resolve({ data: reader.result.split(',')[1], type: 'application/pdf', name: file.name });
+      reader.readAsDataURL(file);
+      return;
+    }
+    const img = new Image();
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      img.onload = () => {
+        const scale = img.width > maxWidth ? maxWidth / img.width : 1;
+        const canvas = document.createElement('canvas');
+        canvas.width = img.width * scale;
+        canvas.height = img.height * scale;
+        canvas.getContext('2d').drawImage(img, 0, 0, canvas.width, canvas.height);
+        const dataUrl = canvas.toDataURL('image/jpeg', quality);
+        resolve({ data: dataUrl.split(',')[1], type: 'image/jpeg', name: file.name.replace(/\.\w+$/, '.jpg') });
+      };
+      img.src = e.target.result;
+    };
+    reader.readAsDataURL(file);
+  });
+}
+
+function setupUploadZone(fieldId, suffix) {
+  const input = document.getElementById(fieldId);
+  const zone = input.closest('.upload-zone');
+  const preview = document.getElementById('preview' + suffix);
+  const previewImg = document.getElementById('preview' + suffix + 'Img');
+  const previewName = document.getElementById('preview' + suffix + 'Name');
+  function showFile(file) {
+    if (!file) return;
+    if (file.size > 5 * 1024 * 1024) { showToast('File too large — max 5 MB.'); input.value = ''; return; }
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      if (file.type === 'application/pdf') {
+        previewImg.src = 'data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80"><rect width="80" height="80" rx="8" fill="%23152240"/><text x="40" y="48" text-anchor="middle" font-size="16" fill="%2300C8F0" font-family="sans-serif">PDF</text></svg>';
+      } else {
+        previewImg.src = e.target.result;
+      }
+      previewName.textContent = file.name + ' (' + (file.size / 1024).toFixed(0) + ' KB)';
+      preview.style.display = 'block';
+      zone.style.display = 'none';
+    };
+    reader.readAsDataURL(file);
+  }
+  input.addEventListener('change', () => showFile(input.files[0]));
+  zone.addEventListener('dragover', (e) => { e.preventDefault(); zone.classList.add('dragover'); });
+  zone.addEventListener('dragleave', () => zone.classList.remove('dragover'));
+  zone.addEventListener('drop', (e) => { e.preventDefault(); zone.classList.remove('dragover'); if (e.dataTransfer.files[0]) { input.files = e.dataTransfer.files; showFile(e.dataTransfer.files[0]); } });
+}
+
+function clearUpload(suffix) {
+  const preview = document.getElementById('preview' + suffix);
+  const zone = preview.previousElementSibling;
+  const input = zone.querySelector('input[type="file"]');
+  input.value = '';
+  preview.style.display = 'none';
+  zone.style.display = '';
+}
+
 function validateApplyForm() {
   let ok = true;
   const name = document.getElementById('af-name').value.trim();
   const phone = document.getElementById('af-phone').value.replace(/\D/g, '');
   const email = document.getElementById('af-email').value.trim();
   const postcode = document.getElementById('af-postcode').value.trim();
+  const dob = document.getElementById('af-dob').value;
+  const idType = document.getElementById('af-id-type').value;
+  const rightToWork = document.getElementById('af-right-to-work').value;
+  const dbs = document.getElementById('af-dbs').value;
+  const emergencyName = document.getElementById('af-emergency-name').value.trim();
+  const emergencyPhone = document.getElementById('af-emergency-phone').value.replace(/\D/g, '');
+  const idFile = document.getElementById('af-id-file').files[0];
+  const selfieFile = document.getElementById('af-selfie-file').files[0];
   const consent = document.getElementById('af-consent').checked;
+
   const fields = [
     { el: 'af-name', valid: name.length >= 2 },
     { el: 'af-phone', valid: phone.length >= 10 },
     { el: 'af-email', valid: /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email) },
     { el: 'af-postcode', valid: postcode.length >= 3 },
+    { el: 'af-dob', valid: !!dob && (new Date().getFullYear() - new Date(dob).getFullYear()) >= 18 },
+    { el: 'af-id-type', valid: !!idType },
+    { el: 'af-right-to-work', valid: !!rightToWork },
+    { el: 'af-dbs', valid: !!dbs },
+    { el: 'af-emergency-name', valid: emergencyName.length >= 2 },
+    { el: 'af-emergency-phone', valid: emergencyPhone.length >= 10 },
   ];
   fields.forEach(f => {
     const el = document.getElementById(f.el);
     if (el) el.classList.toggle('user-invalid', !f.valid);
     if (!f.valid) ok = false;
   });
+
+  if (!idFile) { ok = false; document.getElementById('uzId')?.classList.add('user-invalid'); }
+  else { document.getElementById('uzId')?.classList.remove('user-invalid'); }
+  if (!selfieFile) { ok = false; document.getElementById('uzSelfie')?.classList.add('user-invalid'); }
+  else { document.getElementById('uzSelfie')?.classList.remove('user-invalid'); }
+
   if (!consent) ok = false;
   if (!ok) {
     const first = document.querySelector('#applyForm .user-invalid');
     if (first) { first.scrollIntoView({ block: 'center', behavior: 'smooth' }); setTimeout(() => first.focus(), 350); }
-    showToast(!consent && fields.every(f => f.valid) ? 'Please agree to the Terms, Privacy Policy, and Disclaimer.' : 'Please fill in all required fields.');
+    if (!consent && fields.every(f => f.valid) && idFile && selfieFile) {
+      showToast('Please agree to the Terms, Privacy Policy, and Disclaimer.');
+    } else if (!idFile || !selfieFile) {
+      showToast('Please upload your ID photo and a selfie holding your ID.');
+    } else if (dob && (new Date().getFullYear() - new Date(dob).getFullYear()) < 18) {
+      showToast('You must be 18 or over to apply.');
+    } else {
+      showToast('Please fill in all required fields including identity verification.');
+    }
   }
   return ok;
 }
@@ -1587,6 +1778,16 @@ async function handleApply(e) {
   const experience = document.getElementById('af-experience').value;
   const transport = document.getElementById('af-transport').value;
   const source = document.getElementById('af-source').value;
+  const dob = document.getElementById('af-dob').value;
+  const idType = document.getElementById('af-id-type').value;
+  const rightToWork = document.getElementById('af-right-to-work').value;
+  const dbs = document.getElementById('af-dbs').value;
+  const emergencyName = document.getElementById('af-emergency-name').value;
+  const emergencyPhone = document.getElementById('af-emergency-phone').value;
+
+  const idTypeLabels = { 'passport': 'Passport', 'driving-licence': 'Driving Licence', 'brp': 'BRP', 'national-id': 'National ID' };
+  const rtwLabels = { 'british-citizen': 'British Citizen', 'settled-status': 'EU Settled Status', 'pre-settled': 'EU Pre-Settled', 'visa-work': 'Work Visa', 'student-visa': 'Student Visa', 'other-right': 'Other' };
+  const dbsLabels = { 'have-basic': 'Has Basic DBS', 'have-enhanced': 'Has Enhanced DBS', 'willing': 'Willing to get DBS', 'not-applicable': 'N/A' };
 
   const message = [
     `[PROVIDER APPLICATION]`,
@@ -1597,26 +1798,46 @@ async function handleApply(e) {
     `Availability: ${availability || 'Not specified'}`,
     `Transport: ${transport || 'Not specified'}`,
     `Heard about us: ${source || 'Not specified'}`,
-    `Experience: ${experience}`
+    `Experience: ${experience}`,
+    `--- KYC VERIFICATION ---`,
+    `Date of Birth: ${dob}`,
+    `ID Type: ${idTypeLabels[idType] || idType}`,
+    `Right to Work: ${rtwLabels[rightToWork] || rightToWork}`,
+    `DBS Status: ${dbsLabels[dbs] || dbs}`,
+    `Emergency Contact: ${emergencyName} — ${emergencyPhone}`,
+    `ID Document: attached`,
+    `Selfie with ID: attached`
   ].join('\n');
 
+  btn.textContent = 'Compressing documents…';
+  let attachments = [];
+  try {
+    const idFile = document.getElementById('af-id-file').files[0];
+    const selfieFile = document.getElementById('af-selfie-file').files[0];
+    if (idFile) attachments.push(await compressImage(idFile));
+    if (selfieFile) attachments.push(await compressImage(selfieFile));
+  } catch { /* proceed without attachments */ }
+
+  btn.textContent = 'Submitting application…';
   try {
     const res = await fetch('/api/contact', {
       method: 'POST',
       headers: { 'content-type': 'application/json' },
-      body: JSON.stringify({ name, email, message })
+      body: JSON.stringify({ name, email, message, attachments })
     });
     const data = await res.json();
     if (data.ok) {
-      showToast('✓ Application received! We\'ll review and WhatsApp you within 48 hours.');
+      showToast('✓ Application received! We\'ll review your documents and WhatsApp you within 48 hours.');
       e.target.reset();
       document.querySelectorAll('.char-tag').forEach(t => t.classList.remove('selected'));
       document.querySelectorAll('.rate-opt').forEach(r => r.classList.remove('active'));
+      clearUpload('Id');
+      clearUpload('Selfie');
     } else {
       showToast('⚠ ' + (data.error || 'Something went wrong. Please try again.'));
     }
   } catch {
-    showToast('⚠ Network error — please try again or message us on WhatsApp.');
+    showToast('⚠ Network error — please try again.');
   } finally {
     btn.disabled = false;
     btn.textContent = origText;
@@ -1772,6 +1993,11 @@ document.getElementById('bf-subtotal')?.addEventListener('input', updateBookingP
 
   const afPhone = document.getElementById('af-phone');
   if (afPhone) formatUKPhone(afPhone);
+  const afEmergencyPhone = document.getElementById('af-emergency-phone');
+  if (afEmergencyPhone) formatUKPhone(afEmergencyPhone);
+
+  setupUploadZone('af-id-file', 'Id');
+  setupUploadZone('af-selfie-file', 'Selfie');
 
   document.querySelectorAll('#applyForm input, #applyForm textarea, #applyForm select').forEach(function (el) {
     el.addEventListener('blur', function () {

@@ -1,7 +1,8 @@
 import { addContact } from "../lib/kv-store.js";
 import { notifyProviderApplicationAdmin, notifyProviderApplicationApplicant } from "../lib/notify.js";
+import { sendEmail, adminInbox, isEmailConfigured } from "../lib/email.js";
 
-function readBody(req, limitBytes = 1024 * 1024) {
+function readBody(req, limitBytes = 4 * 1024 * 1024) {
   return new Promise((resolve, reject) => {
     const chunks = [];
     let size = 0;
@@ -48,7 +49,8 @@ export default async function handler(req, res) {
 
   const name = safeText(payload?.name, 120);
   const email = safeText(payload?.email, 120);
-  const message = safeText(payload?.message, 3000);
+  const message = safeText(payload?.message, 8000);
+  const attachments = Array.isArray(payload?.attachments) ? payload.attachments : [];
 
   if (!name) return endJson(res, 400, { ok: false, error: "Missing name" });
   if (!isValidEmail(email)) return endJson(res, 400, { ok: false, error: "Invalid email" });
@@ -65,6 +67,28 @@ export default async function handler(req, res) {
         notifyProviderApplicationApplicant(name, email.trim()),
         notifyProviderApplicationAdmin(record),
       ]);
+
+      if (isEmailConfigured() && attachments.length > 0) {
+        const emailAttachments = attachments
+          .filter((a) => a?.data && a?.name)
+          .slice(0, 3)
+          .map((a) => ({
+            filename: a.name,
+            content: a.data,
+            encoding: "base64",
+            contentType: a.type || "image/jpeg",
+          }));
+
+        if (emailAttachments.length > 0) {
+          const kycLines = message.split("\n").filter((l) => l.includes(":")).map((l) => `<li>${l.replace(":", ":</strong>").replace(/^/, "<strong>")}</li>`).join("");
+          void sendEmail({
+            to: adminInbox(),
+            subject: `[Clip Services] KYC Documents — ${name}`,
+            html: `<h3>Provider KYC Documents</h3><ul>${kycLines}</ul><p>${emailAttachments.length} document(s) attached.</p>`,
+            attachments: emailAttachments,
+          }).catch((e) => console.error("KYC_EMAIL_ERROR", e));
+        }
+      }
     }
     return endJson(res, 200, { ok: true });
   } catch (e) {
