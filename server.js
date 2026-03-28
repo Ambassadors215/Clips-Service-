@@ -133,7 +133,7 @@ const server = http.createServer(async (req, res) => {
       if (!isValidEmail(email)) return json(res, 400, { ok: false, error: "Invalid email" });
       if (!consent) return json(res, 400, { ok: false, error: "Consent is required" });
 
-      const ref = `DHC-${Math.random().toString(36).slice(2, 8).toUpperCase()}`;
+      const ref = `CS-${Math.random().toString(36).slice(2, 8).toUpperCase()}`;
       const createdAt = new Date().toISOString();
       const record = {
         ref,
