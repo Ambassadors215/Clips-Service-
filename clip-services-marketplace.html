@@ -291,7 +291,7 @@ footer{background:var(--navy2);border-top:1px solid var(--border);padding:56px 5
 .toast.show{transform:translateX(-50%) translateY(0);opacity:1;}
 
 /* PAYMENT SECTION */
-.pay-methods{display:grid;grid-template-columns:repeat(3,1fr);gap:2px;margin-bottom:36px;}
+.pay-methods{display:grid;grid-template-columns:1fr;gap:2px;margin-bottom:36px;max-width:480px;}
 .pay-card{background:var(--card);border:1px solid var(--border);padding:28px 24px;text-align:center;transition:border-color .2s;}
 .pay-card:hover{border-color:var(--cyan);}
 .pay-card.recommended{border-color:var(--green);position:relative;}
@@ -429,7 +429,6 @@ input[type="checkbox"]{min-width:20px;min-height:20px;}
   .cb-title{font-size:22px;}
   .cat-cards{grid-template-columns:repeat(2,1fr);}
   .modal-stats{grid-template-columns:repeat(3,1fr);}
-  .pay-methods{grid-template-columns:1fr;}
   .pay-flow{grid-template-columns:1fr;}
   .pf-step::after{display:none;}
   .pay-trust{grid-template-columns:repeat(2,1fr);}
@@ -655,7 +654,7 @@ input[type="checkbox"]{min-width:20px;min-height:20px;}
       <div class="how-step r rd1">
         <div class="how-num">02</div>
         <h3>Book instantly</h3>
-        <p>Fill in the booking form or tap "Book via WhatsApp." Confirm your time, address, and requirements in seconds.</p>
+        <p>Fill in the booking form with your details, pick a date and time, and pay securely by card. Done in under 2 minutes.</p>
       </div>
       <div class="how-step r rd2">
         <div class="how-num">03</div>
@@ -678,25 +677,11 @@ input[type="checkbox"]{min-width:20px;min-height:20px;}
 
     <div class="pay-methods r">
       <div class="pay-card recommended">
-        <span class="pay-icon">🏦</span>
-        <div class="pay-name">Bank Transfer</div>
-        <div class="pay-desc">Pay directly via bank transfer after your booking is confirmed. Sonia sends you the payment details via WhatsApp.</div>
-        <div class="pay-detail">Instant via Faster Payments. Sort code and account number shared securely after booking confirmation.</div>
-        <span class="pay-badge pb-free">Zero fees</span>
-      </div>
-      <div class="pay-card">
         <span class="pay-icon">💳</span>
-        <div class="pay-name">Payment Link</div>
-        <div class="pay-desc">Receive a secure payment link via WhatsApp. Tap to pay instantly from your bank app — no card details needed.</div>
-        <div class="pay-detail">Monzo.me or similar payment link. Opens in your banking app. Funds arrive instantly.</div>
-        <span class="pay-badge pb-fast">Instant</span>
-      </div>
-      <div class="pay-card">
-        <span class="pay-icon">💎</span>
-        <div class="pay-name">Card Payment (Stripe)</div>
-        <div class="pay-desc">When you book a provider, you can pay by debit or credit card on our secure Stripe checkout page. Email receipt from Stripe.</div>
-        <div class="pay-detail">Available when you click “Continue to secure card payment” on the booking form. Major cards accepted.</div>
-        <span class="pay-badge pb-fast">At booking</span>
+        <div class="pay-name">Secure Card Payment (Stripe)</div>
+        <div class="pay-desc">Pay by debit or credit card on our secure Stripe checkout page when you book. Visa, Mastercard, Amex, and more. Instant email receipt from Stripe.</div>
+        <div class="pay-detail">Click “Continue to secure card payment” on the booking form. You'll be redirected to Stripe's hosted checkout page. All major cards accepted.</div>
+        <span class="pay-badge pb-fast">Pay at booking</span>
       </div>
     </div>
 
@@ -712,12 +697,12 @@ input[type="checkbox"]{min-width:20px;min-height:20px;}
       <div class="pf-step">
         <div class="pf-num">02</div>
         <h4>Confirm</h4>
-        <p>Sonia confirms via WhatsApp with a price breakdown</p>
+        <p>Review your price breakdown with 15% platform fee</p>
       </div>
       <div class="pf-step">
         <div class="pf-num">03</div>
         <h4>Pay</h4>
-        <p>Pay via bank transfer or payment link before the job</p>
+        <p>Pay securely by card on Stripe checkout</p>
       </div>
       <div class="pf-step">
         <div class="pf-num">04</div>
@@ -758,7 +743,7 @@ input[type="checkbox"]{min-width:20px;min-height:20px;}
       </div>
       <div class="pt">
         <span class="pt-icon">📱</span>
-        <div class="pt-label">WhatsApp<br>confirmation</div>
+        <div class="pt-label">Stripe<br>protected</div>
       </div>
     </div>
   </section>
@@ -851,15 +836,15 @@ input[type="checkbox"]{min-width:20px;min-height:20px;}
       </div>
       <div class="faq-item">
         <button class="faq-q" onclick="toggleFaq(this)">What payment methods do you accept? <span class="faq-icon">+</span></button>
-        <div class="faq-a"><p>You can pay by card when you book — we use Stripe Checkout (secure, receipt by email). We also accept bank transfers and payment links (Monzo.me or similar) via WhatsApp if you prefer. All payments go through Clip Services — never directly to a provider.</p></div>
+        <div class="faq-a"><p>We accept all major debit and credit cards (Visa, Mastercard, Amex) through Stripe Checkout. When you book, you're redirected to Stripe's secure payment page — your card details never touch our servers. You'll receive an instant email receipt. All payments go through Clip Services — never directly to a provider.</p></div>
       </div>
       <div class="faq-item">
         <button class="faq-q" onclick="toggleFaq(this)">When do I pay — before or after the service? <span class="faq-icon">+</span></button>
-        <div class="faq-a"><p>You pay before the service starts. Once your booking is confirmed via WhatsApp, we send a price breakdown and payment instructions. Payment must be received before the provider arrives. This protects both you and the provider — if anything goes wrong, we mediate and issue refunds from the amount held.</p></div>
+        <div class="faq-a"><p>You pay when you book. The booking form shows your full price breakdown (service cost + 15% platform fee), then you pay securely by card through Stripe. Payment is confirmed instantly and your provider is notified. If anything goes wrong, we mediate and issue refunds.</p></div>
       </div>
       <div class="faq-item">
         <button class="faq-q" onclick="toggleFaq(this)">What does the 15% platform fee cover? <span class="faq-icon">+</span></button>
-        <div class="faq-a"><p>The 15% fee covers provider verification, booking management, dispute resolution, payment protection, WhatsApp support, and marketing. It's added on top of the provider's stated rate — so when a provider says £15/hr, you pay £17.25/hr and the provider keeps the full £15. No hidden charges.</p></div>
+        <div class="faq-a"><p>The 15% fee covers provider verification, booking management, dispute resolution, payment protection, customer support, and marketing. It's added on top of the provider's stated rate — so when a provider says £15/hr, you pay £17.25/hr and the provider keeps the full £15. No hidden charges.</p></div>
       </div>
       <div class="faq-item">
         <button class="faq-q" onclick="toggleFaq(this)">Can I get a refund? <span class="faq-icon">+</span></button>
@@ -1224,7 +1209,7 @@ input[type="checkbox"]{min-width:20px;min-height:20px;}
         </div>
         <div class="booking-submit-wrap">
           <button type="submit" class="btn-p" id="bookBtn" style="width:100%;justify-content:center;">Continue to secure card payment →</button>
-          <p style="font-size:12px;color:var(--faint);text-align:center;margin-top:8px;">Secure Stripe checkout. If card isn’t active, we’ll send payment details on WhatsApp.</p>
+          <p style="font-size:12px;color:var(--faint);text-align:center;margin-top:8px;">Secure Stripe checkout. Your card details never touch our servers.</p>
         </div>
       </form>
     </div>
@@ -1531,41 +1516,9 @@ async function handleBook(e) {
       return;
     }
 
-    if (data.code === 'NO_STRIPE') {
-      btn.textContent = 'Sending request…';
-      const fallback = {
-        service: payload.service,
-        price: `£${total.toFixed(2)} (incl. 15% fee) — pay via WhatsApp / bank`,
-        dur: '',
-        date: payload.date,
-        time: payload.time,
-        firstName: payload.firstName,
-        lastName: payload.lastName,
-        phone: payload.phone,
-        email: payload.email,
-        notes: fullNotes + `\nPayment: Service £${subtotal.toFixed(2)} + 15% fee £${fee.toFixed(2)} = £${total.toFixed(2)}. Online card checkout not configured — customer to pay via agreed method.`,
-        consent: payload.consent
-      };
-      const res2 = await fetch('/api/booking', {
-        method: 'POST',
-        headers: { 'content-type': 'application/json' },
-        body: JSON.stringify(fallback)
-      });
-      const d2 = await res2.json();
-      if (d2.ok) {
-        document.getElementById('modalOverlay').classList.remove('open');
-        document.body.style.overflow = '';
-        document.getElementById('bookingForm').reset();
-        showToast(`✓ Request saved (ref: ${d2.ref}). Pay via WhatsApp — card checkout coming soon.`);
-      } else {
-        showToast('⚠ ' + (d2.error || 'Could not save booking.'));
-      }
-      return;
-    }
-
     showToast('⚠ ' + (data.error || 'Something went wrong. Please try again.'));
   } catch {
-    showToast('⚠ Network error — please try again or message us on WhatsApp.');
+    showToast('⚠ Network error — please try again.');
   } finally {
     btn.disabled = false;
     btn.textContent = origText;
@@ -1830,10 +1783,10 @@ document.getElementById('bf-subtotal')?.addEventListener('input', updateBookingP
   const b = p.get('booking');
   if (b === 'paid') {
     const ref = p.get('ref') || '';
-    showToast('✓ Payment successful' + (ref ? ' — ref ' + ref : '') + '. We’ll WhatsApp you to confirm your booking.');
+    showToast('✓ Payment successful' + (ref ? ' — ref ' + ref : '') + '. We’ll confirm your booking shortly.');
     history.replaceState({}, '', location.pathname);
   } else if (b === 'cancel') {
-    showToast('Payment was cancelled. Message us on WhatsApp if you still want the booking — ref ' + (p.get('ref') || 'on file') + '.');
+    showToast('Payment was cancelled. You can rebook anytime — ref ' + (p.get('ref') || 'on file') + '.');
     history.replaceState({}, '', location.pathname);
   }
 })();
