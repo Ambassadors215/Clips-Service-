@@ -14,8 +14,12 @@ import {
   getOnboardingApplications,
   getSearchAnalyticsSummary,
   getPwaMetrics,
+  getWhatsAppMetrics,
+  getMarketplaceListingById,
+  getPlatformFunnel,
 } from "../../lib/kv-store.js";
 import { notifyBookingStatusCustomer } from "../../lib/notify.js";
+import { waNotifyStoreApproved } from "../../lib/whatsapp-notify.js";
 
 async function handlePing(req, res) {
   return endJson(res, 200, { ok: true });
@@ -124,6 +128,7 @@ async function handleMarketplacePublish(req, res) {
   const icon = String(payload?.icon || "plus").trim().slice(0, 40);
   const popular = Boolean(payload?.popular);
   const negotiationEnabled = payload?.negotiationEnabled !== false;
+  const applicationStatus = String(payload?.applicationStatus || "").trim().toLowerCase();
   let services = payload?.services;
   if (typeof services === "string") {
     services = services.split(/[,;\n]/).map((s) => s.trim()).filter(Boolean);
@@ -133,7 +138,20 @@ async function handleMarketplacePublish(req, res) {
     return endJson(res, 400, { ok: false, error: "id, email, and display name (role) are required" });
   }
   try {
-    await upsertMarketplaceListing({ id, email, role, bio, services, category, icon, popular, negotiationEnabled });
+    const prev = await getMarketplaceListingById(id);
+    const up = { id, email, role, bio, services, category, icon, popular, negotiationEnabled };
+    if (applicationStatus && ["pending", "approved", "active", "rejected"].includes(applicationStatus)) {
+      up.applicationStatus = applicationStatus;
+    }
+    await upsertMarketplaceListing(up);
+    if (
+      prev &&
+      String(prev.applicationStatus) === "pending" &&
+      (applicationStatus === "approved" || applicationStatus === "active")
+    ) {
+      const next = await getMarketplaceListingById(id);
+      if (next) void waNotifyStoreApproved(next).catch((e) => console.error("WA_APPROVED", e));
+    }
     return endJson(res, 200, { ok: true });
   } catch (e) {
     console.error("ADMIN_MARKETPLACE_PUBLISH", e);
@@ -165,6 +183,22 @@ async function handlePlatformStats(req, res) {
     } catch {
       pwa = null;
     }
+    let wa = null;
+    try {
+      wa = await getWhatsAppMetrics();
+    } catch {
+      wa = null;
+    }
+    let funnel = null;
+    try {
+      funnel = await getPlatformFunnel();
+    } catch {
+      funnel = null;
+    }
+    const reviewCompletionRatePct =
+      funnel && funnel.order_complete > 0
+        ? Math.round((1000 * (funnel.review_submitted || 0)) / funnel.order_complete) / 10
+        : null;
     return endJson(res, 200, {
       ok: true,
       totalApplicationsLogged: apps.length,
@@ -175,6 +209,8 @@ async function handlePlatformStats(req, res) {
       totalGmvGbp: Math.round(gmv * 100) / 100,
       applicationToActivePct,
       pwa,
+      whatsapp: wa,
+      reviewCompletionRatePct,
     });
   } catch (e) {
     console.error("ADMIN_PLATFORM", e);

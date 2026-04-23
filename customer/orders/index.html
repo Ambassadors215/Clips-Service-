@@ -84,7 +84,7 @@ a{color:var(--t);font-weight:600}
   if (q.get("email")) { em.value = q.get("email").trim(); }
   else { try { var s = localStorage.getItem(LS); if (s) em.value = s; } catch (e) {} }
 
-  var ST = ["new","confirmed","preparing","ready","completed"];
+  var ST = ["new","confirmed","preparing","en_route","ready","completed"];
 
   function money(n) {
     if (n == null || n === "") return "—";
@@ -131,18 +131,24 @@ a{color:var(--t);font-weight:600}
       return '<p class="muted" style="margin:8px 0">Payment not completed for this order.</p>';
     }
     var st = o.storeStage || "new";
-    var dLabel = o.fulfillment === "delivery" ? "Out for delivery" : "Ready for collection";
+    var isDel = o.fulfillment === "delivery";
+    var dLabel = isDel ? "On the way" : "—";
+    var rLabel = isDel ? "Out for delivery" : "Ready for collection";
     var lines = [
       { icon: "🟢", name: "Order placed" },
       { icon: "🟡", name: "Confirmed" },
       { icon: "🔵", name: "Being prepared" },
-      { icon: "🟣", name: dLabel },
+      { icon: "🚗", name: dLabel },
+      { icon: "🟣", name: rLabel },
       { icon: "✅", name: "Complete" }
     ];
-    var cur = st === "completed" ? 4 : ST.indexOf(st);
+    if (!isDel) {
+      lines[3] = { icon: "⬜", name: "—" };
+    }
+    var cur = st === "completed" ? 5 : ST.indexOf(st);
     if (cur < 0) cur = 0;
-    var h = '<div class="trk" role="list">';
-    for (var i = 0; i < 5; i++) {
+    var h = '<div class="trk" style="grid-template-columns:repeat(6,1fr)" role="list">';
+    for (var i = 0; i < 6; i++) {
       var cl = "tstep";
       if (st === "completed") cl = "tstep done";
       else if (i < cur) cl = "tstep done";
@@ -233,6 +239,9 @@ a{color:var(--t);font-weight:600}
     document.getElementById("content").style.display = "block";
     document.getElementById("active").innerHTML = active.length ? active.map(function(o) { return cardHTML(o); }).join("") : '<p class="muted">No active orders. Completed orders appear below.</p>';
     document.getElementById("history").innerHTML = hist.length ? hist.map(function(o) { return cardHTML(o); }).join("") : '<p class="muted">No completed orders yet.</p>';
+    if (active.length) {
+      try { window.__CLIP_FIRST_ORDER_REF = active[0].ref; } catch (e) {}
+    }
     document.getElementById("content").onclick = function(ev) {
       var t = ev.target && ev.target.closest && ev.target.closest("[data-reorder]");
       if (!t) return;
@@ -258,7 +267,9 @@ a{color:var(--t);font-weight:600}
 
   document.getElementById("load").onclick = load;
   if (q.get("email") && (q.get("email") + "").indexOf("@") > 0) { load(); }
+  try { if (/[?&]src=wa(?:&|$)/.test(location.search)) sessionStorage.setItem("clipOrderSource", "wa"); } catch (_e) {}
 })(); 
 </script>
+<script src="/js/clip-whatsapp-float.js" defer></script>
 </body>
 </html>

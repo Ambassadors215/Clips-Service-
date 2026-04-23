@@ -1,5 +1,5 @@
 /* Clip Services PWA v9 — offline, precache, network-first for listings */
-const CACHE = "clip-services-v9";
+const CACHE = "clip-services-v10";
 const OFFLINE_PAGE = "/offline.html";
 const PRECACHE = [
   "/",
@@ -7,6 +7,7 @@ const PRECACHE = [
   "/clip-services-marketplace",
   "/manifest.webmanifest",
   "/js/pwa-core.js",
+  "/js/clip-whatsapp-float.js",
   "/icons/icon-192.svg",
   "/icons/icon-512.svg",
   "/css/global-search.css",

@@ -77,7 +77,13 @@ a{color:var(--t);font-weight:600}
   }
   if (email) {
     var bo = document.getElementById("back-orders");
-    bo.href = "/customer/orders/?email=" + encodeURIComponent(email);
+    bo.href = "/customer/orders/?email=" + encodeURIComponent(email) + (q.get("src") === "wa" ? "&src=wa" : "");
+  }
+  if (q.get("src") === "wa") {
+    try { sessionStorage.setItem("clipOrderSource", "wa"); } catch (e) {}
+    if (window.fetch) {
+      fetch("/api/pwa-analytics", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ event: "wa_review_link_click" }), keepalive: true }).catch(function () {});
+    }
   }
   if (!ref || !email) {
     document.getElementById("sub").textContent = "Missing order details. Open the link from your email or order page.";
@@ -112,10 +118,11 @@ a{color:var(--t);font-weight:600}
     var err = document.getElementById("e");
     err.textContent = "";
     document.getElementById("go").disabled = true;
+    var src = q.get("src") === "wa" ? "wa" : "";
     fetch("/api/order-review", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ ref: ref, email: email, rating: rating, text: document.getElementById("tx").value })
+      body: JSON.stringify({ ref: ref, email: email, rating: rating, text: document.getElementById("tx").value, source: src || undefined })
     })
       .then(function(r) { return r.json(); })
       .then(function(j) {
@@ -134,5 +141,7 @@ a{color:var(--t);font-weight:600}
   };
 })();
 </script>
+<script>try{if(/[?&]src=wa(?:&|$)/.test(location.search))sessionStorage.setItem("clipOrderSource","wa")}catch(_e){}</script>
+<script src="/js/clip-whatsapp-float.js" defer></script>
 </body>
 </html>

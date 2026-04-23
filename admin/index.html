@@ -498,6 +498,15 @@
             </div>
             <label class="muted" style="font-size:13px;display:flex;align-items:center;gap:8px;cursor:pointer;"><input type="checkbox" id="pub-negotiation" checked /> Allow customers to counter-offer (prices still come from you)</label>
             <label class="muted" style="font-size:13px;display:flex;align-items:center;gap:8px;cursor:pointer;"><input type="checkbox" id="pub-popular" /> Feature as Popular</label>
+            <div><div class="muted" style="font-size:11px;margin-bottom:4px;">Store application status (optional)</div>
+              <select class="select" id="pub-appstatus" style="width:100%;padding:10px 12px;">
+                <option value="">(leave unchanged)</option>
+                <option value="pending">pending</option>
+                <option value="approved">approved</option>
+                <option value="active">active</option>
+                <option value="rejected">rejected</option>
+              </select>
+            </div>
             <div class="row" style="margin-top:8px;">
               <button class="btn btn-primary" type="button" id="pubSaveBtn">Save listing</button>
               <button class="btn btn-ghost" type="button" id="pubCancelBtn">Cancel</button>
@@ -704,6 +713,19 @@
           if (!pl || !pl.ok) {
             el.platformMetrics.innerHTML = '<p class="muted" style="grid-column:1/-1;padding:8px 4px">Platform stats load with Refresh.</p>';
           } else {
+            const w = pl.whatsapp || {};
+            const wbt = w.byType || {};
+            const waRow = pl.whatsapp
+              ? `<div class="dash-card" style="grid-column:1/-1;border-top:1px dashed var(--border);padding-top:12px;margin-top:4px"><div class="dash-label" style="color:#25D366;font-size:11px;margin-bottom:8px">WhatsApp (Meta Cloud API + web)</div><div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px">
+                <div class="dash-card" style="box-shadow:none;border-style:dashed"><span class="dash-icon">💬</span><div class="dash-label c-cyan">Messages sent</div><div class="dash-value">${w.total ?? "—"}</div><div class="dash-status muted" style="font-size:11px">API + delivery metrics</div></div>
+                <div class="dash-card" style="box-shadow:none;border-style:dashed"><span class="dash-icon">🛒</span><div class="dash-label c-amber">Orders from WA</div><div class="dash-value">${wbt.orders_from_whatsapp ?? 0}</div><div class="dash-status muted" style="font-size:11px">checkout orderSource=wa</div></div>
+                <div class="dash-card" style="box-shadow:none;border-style:dashed"><span class="dash-icon">⭐</span><div class="dash-label c-purple">Review link taps</div><div class="dash-value">${wbt.wa_review_link_click ?? 0}</div><div class="dash-status muted" style="font-size:11px">?src=wa on review</div></div>
+                <div class="dash-card" style="box-shadow:none;border-style:dashed"><span class="dash-icon">🖱</span><div class="dash-label c-cyan">Float button</div><div class="dash-value">${wbt.float_whatsapp_click ?? 0}</div><div class="dash-status muted" style="font-size:11px">Clicks (all pages)</div></div>
+                <div class="dash-card" style="box-shadow:none;border-style:dashed"><span class="dash-icon">↩</span><div class="dash-label c-amber">Dashboard from WA</div><div class="dash-value">${wbt.wa_dashboard_from_whatsapp ?? 0}</div><div class="dash-status muted" style="font-size:11px">/store-owner?src=wa</div></div>
+                <div class="dash-card" style="box-shadow:none;border-style:dashed"><span class="dash-icon">📝</span><div class="dash-label c-purple">Reviews from WA</div><div class="dash-value">${wbt.review_submitted_from_wa ?? 0}</div><div class="dash-status muted" style="font-size:11px">form source=wa</div></div>
+                <div class="dash-card" style="box-shadow:none;border-style:dashed"><span class="dash-icon">📈</span><div class="dash-label c-cyan">Review rate</div><div class="dash-value" style="font-size:22px">${pl.reviewCompletionRatePct != null ? pl.reviewCompletionRatePct + "%" : "—"}</div><div class="dash-status muted" style="font-size:11px">submitted / orders (funnel)</div></div>
+                </div></div>`
+              : "";
             const pw = pl.pwa || {};
             const pwaRow = pl.pwa
               ? `<div class="dash-card" style="grid-column:1/-1;border-top:1px dashed var(--border);padding-top:12px;margin-top:4px"><div class="dash-label c-cyan" style="font-size:11px;margin-bottom:8px">PWA (installs &amp; usage)</div><div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:10px">
@@ -721,6 +743,7 @@
               <div class="dash-card"><span class="dash-icon">📦</span><div class="dash-label c-purple">Marketplace orders</div><div class="dash-value">${pl.totalMarketplaceOrders ?? "—"}</div><div class="dash-status muted" style="font-size:11px">All-time</div></div>
               <div class="dash-card"><span class="dash-icon">💷</span><div class="dash-label c-cyan">GMV (subtotal)</div><div class="dash-value">£${pl.totalGmvGbp ?? "—"}</div><div class="dash-status muted" style="font-size:11px">Recorded on bookings</div></div>
               <div class="dash-card"><span class="dash-icon">📊</span><div class="dash-label c-purple">Apply → active</div><div class="dash-value" style="font-size:22px">${pl.applicationToActivePct != null ? pl.applicationToActivePct + "%" : "—"}</div><div class="dash-status muted" style="font-size:11px">Submissions vs activated</div></div>
+              ${waRow}
               ${pwaRow}
             `;
           }
@@ -808,6 +831,8 @@
         document.getElementById("pub-category").value = "beauty";
         document.getElementById("pub-icon").value = "beauty";
         document.getElementById("pub-popular").checked = false;
+        const pubAps = document.getElementById("pub-appstatus");
+        if (pubAps) pubAps.value = "";
         const pubNeg = document.getElementById("pub-negotiation");
         if (pubNeg) pubNeg.checked = true;
         setStatus(el.pubStatus, "", null);
@@ -1004,6 +1029,8 @@
           popular: document.getElementById("pub-popular").checked,
           negotiationEnabled: document.getElementById("pub-negotiation")?.checked !== false
         };
+        const aps = document.getElementById("pub-appstatus")?.value;
+        if (aps) body.applicationStatus = aps;
         try {
           await api("/api/admin?action=marketplace-publish", { method: "POST", body: JSON.stringify(body) });
           setStatus(el.pubStatus, "Saved.", "ok");

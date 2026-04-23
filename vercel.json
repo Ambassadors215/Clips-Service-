@@ -56,6 +56,12 @@
     { "source": "/customer/review", "destination": "/customer/review/index.html" },
     { "source": "/customer/review/", "destination": "/customer/review/index.html" }
   ],
+  "crons": [
+    {
+      "path": "/api/whatsapp-cron",
+      "schedule": "0 * * * *"
+    }
+  ],
   "functions": {
     "api/[...path].js": { "maxDuration": 60 },
     "api/admin/index.js": { "maxDuration": 30 }

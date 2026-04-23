@@ -283,7 +283,7 @@ function renderOrders() {
       <td>${esc(o.fulfillment)}</td>
       <td>${stageBadge(o.storeStage)}
         <select data-ref="${esc(o.ref)}" class="input st-sel" style="margin-top:6px;padding:6px;font-size:12px">
-          ${['new','confirmed','preparing','ready','completed'].map(s => `<option value="${s}" ${s===o.storeStage?'selected':''}>${s}</option>`).join('')}
+          ${['new','confirmed','preparing','en_route','ready','completed'].map(s => `<option value="${s}" ${s===o.storeStage?'selected':''}>${s}</option>`).join('')}
         </select></td>
       <td style="font-size:12px">${esc((o.createdAt||'').slice(0,16))}</td>
       <td><a class="btn btn-ghost" style="padding:6px 10px;font-size:12px" href="https://wa.me/${String(o.phone||'').replace(/\D/g,'')}" target="_blank" rel="noopener">Message</a></td>
@@ -619,5 +619,15 @@ fetch('/api/store-owner', { credentials:'include' }).then(r=>r.json()).then(d =>
 }).catch(()=>{});
 })();
 </script>
+<script>
+(function(){
+  try {
+    if (/[?&]src=wa(?:&|$)/.test(location.search) && window.fetch) {
+      fetch("/api/pwa-analytics", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ event: "wa_dashboard_from_whatsapp" }), keepalive: true }).catch(function () {});
+    }
+  } catch (e) {}
+})();
+</script>
+<script src="/js/clip-whatsapp-float.js" defer></script>
 </body>
 </html>

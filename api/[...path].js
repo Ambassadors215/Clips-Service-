@@ -33,6 +33,8 @@ import orderReview from "../lib/handlers/order-review.js";
 import pwaAnalytics from "../lib/handlers/pwa-analytics.js";
 import searchApi from "../lib/handlers/search-api.js";
 import searchEvent from "../lib/handlers/search-event.js";
+import whatsappCron from "../lib/handlers/whatsapp-cron.js";
+import whatsappWebhook from "../lib/handlers/whatsapp-webhook.js";
 
 const handlers = {
   booking,
@@ -66,6 +68,8 @@ const handlers = {
   "pwa-analytics": pwaAnalytics,
   search: searchApi,
   "search-event": searchEvent,
+  "whatsapp-cron": whatsappCron,
+  "whatsapp-webhook": whatsappWebhook,
 };
 
 function notFound(res) {
