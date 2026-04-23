@@ -704,6 +704,16 @@
           if (!pl || !pl.ok) {
             el.platformMetrics.innerHTML = '<p class="muted" style="grid-column:1/-1;padding:8px 4px">Platform stats load with Refresh.</p>';
           } else {
+            const pw = pl.pwa || {};
+            const pwaRow = pl.pwa
+              ? `<div class="dash-card" style="grid-column:1/-1;border-top:1px dashed var(--border);padding-top:12px;margin-top:4px"><div class="dash-label c-cyan" style="font-size:11px;margin-bottom:8px">PWA (installs &amp; usage)</div><div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:10px">
+                <div class="dash-card" style="box-shadow:none;border-style:dashed"><span class="dash-icon">📲</span><div class="dash-label c-amber">Install prompt shown</div><div class="dash-value">${pw.install_prompt_shown ?? 0}</div><div class="dash-status muted" style="font-size:11px">All-time</div></div>
+                <div class="dash-card" style="box-shadow:none;border-style:dashed"><span class="dash-icon">✅</span><div class="dash-label" style="color:#6ee7b7">App installed</div><div class="dash-value">${pw.appinstalled ?? 0}</div><div class="dash-status muted" style="font-size:11px">appinstalled</div></div>
+                <div class="dash-card" style="box-shadow:none;border-style:dashed"><span class="dash-icon">📈</span><div class="dash-label c-purple">Install conversion</div><div class="dash-value" style="font-size:22px">${pw.installConversionPct != null ? pw.installConversionPct + "%" : "—"}</div><div class="dash-status muted" style="font-size:11px">vs prompt shown</div></div>
+                <div class="dash-card" style="box-shadow:none;border-style:dashed"><span class="dash-icon">🌅</span><div class="dash-label c-cyan">PWA opens (14d)</div><div class="dash-value">${pw.dau14Sum ?? 0}</div><div class="dash-status muted" style="font-size:11px">Sessions · not unique users</div></div>
+                <div class="dash-card" style="box-shadow:none;border-style:dashed"><span class="dash-icon">🛒</span><div class="dash-label c-purple">Orders in PWA</div><div class="dash-value">${pw.order_completed_in_pwa ?? 0}</div><div class="dash-status muted" style="font-size:11px">checkout source=pwa</div></div>
+                </div></div>`
+              : "";
             el.platformMetrics.innerHTML = `
               <div class="dash-card"><span class="dash-icon">📋</span><div class="dash-label c-cyan">Applications logged</div><div class="dash-value">${pl.totalApplicationsLogged ?? "—"}</div><div class="dash-status muted" style="font-size:11px">Onboarding log</div></div>
               <div class="dash-card"><span class="dash-icon">✓</span><div class="dash-label" style="color:#6ee7b7">Approved stores</div><div class="dash-value">${pl.approvedStores ?? "—"}</div><div class="dash-status muted" style="font-size:11px">applicationStatus</div></div>
@@ -711,6 +721,7 @@
               <div class="dash-card"><span class="dash-icon">📦</span><div class="dash-label c-purple">Marketplace orders</div><div class="dash-value">${pl.totalMarketplaceOrders ?? "—"}</div><div class="dash-status muted" style="font-size:11px">All-time</div></div>
               <div class="dash-card"><span class="dash-icon">💷</span><div class="dash-label c-cyan">GMV (subtotal)</div><div class="dash-value">£${pl.totalGmvGbp ?? "—"}</div><div class="dash-status muted" style="font-size:11px">Recorded on bookings</div></div>
               <div class="dash-card"><span class="dash-icon">📊</span><div class="dash-label c-purple">Apply → active</div><div class="dash-value" style="font-size:22px">${pl.applicationToActivePct != null ? pl.applicationToActivePct + "%" : "—"}</div><div class="dash-status muted" style="font-size:11px">Submissions vs activated</div></div>
+              ${pwaRow}
             `;
           }
         }

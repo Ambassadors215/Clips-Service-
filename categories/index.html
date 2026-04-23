@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Shop by category | Clip Services</title>
+<meta name="description" content="Browse food, hair, beauty and more from African, Caribbean and Asian independents on Clip Services.">
+<meta name="theme-color" content="#8B3A3A">
+<link rel="manifest" href="/manifest.webmanifest">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Inter:wght@500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--t:#8B3A3A;--c:#F5F0E8;--b:#2C1810;--g:#D4A017;--w:#fff;}
+*{box-sizing:border-box}body{margin:0;font-family:Inter,system-ui,sans-serif;background:var(--c);color:var(--b);line-height:1.6;padding:20px;min-height:100vh;font-size:16px}
+.wrap{max-width:720px;margin:0 auto}
+h1{font-family:Playfair Display,Georgia,serif;color:var(--t);font-size:1.75rem}
+a{color:var(--t);font-weight:600}
+.grid{display:grid;gap:12px;margin-top:20px}
+.btn{display:block;padding:16px 20px;border-radius:12px;background:var(--t);color:var(--w);text-align:center;font-weight:700;text-decoration:none;min-height:48px}
+.tag{font-size:13px;color:#5c4033;margin-top:8px}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <p><a href="/">← Home</a></p>
+  <h1>Popular categories &amp; products</h1>
+  <p class="tag">Discover stores with these product types — you’ll go to a filtered browse or search.</p>
+  <div class="grid">
+    <a class="btn" href="/search?q=plantain+rice+spices">Groceries &amp; ingredients</a>
+    <a class="btn" href="/search?q=halal+meat">Halal &amp; meat</a>
+    <a class="btn" href="/search?q=hair+beauty">Hair &amp; beauty</a>
+    <a class="btn" href="/search?q=fabric+fashion">Fabric &amp; fashion</a>
+    <a class="btn" href="/search?q=ready+meals">Ready meals &amp; snacks</a>
+    <a class="btn" href="/stores">All stores</a>
+  </div>
+</div>
+<script src="/js/pwa-core.js" defer></script>
+</body>
+</html>

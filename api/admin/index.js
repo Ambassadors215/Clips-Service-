@@ -13,6 +13,7 @@ import {
   getOnboardingAnalyticsCounters,
   getOnboardingApplications,
   getSearchAnalyticsSummary,
+  getPwaMetrics,
 } from "../../lib/kv-store.js";
 import { notifyBookingStatusCustomer } from "../../lib/notify.js";
 
@@ -158,6 +159,12 @@ async function handlePlatformStats(req, res) {
     }).length;
     const subTotal = (counters.submissionsStore || 0) + (counters.submissionsStall || 0);
     const applicationToActivePct = subTotal ? ((activatedStores / subTotal) * 100).toFixed(2) : null;
+    let pwa = null;
+    try {
+      pwa = await getPwaMetrics();
+    } catch {
+      pwa = null;
+    }
     return endJson(res, 200, {
       ok: true,
       totalApplicationsLogged: apps.length,
@@ -167,6 +174,7 @@ async function handlePlatformStats(req, res) {
       totalMarketplaceOrders: marketplaceOrders.length,
       totalGmvGbp: Math.round(gmv * 100) / 100,
       applicationToActivePct,
+      pwa,
     });
   } catch (e) {
     console.error("ADMIN_PLATFORM", e);

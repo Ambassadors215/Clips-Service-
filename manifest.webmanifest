@@ -1,27 +1,25 @@
 {
-  "name": "Clip Services — African, Caribbean & Asian marketplace",
+  "name": "Clip Services",
   "short_name": "Clip Services",
-  "description": "UK marketplace for independent African, Caribbean and Asian stores and market traders. Shop online — Stripe secure, WhatsApp orders, installable app.",
+  "description": "African, Caribbean & Asian marketplace UK — shop local independents, Stripe checkout, WhatsApp updates.",
   "id": "https://clipservice.app/",
-  "start_url": "https://clipservice.app/",
-  "scope": "https://clipservice.app/",
+  "start_url": "/?utm_source=pwa",
+  "scope": "/",
   "display": "standalone",
   "background_color": "#F5F0E8",
   "theme_color": "#8B3A3A",
   "orientation": "portrait-primary",
+  "lang": "en-GB",
   "icons": [
-    {
-      "src": "/icons/icon-192.svg",
-      "sizes": "192x192",
-      "type": "image/svg+xml",
-      "purpose": "any"
-    },
-    {
-      "src": "/icons/icon-512.svg",
-      "sizes": "512x512",
-      "type": "image/svg+xml",
-      "purpose": "any"
-    }
+    { "src": "/icons/icon-192.svg", "sizes": "72x72 96x96 128x128 192x192", "type": "image/svg+xml", "purpose": "any" },
+    { "src": "/icons/icon-512.svg", "sizes": "256x256 512x512", "type": "image/svg+xml", "purpose": "any" },
+    { "src": "/icons/icon-192.svg", "sizes": "192x192", "type": "image/svg+xml", "purpose": "maskable" }
   ],
-  "categories": ["business", "lifestyle", "shopping"]
+  "categories": ["food", "shopping", "lifestyle"],
+  "shortcuts": [
+    { "name": "Browse stores", "short_name": "Stores", "url": "/stores", "description": "Find local African, Caribbean and Asian independents" },
+    { "name": "Track my order", "short_name": "Orders", "url": "/customer/orders", "description": "Guest order history" },
+    { "name": "Find stores near me", "short_name": "Near me", "url": "/stores?sort=nearest", "description": "Use location to pick a city" },
+    { "name": "Popular products", "short_name": "Products", "url": "/categories", "description": "Shop by category" }
+  ]
 }

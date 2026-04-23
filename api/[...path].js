@@ -30,6 +30,7 @@ import storeAnalytics from "../lib/handlers/store-analytics.js";
 import orderPublic from "../lib/handlers/order-public.js";
 import customerOrders from "../lib/handlers/customer-orders.js";
 import orderReview from "../lib/handlers/order-review.js";
+import pwaAnalytics from "../lib/handlers/pwa-analytics.js";
 import searchApi from "../lib/handlers/search-api.js";
 import searchEvent from "../lib/handlers/search-event.js";
 
@@ -62,6 +63,7 @@ const handlers = {
   "order-public": orderPublic,
   "customer-orders": customerOrders,
   "order-review": orderReview,
+  "pwa-analytics": pwaAnalytics,
   search: searchApi,
   "search-event": searchEvent,
 };

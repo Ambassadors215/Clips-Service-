@@ -212,10 +212,48 @@ footer a:hover{color:var(--gold-soft);}
 .social a{font-weight:600;}
 
 .pwa-hint{font-size:12px;color:var(--brown-muted);margin-top:24px;text-align:center;}
+#clip-pwa-install[hidden]{display:none!important}
+#clip-pwa-install{position:fixed;bottom:0;left:0;right:0;z-index:9998;background:var(--white);border-top:2px solid var(--gold);padding:16px 18px;box-shadow:0 -6px 32px rgba(44,24,16,.12)}
+#clip-pwa-welcome[hidden]{display:none!important}
+#clip-pwa-welcome{position:fixed;inset:0;z-index:9999;background:var(--cream);padding:32px 20px;overflow-y:auto}
+#clip-pwa-welcome .wel-in{max-width:400px;margin:0 auto}
+#clip-recent-wrap{background:var(--white);border-top:1px solid var(--cream-dark);border-bottom:1px solid var(--cream-dark);padding:24px 0;display:none}
+#clip-recent-wrap.show{display:block}
+.clip-recent-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:12px}
+.clip-recent-grid a{background:var(--card);border:1px solid var(--cream-dark);border-radius:12px;padding:12px 14px;text-decoration:none;font-weight:600}
 </style>
 </head>
 <body>
 <a class="skip-link" href="#main">Skip to content</a>
+<div id="clip-pwa-install" hidden>
+  <div class="wrap" style="max-width:720px;margin:0 auto">
+    <p style="font-size:1rem;font-weight:600;margin:0 0 8px;color:var(--brown)">Shop African, Caribbean &amp; Asian stores from your phone — install the free Clip Services app</p>
+    <p style="font-size:14px;color:var(--brown-muted);margin:0 0 10px">⚡ Faster browsing · 🛒 Easy ordering · 🔔 Order updates</p>
+    <div class="hero-cta" style="margin:0;justify-content:flex-start">
+      <button type="button" class="btn btn-primary" data-pwa-install style="min-height:48px">Install app</button>
+      <button type="button" class="btn btn-secondary" data-pwa-later style="min-height:48px">Maybe later</button>
+    </div>
+  </div>
+</div>
+<div id="clip-pwa-welcome" hidden>
+  <div class="wel-in">
+    <p style="text-align:center"><img src="/icons/clip-logo-full.svg" alt="Clip Services" style="height:40px" /></p>
+    <h2 class="font-display" style="text-align:center;margin:12px 0 6px">Welcome to Clip Services</h2>
+    <p class="hero-sub" style="text-align:center">The UK’s African, Caribbean &amp; Asian marketplace</p>
+    <p style="font-weight:600;margin:20px 0 6px">Where are you located?</p>
+    <p style="margin:0 0 10px">
+      <button type="button" class="btn btn-secondary" data-wel-geo style="min-height:48px;width:100%;margin-bottom:8px">Use my location</button>
+    </p>
+    <label for="wel-city" style="font-size:14px">Or pick a city</label>
+    <select id="wel-city" class="input" style="width:100%;min-height:48px;padding:12px;border-radius:10px;border:1px solid var(--cream-dark);font-size:16px;margin:8px 0 16px">
+      <option value="">All cities / skip</option>
+      <option>Manchester</option><option>London</option><option>Birmingham</option><option>Leeds</option><option>Leicester</option>
+      <option>Bradford</option><option>Bristol</option><option>Liverpool</option><option>Sheffield</option><option>Nottingham</option>
+    </select>
+    <button type="button" class="btn btn-primary" data-wel-go style="min-height:48px;width:100%">Find stores near me</button>
+    <p style="text-align:center;margin-top:16px"><button type="button" data-wel-close style="background:none;border:none;color:var(--terracotta);font-weight:600;cursor:pointer">Skip for now</button></p>
+  </div>
+</div>
 <div id="global-search-mount"></div>
 <div class="topbar" role="status">
   <strong>Clip Services Ltd</strong> · UK registered · <span id="topbar-tagline">African, Caribbean & Asian Marketplace — Your Community, Online</span>
@@ -252,6 +290,12 @@ footer a:hover{color:var(--gold-soft);}
       </div>
     </div>
   </section>
+
+  <div class="wrap" id="clip-recent-wrap" style="max-width:1180px" aria-label="Recently viewed">
+    <h2 class="font-display" style="font-size:1.35rem;margin:0 0 12px">Recently viewed</h2>
+    <p class="hero-sub" id="clip-recent-empty" style="text-align:left;margin-bottom:0">No recent stores yet — browse below.</p>
+    <div class="clip-recent-grid" id="clip-recent-stores" style="display:none"></div>
+  </div>
 
   <!-- 2 COMMUNITY NAVIGATOR -->
   <section class="alt" aria-labelledby="comm-title">
@@ -798,12 +842,30 @@ footer a:hover{color:var(--gold-soft);}
     }
     runImpactAnimation(stats || { storesListed: 0, ordersProcessed: 0, citiesServed: 0, communitiesRepresented: 24 });
 
-    if ("serviceWorker" in navigator) {
-      navigator.serviceWorker.register("/sw.js", { scope: "/" }).catch(function () {});
-    }
   });
-})();
+
+  (function recent() {
+    try {
+      var st = JSON.parse(localStorage.getItem("clip_recent_stores_v1") || "[]");
+      if (!Array.isArray(st) || !st.length) return;
+      var grid = document.getElementById("clip-recent-stores");
+      var sec = document.getElementById("clip-recent-wrap");
+      var empty = document.getElementById("clip-recent-empty");
+      if (!grid || !sec) return;
+      sec.classList.add("show");
+      grid.style.display = "grid";
+      if (empty) empty.style.display = "none";
+      grid.innerHTML = st
+        .map(function (r) {
+          if (!r || !r.id) return "";
+          var h = r.slug ? "/stores/" + encodeURIComponent(r.slug) : "/store/" + encodeURIComponent(r.id);
+          return '<a href="' + h + '">' + (r.name || "Store") + " →</a>";
+        })
+        .join("");
+    } catch (e) {}
+  })();
 </script>
+<script src="/js/pwa-core.js" defer></script>
 <script src="/js/global-search.js" defer></script>
 </body>
 </html>

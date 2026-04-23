@@ -1,11 +1,15 @@
-/* Clip Services — marketplace v8 */
-const CACHE = "clip-services-v8";
+/* Clip Services PWA v9 — offline, precache, network-first for listings */
+const CACHE = "clip-services-v9";
 const OFFLINE_PAGE = "/offline.html";
 const PRECACHE = [
   "/",
+  "/stores",
+  "/clip-services-marketplace",
   "/manifest.webmanifest",
+  "/js/pwa-core.js",
   "/icons/icon-192.svg",
   "/icons/icon-512.svg",
+  "/css/global-search.css",
   OFFLINE_PAGE,
 ];
 
@@ -13,7 +17,7 @@ self.addEventListener("install", (event) => {
   event.waitUntil(
     caches
       .open(CACHE)
-      .then((cache) => cache.addAll(PRECACHE).catch(() => {}))
+      .then((cache) => cache.addAll(PRECACHE).catch(() => cache.addAll(["/", "/offline.html"])))
       .then(() => self.skipWaiting())
   );
 });
@@ -27,6 +31,22 @@ self.addEventListener("activate", (event) => {
   );
 });
 
+self.addEventListener("message", (event) => {
+  const m = event.data;
+  if (!m || m.type !== "CLIP_CACHE_URL" || !m.url) return;
+  const u = m.url;
+  if (!/^https?:/i.test(u) || !u.includes(self.location.origin)) return;
+  event.waitUntil(
+    fetch(u)
+      .then((res) => {
+        if (res && res.ok) {
+          return caches.open(CACHE).then((c) => c.put(u, res));
+        }
+      })
+      .catch(() => {})
+  );
+});
+
 self.addEventListener("push", (event) => {
   let data = { title: "Clip Services", body: "", url: "/" };
   try {
@@ -35,7 +55,7 @@ self.addEventListener("push", (event) => {
     try {
       data.body = event.data.text();
     } catch {
-      /* ignore */
+      /* */
     }
   }
   event.waitUntil(
@@ -57,13 +77,13 @@ self.addEventListener("notificationclick", (event) => {
   event.notification.close();
   if (event.action === "dismiss") return;
   const raw = event.notification.data?.url || "/";
-  const url = /^https?:\/\//i.test(raw) ? raw : new URL(raw, self.location.origin).href;
+  const href = /^https?:\/\//i.test(raw) ? raw : new URL(raw, self.location.origin).href;
   event.waitUntil(
     self.clients.matchAll({ type: "window", includeUncontrolled: true }).then((clientList) => {
       for (const c of clientList) {
         if (c.url.includes(self.location.origin) && "focus" in c) return c.focus();
       }
-      if (self.clients.openWindow) return self.clients.openWindow(url);
+      if (self.clients.openWindow) return self.clients.openWindow(href);
     })
   );
 });
@@ -72,30 +92,52 @@ self.addEventListener("fetch", (event) => {
   const req = event.request;
   if (req.method !== "GET") return;
   const url = new URL(req.url);
-  if (url.pathname.startsWith("/api/")) return;
+  if (url.pathname.startsWith("/api/") && url.pathname !== "/api/listings" && url.pathname !== "/api/public-stats") {
+    return;
+  }
+
+  // Short cache for public listings (GET only)
+  if (url.pathname === "/api/listings" || url.pathname === "/api/public-stats") {
+    event.respondWith(
+      fetch(req)
+        .then((res) => {
+          if (res && res.ok) {
+            const c = res.clone();
+            return caches.open(CACHE).then((cache) => {
+              try {
+                cache.put(req, c);
+              } catch (e) {
+                /* */
+              }
+              return res;
+            });
+          }
+          return res;
+        })
+        .catch(() => caches.match(req).then((cached) => cached || new Response("{}", { status: 503, headers: { "content-type": "application/json" } })))
+    );
+    return;
+  }
 
   if (req.mode === "navigate") {
     event.respondWith(
       fetch(req)
         .then((res) => {
           const copy = res.clone();
-          if (res.ok) caches.open(CACHE).then((c) => c.put(req, copy));
+          if (res.ok) caches.open(CACHE).then((c) => c.put(req, copy).catch(() => {}));
           return res;
         })
-        .catch(() =>
-          caches.match(req).then((c) => c || caches.match(OFFLINE_PAGE))
-        )
+        .catch(() => caches.match(req).then((c) => c || caches.match("/").catch(() => null) || caches.match(OFFLINE_PAGE)))
     );
     return;
   }
 
   const isFont = url.hostname.includes("fonts.googleapis.com") || url.hostname.includes("fonts.gstatic.com");
-
   if (isFont) {
     event.respondWith(
       caches.match(req).then((cached) => cached || fetch(req).then((res) => {
         const copy = res.clone();
-        if (res.ok) caches.open(CACHE).then((c) => c.put(req, copy));
+        if (res.ok) caches.open(CACHE).then((c) => c.put(req, copy).catch(() => {}));
         return res;
       }))
     );
@@ -107,7 +149,7 @@ self.addEventListener("fetch", (event) => {
       .then((res) => {
         const copy = res.clone();
         if (res.ok && url.origin === self.location.origin) {
-          caches.open(CACHE).then((c) => c.put(req, copy));
+          caches.open(CACHE).then((c) => c.put(req, copy).catch(() => {}));
         }
         return res;
       })

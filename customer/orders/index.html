@@ -203,10 +203,15 @@ a{color:var(--t);font-weight:600}
     if (!o.storeActive) { alert("This store is no longer available."); return; }
     if (!o.listingId) return;
     var c = {};
+    var want = 0;
     (o.cartSnapshot || []).forEach(function(l) {
+      if (l.qty) want++;
       if (l.idx != null && l.qty) c[String(l.idx)] = parseInt(l.qty, 10) || 0;
     });
     if (!Object.keys(c).length) { alert("Could not copy this basket. Open the store and add products again."); return; }
+    if (want > Object.keys(c).length) {
+      try { sessionStorage.setItem("clip_reorder_note", "Some line items are no longer on the menu and were skipped."); } catch (e) {}
+    }
     try { localStorage.setItem("clipCart:" + o.listingId, JSON.stringify(c)); } catch (e2) {}
     var path = o.storeSlug ? "/stores/" + encodeURIComponent(o.storeSlug) : "/store/" + encodeURIComponent(o.listingId);
     location.href = path;

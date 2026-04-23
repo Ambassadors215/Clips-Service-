@@ -102,12 +102,19 @@
         <p class="muted" style="margin-top: 16px; font-size: 0.9rem">
           Your payment is secure and encrypted by Stripe. A confirmation has been sent to the email you used at checkout.
         </p>
+        <div id="push-pitch" style="display: none; margin-top: 16px; padding: 14px; border-radius: 12px; border: 1px solid rgba(139, 58, 58, 0.25); background: #fffdf8">
+          <p style="margin: 0 0 8px; font-size: 0.95rem">Get order updates and new store alerts — enable notifications on this device.</p>
+          <button type="button" class="btn" id="push-enable" style="min-height: 48px; font-size: 0.95rem; border: 2px solid var(--terracotta); background: #fff; color: var(--terracotta)">Enable notifications</button>
+        </div>
       </div>
       <p class="err" id="e"></p>
     </div>
     <p class="lock" id="lock" style="display: none">🔒 Secure checkout via Stripe</p>
     <script>
       (function () {
+        if ("serviceWorker" in navigator) {
+          navigator.serviceWorker.register("/sw.js", { scope: "/" }).catch(function () {});
+        }
         var q = new URLSearchParams(location.search);
         var ref = q.get("ref");
         var sub = document.getElementById("sub");
@@ -182,6 +189,51 @@
             var qe = (q.get("email") || "").trim();
             if (qe.indexOf("@") > 0) oo.href = "/customer/orders/?email=" + encodeURIComponent(qe);
             else oo.href = "/customer/orders/";
+            try {
+              if (!localStorage.getItem("clip_notify_asked") && "Notification" in window && Notification.permission === "default") {
+                var pp = document.getElementById("push-pitch");
+                if (pp) pp.style.display = "block";
+              }
+            } catch (x) {}
+            document.getElementById("push-enable").onclick = function () {
+              if (!("Notification" in window)) return;
+              Notification.requestPermission().then(function (p) {
+                try {
+                  localStorage.setItem("clip_notify_asked", "1");
+                } catch (e) {}
+                document.getElementById("push-pitch").style.display = "none";
+                if (p !== "granted" || !("serviceWorker" in navigator)) return;
+                var em = (q.get("email") || "").trim();
+                if (em.indexOf("@") < 0) return;
+                navigator.serviceWorker.ready.then(function (reg) {
+                  return fetch("/api/push-vapid")
+                    .then(function (r) {
+                      return r.json();
+                    })
+                    .then(function (j) {
+                      if (!j || !j.publicKey) return null;
+                      var v = j.publicKey;
+                      return reg.pushManager.subscribe({ userVisibleOnly: true, applicationServerKey: urlB64ToUint8(v) });
+                    })
+                    .then(function (sub) {
+                      if (!sub) return;
+                      return fetch("/api/push-subscribe", {
+                        method: "POST",
+                        headers: { "Content-Type": "application/json" },
+                        body: JSON.stringify({ role: "customer", email: em, subscription: sub.toJSON() }),
+                      });
+                    });
+                });
+              });
+            };
+            function urlB64ToUint8(b64) {
+              var padding = "=".repeat((4 - (b64.length % 4)) % 4);
+              var b = (b64 + padding).replace(/-/g, "+").replace(/_/g, "/");
+              var raw = atob(b);
+              var a = new Uint8Array(raw.length);
+              for (var i = 0; i < raw.length; i++) a[i] = raw.charCodeAt(i);
+              return a;
+            }
           })
           .catch(function () {
             err.textContent = "Network error.";
