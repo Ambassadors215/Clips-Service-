@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Leave a review | Clip Services</title>
+<meta name="robots" content="noindex, nofollow">
+<meta name="theme-color" content="#8B3A3A">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--t:#8B3A3A;--c:#F5F0E8;--b:#2C1810;--card:#fffdf8;--gold:#D4A017}
+*{box-sizing:border-box}
+body{margin:0;font-family:"DM Sans",system-ui,sans-serif;background:var(--c);color:var(--b);min-height:100vh;padding:24px 16px 48px}
+.wrap{max-width:420px;margin:0 auto}
+h1{font-size:1.35rem;color:var(--t);margin:0 0 8px}
+.muted{color:#5c4033;font-size:.95rem}
+.card{background:var(--card);border:1px solid rgba(139,58,58,.2);border-radius:16px;padding:20px;margin-top:16px;box-shadow:0 4px 20px rgba(44,24,16,.06)}
+.stars{display:flex;gap:8px;margin:16px 0;flex-wrap:wrap}
+.stars button{width:48px;height:48px;border:2px solid #E8DFD4;border-radius:12px;background:#fff;font-size:1.4rem;cursor:pointer;line-height:1;padding:0}
+.stars button.on,.stars button:hover{border-color:var(--gold);background:#fffef5}
+textarea{width:100%;min-height:88px;padding:12px;border-radius:12px;border:1px solid #E8DFD4;font:inherit;resize:vertical}
+.btn{display:block;width:100%;margin-top:16px;background:var(--t);color:#fff;border:none;font-weight:700;padding:16px 18px;border-radius:12px;font-size:1rem;cursor:pointer}
+.btn:disabled{opacity:.55;cursor:not-allowed}
+.thanks{display:none;text-align:center;padding:20px 0}
+.thanks .check{font-size:3rem}
+.err{color:#b91c1c;margin-top:8px;font-size:.9rem}
+a{color:var(--t);font-weight:600}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <p><a href="/">← Home</a> · <a id="back-orders" href="/customer/orders/">My orders</a></p>
+  <div id="view-form">
+    <h1>How was your order?</h1>
+    <p class="muted" id="sub">Loading…</p>
+    <div class="card" id="box" style="display:none">
+      <p id="store-line"></p>
+      <p class="muted" id="ref-line"></p>
+      <p style="margin-top:12px;font-weight:600">Your rating</p>
+      <div class="stars" id="stars" role="group" aria-label="Star rating 1 to 5"></div>
+      <label class="muted" for="tx">Optional comment</label>
+      <textarea id="tx" placeholder="What stood out? (optional)"></textarea>
+      <p class="err" id="e"></p>
+      <button type="button" class="btn" id="go" disabled>Submit review</button>
+    </div>
+  </div>
+  <div class="thanks" id="thanks">
+    <div class="check" aria-hidden="true">🙏</div>
+    <h1>Thank you!</h1>
+    <p class="muted">Your review helps other shoppers find great local stores. It can appear on the store page within a few minutes.</p>
+    <p><a href="/customer/orders/">Back to my orders</a> · <a href="/stores">Browse stores</a></p>
+  </div>
+  <p class="err" id="global-err"></p>
+</div>
+<script>
+(function(){
+  var q = new URLSearchParams(location.search);
+  var ref = q.get("ref");
+  var email = (q.get("email") || "").trim();
+  var starsEl = document.getElementById("stars");
+  var rating = 0;
+  for (var s = 1; s <= 5; s++) {
+    var b = document.createElement("button");
+    b.type = "button";
+    b.setAttribute("data-s", String(s));
+    b.setAttribute("aria-label", s + " star" + (s > 1 ? "s" : ""));
+    b.textContent = "★";
+    b.addEventListener("click", function(){
+      var n = parseInt(this.getAttribute("data-s"), 10);
+      rating = n;
+      [].forEach.call(starsEl.querySelectorAll("button"), function(x, i) {
+        x.classList.toggle("on", i < n);
+      });
+      document.getElementById("go").disabled = false;
+    });
+    starsEl.appendChild(b);
+  }
+  if (email) {
+    var bo = document.getElementById("back-orders");
+    bo.href = "/customer/orders/?email=" + encodeURIComponent(email);
+  }
+  if (!ref || !email) {
+    document.getElementById("sub").textContent = "Missing order details. Open the link from your email or order page.";
+    return;
+  }
+  document.getElementById("sub").textContent = "Tap the stars, then submit — no text required.";
+
+  fetch("/api/order-public?ref=" + encodeURIComponent(ref))
+    .then(function(r){ return r.json(); })
+    .then(function(data) {
+      if (!data.ok || !data.order) {
+        document.getElementById("global-err").textContent = data.error || "Could not load order.";
+        document.getElementById("sub").textContent = "";
+        return;
+      }
+      var o = data.order;
+      document.getElementById("store-line").innerHTML = "<strong>" + (o.storeName || "Store") + "</strong>";
+      document.getElementById("ref-line").textContent = "Order " + o.ref;
+      if (String(o.storeStage) !== "completed") {
+        document.getElementById("global-err").textContent = "Reviews are available after the store marks your order complete.";
+        document.getElementById("sub").textContent = "";
+        return;
+      }
+      document.getElementById("box").style.display = "block";
+    })
+    .catch(function() {
+      document.getElementById("global-err").textContent = "Network error.";
+    });
+
+  document.getElementById("go").onclick = function() {
+    if (rating < 1) return;
+    var err = document.getElementById("e");
+    err.textContent = "";
+    document.getElementById("go").disabled = true;
+    fetch("/api/order-review", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ ref: ref, email: email, rating: rating, text: document.getElementById("tx").value })
+    })
+      .then(function(r) { return r.json(); })
+      .then(function(j) {
+        if (j && j.ok) {
+          document.getElementById("view-form").style.display = "none";
+          document.getElementById("thanks").style.display = "block";
+          return;
+        }
+        err.textContent = (j && j.error) || "Could not save review.";
+        document.getElementById("go").disabled = false;
+      })
+      .catch(function() {
+        err.textContent = "Network error.";
+        document.getElementById("go").disabled = false;
+      });
+  };
+})();
+</script>
+</body>
+</html>

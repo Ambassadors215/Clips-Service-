@@ -17,6 +17,12 @@ h1{font-family:"Playfair Display",serif;color:var(--t)}
 .stat div{background:#fff;padding:16px;border-radius:12px;border:1px solid #E8DFD4;text-align:center}
 .stat strong{font-size:1.75rem;color:var(--g);display:block}
 .map-placeholder{background:#ddd;height:180px;border-radius:12px;display:flex;align-items:center;justify-content:center;color:#555;margin:20px 0}
+.frow{display:flex;align-items:center;gap:10px;font-size:14px;flex-wrap:wrap}
+.frow .bar{flex:1;min-width:100px;height:10px;border-radius:6px;background:linear-gradient(90deg,rgba(212,160,23,.2),#D4A017)}
+.frow .pct{color:#5c4a3a;min-width:3em}
+label{font-weight:700;min-width:8em}
+#search-terms li{background:#fff;padding:8px 10px;border-radius:8px;border:1px solid #E8DFD4;margin-bottom:6px;break-inside:avoid}
+@media (min-width:560px){#search-terms{columns:2}}
 @media print{ .no-print{display:none} body{padding:12px} }
 a{color:var(--t);font-weight:600}
 </style>
@@ -38,17 +44,51 @@ a{color:var(--t);font-weight:600}
 <h2>Founder</h2>
 <p><strong>Sonia Chidinma Otikpa</strong> — Clip Services Ltd, Manchester. Building fair, Stripe-powered commerce for diaspora-led independents.</p>
 
+<h2>Order conversion funnel</h2>
+<p>Aggregated on-site events (store pages): views → add to basket → basket opened → checkout started → paid order. <span class="muted" id="f-hint" style="font-size:.9em"></span></p>
+<div id="funnel" class="funnel" style="display:grid;gap:8px;margin:12px 0;max-width:100%"></div>
+<h2>Top search terms</h2>
+<p>Most frequent queries in our marketplace search (anonymised counts). <span class="muted" id="s-hint"></span></p>
+<ul id="search-terms" style="list-style:none;padding:0;font-size:14px;columns:1"></ul>
+
 <h2>Growth</h2>
-<p>Order volume and GMV charts can be exported from your analytics dashboard; this page shows live counters from our public stats API.</p>
+<p>Order volume and GMV charts can be exported from your analytics dashboard; this page shows live counters from our public stats API and conversion funnel for Tech Nation evidence.</p>
 
 <p class="no-print" style="margin-top:32px"><button type="button" onclick="window.print()" style="background:var(--t);color:#fff;border:none;padding:12px 20px;border-radius:10px;font-weight:700;cursor:pointer">Print / Save PDF</button></p>
 </div>
 <script>
+function pct(n,d){ if(d<=0)return"—"; return(100-100*n/d).toFixed(0)+"%"; }
+function funnelRow(l,a,b,drop){
+  var p=document.createElement("div");
+  p.className="frow";
+  p.innerHTML="<label>"+l+"</label><div class=\"bar\" style=\"width:"+a+"%\"></div><span>"+b.toLocaleString("en-GB")+"</span><span class=\"pct\">drop "+drop+"</span>";
+  return p;
+ }
 fetch("/api/public-stats").then(function(r){ return r.json(); }).then(function(j){
   if (!j || !j.ok) return;
   document.getElementById("s-st").textContent = (j.storesListed ?? 0).toLocaleString("en-GB");
   document.getElementById("s-or").textContent = (j.ordersProcessed ?? 0).toLocaleString("en-GB");
   document.getElementById("s-ci").textContent = (j.citiesServed ?? 0).toLocaleString("en-GB");
+  var f = j.orderFunnel;
+  if (f) {
+   var w = Math.max(1, f.view|0);
+   var oc = Math.max(0, f.order_complete|0);
+   var a = function(n){ return Math.max(0, Math.min(100, Math.round(100*(f[n]|0)/w))); };
+   var rvw = function(){ return oc ? Math.min(100, Math.round(100*(f.review_submitted|0)/oc)) : 0; };
+   var fd = document.getElementById("funnel");
+   fd.innerHTML="";
+   fd.appendChild(funnelRow("1. Product views", a("view"), f.view|0, "—"));
+   fd.appendChild(funnelRow("2. Add to basket", a("add_basket"), f.add_basket|0, pct(f.add_basket, f.view)));
+   fd.appendChild(funnelRow("3. Basket opened", a("basket_open"), f.basket_open|0, pct(f.basket_open, f.view)));
+   fd.appendChild(funnelRow("4. Checkout start", a("checkout_start"), f.checkout_start|0, pct(f.checkout_start, f.view)));
+   fd.appendChild(funnelRow("5. Order complete", a("order_complete"), f.order_complete|0, pct(f.order_complete, f.view)));
+   fd.appendChild(funnelRow("6. Review (post-order)", rvw(), f.review_submitted|0, oc ? pct(f.review_submitted, oc) : "—"));
+  } else { document.getElementById("f-hint").textContent="(Funnel requires live KV.)"; }
+  var st = (j.topSearchTerms||[]).slice(0,12);
+  if(st.length) {
+   var ul = document.getElementById("search-terms");
+   st.forEach(function(t){ var li = document.createElement("li"); li.textContent= t.term+ " — "+(t.count|0); ul.appendChild(li); });
+  } else document.getElementById("s-hint").textContent="(No search volume recorded yet in live Redis.)";
 }).catch(function(){});
 </script>
 </body>
