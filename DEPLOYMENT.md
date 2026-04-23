@@ -29,3 +29,14 @@ Both sites call **`/api/booking`** and **`/api/contact`**. They must be deployed
 - Optional: the legacy **[dimshaircare](https://github.com/Ambassadors215/dimshaircare)** GitHub repo can stay as a mirror (`git push dimshaircare main`). The **dimshaircare** Vercel project should use the **same** GitHub repo as **clips-service** ([Clips-Service-](https://github.com/Ambassadors215/Clips-Service-)) so one push deploys both hosts (routing is by domain in `middleware.js`). To reconnect Git for that project: `VERCEL_TOKEN` in `.env.local`, then **`node scripts/vercel-connect-dimshaircare.mjs`** (uses `npx vercel git connect`). Check both: **`npm run vercel:git-status`**.
 
 Push to the remote connected to each Vercel project when you want that deployment to update.
+
+## WhatsApp Cloud API (optional)
+
+Automated customer/store messages and the inbound auto-reply use **Meta WhatsApp Cloud API**. If `WHATSAPP_ACCESS_TOKEN` / `WHATSAPP_PHONE_NUMBER_ID` are unset, the site still works; only automated WA sends are skipped.
+
+1. In Vercel → **clips-service** → Environment Variables, set (see `.env.example`):
+   - `WHATSAPP_ACCESS_TOKEN`, `WHATSAPP_PHONE_NUMBER_ID`
+   - `WHATSAPP_WEBHOOK_VERIFY_TOKEN` (random string; same value in Meta)
+   - `CLIP_WHATSAPP_E164` (digits only, e.g. `447487588706`)
+2. In Meta Developer → WhatsApp → Configuration, set **Callback URL** to `https://clipservice.app/api/whatsapp-webhook` and subscribe to **messages**.
+3. **Cron:** `vercel.json` runs `/api/whatsapp-cron` hourly (delayed review jobs, Monday window for weekly summaries, inactive nudges). On Vercel this is authenticated via the `x-vercel-cron` header. Optionally set `CRON_WHATSAPP_SECRET` for manual GET/POST with `?secret=…` or `Authorization: Bearer`.
