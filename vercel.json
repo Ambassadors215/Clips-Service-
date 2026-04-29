@@ -7,7 +7,10 @@
     { "source": "/categories/spices-staples", "destination": "/categories/spices-ingredients", "permanent": true },
     { "source": "/categories/fashion-fabric", "destination": "/categories/fashion-fabrics", "permanent": true },
     { "source": "/categories/drinks", "destination": "/categories/drinks-beverages", "permanent": true },
-    { "source": "/categories/halal", "destination": "/categories/halal-products", "permanent": true }
+    { "source": "/categories/halal", "destination": "/categories/halal-products", "permanent": true },
+    { "source": "/categories/meat-and-fish", "destination": "/categories/meat-fish", "permanent": true },
+    { "source": "/categories/rice-grains-flour", "destination": "/categories/staples-grains", "permanent": true },
+    { "source": "/blog/top-caribbean-ingredients-cooking-home", "destination": "/blog/caribbean-cooking-essential-ingredients-buy-online", "permanent": true }
   ],
   "rewrites": [
     { "source": "/sitemap.xml", "destination": "/api/sitemap" },
