@@ -541,8 +541,8 @@ footer a:hover{color:var(--gold-soft);}
     <div>
       <h4>About Clip Services</h4>
       <ul>
-        <li><a href="/stores#mission">Our Mission</a></li>
-        <li><a href="/#impact-stats">Impact Data</a></li>
+        <li><a href="/about">Our Mission</a></li>
+        <li><a href="/about#numbers-section">Impact Data</a></li>
         <li><a href="mailto:clipservices26@gmail.com?subject=Press">Press</a></li>
         <li><a href="mailto:clipservices26@gmail.com">Contact</a></li>
       </ul>
@@ -574,17 +574,45 @@ footer a:hover{color:var(--gold-soft);}
   </p>
 </footer>
 
+<div id="clip-cookie-banner" hidden style="position:fixed;bottom:0;left:0;right:0;z-index:9998;background:#07101F;color:#EEF3FF;padding:18px 22px;border-top:2px solid #00C8F0;box-shadow:0 -8px 24px rgba(0,0,0,.25);font-family:Inter,system-ui,sans-serif;font-size:14px;line-height:1.55;">
+  <div style="max-width:980px;margin:0 auto;display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:14px;">
+    <p style="margin:0;flex:1 1 320px;color:#EEF3FF;">
+      We use only essential cookies needed to run Clip Services. We do not track you with marketing or analytics cookies. Read our <a href="/privacy-policy" style="color:#00C8F0;text-decoration:underline;">Privacy Policy</a> for details.
+    </p>
+    <div style="display:flex;gap:10px;flex:0 0 auto;">
+      <button type="button" id="clip-cookie-prefs" style="background:transparent;color:#EEF3FF;border:1px solid #3A5080;padding:10px 16px;border-radius:10px;font-size:13px;font-weight:600;cursor:pointer;font-family:inherit;">Manage preferences</button>
+      <button type="button" id="clip-cookie-accept" style="background:#00C8F0;color:#07101F;border:none;padding:10px 18px;border-radius:10px;font-size:14px;font-weight:700;cursor:pointer;font-family:inherit;">Accept</button>
+    </div>
+  </div>
+</div>
+
+<script>
+(function(){
+  try {
+    if (localStorage.getItem("clipCookieAccepted") === "true") return;
+    var banner = document.getElementById("clip-cookie-banner");
+    if (!banner) return;
+    banner.hidden = false;
+    document.getElementById("clip-cookie-accept").addEventListener("click", function(){
+      try { localStorage.setItem("clipCookieAccepted", "true"); } catch(_e){}
+      banner.hidden = true;
+    });
+    document.getElementById("clip-cookie-prefs").addEventListener("click", function(){
+      alert("Only essential cookies are used. No preferences to manage.\n\nClip Services does not run marketing or analytics cookies. If we add them in future, this banner will return with toggles.");
+    });
+  } catch(_e){}
+})();
+</script>
+
 <script>
 (function () {
   const EVENTS = [
-    { id: "bhm", title: "Black History Month — October 2026", desc: "African & Caribbean stores featured" },
-    { id: "diwali", title: "Diwali — November 2026", desc: "Asian sweets, ghee, spices" },
-    { id: "christmas", title: "Christmas — December 2026", desc: "Plantain, goat meat, jollof, suya, festive items" },
-    { id: "carnival", title: "Caribbean Carnival Season — Summer 2026", desc: "Jerk, festival food, rum cake" },
-    { id: "eid-fitr", title: "Eid al-Fitr — March 2027", desc: "Celebration food, sweets" },
-    { id: "ramadan", title: "Ramadan — Feb–Mar 2027", desc: "Halal products, dates, iftar essentials" },
-    { id: "eid-adha", title: "Eid al-Adha — May 2027", desc: "Halal meat, celebration" },
-    { id: "cny", title: "Lunar New Year — Feb 2027", desc: "Rice, sauces, noodles, dumplings" },
+    { id: "carnival", title: "Caribbean Carnival Season", date: "August 2026", desc: "Caribbean food, jerk seasoning, sorrel, festive ingredients", href: "/community/caribbean" },
+    { id: "bhm", title: "Black History Month", date: "October 2026", desc: "Support African and Caribbean independent businesses across the UK throughout October", href: "/community/african" },
+    { id: "diwali", title: "Diwali", date: "8 Nov 2026", desc: "Asian sweets, decorations, ghee and spices for Diwali", href: "/community/asian" },
+    { id: "christmas", title: "Christmas", date: "December 2026", desc: "Plantain, goat meat, jollof rice ingredients, suya, Asian festive items — order now", href: "/stores" },
+    { id: "ramadan", title: "Ramadan", date: "18 Feb – 19 Mar 2027", desc: "Halal products, dates and iftar essentials from independent African and Asian stores", href: "/categories/halal-products" },
+    { id: "eid-fitr", title: "Eid al-Fitr", date: "20 Mar 2027", desc: "Celebration food and gifts for Eid — find halal meat, sweets and ingredients near you", href: "/categories/halal-products" },
   ];
 
   function initials(name) {
@@ -763,11 +791,13 @@ footer a:hover{color:var(--gold-soft);}
       return (
         '<article class="cal-card"><div><h4>' +
         escapeHtml(ev.title) +
-        '</h4><p>' +
+        '</h4><p style="font-weight:700;color:var(--brown);margin-bottom:6px">' +
+        escapeHtml(ev.date) +
+        '</p><p>' +
         escapeHtml(ev.desc) +
-        '</p></div><a href="/stores?event=' +
-        encodeURIComponent(ev.id) +
-        '">Shop for this season →</a></article>'
+        '</p></div><a class="btn btn-secondary" style="margin-top:10px;padding:10px 16px;font-size:13px;background:var(--terracotta);color:var(--white);border-color:var(--terracotta)" href="' +
+        escapeHtml(ev.href || ("/stores?event=" + ev.id)) +
+        '">Shop now →</a></article>'
       );
     }).join("");
   }

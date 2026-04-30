@@ -71,159 +71,13 @@ ul.bullets li{margin-bottom:6px;}
   <p class="sub">Free to apply. We use this form to review your business — no technical skills required. After approval, you’ll get a dashboard login, Stripe Connect onboarding, and WhatsApp order alerts.</p>
 
   <div class="cta-row">
-    <a class="btn btn-primary" href="/store-owner/apply">Start store application →</a>
-    <a class="btn btn-primary" href="/market-stall/apply" style="background:var(--gold);color:var(--brown)!important;border:none">Market stall (£15/mo) →</a>
+    <a class="btn btn-primary" href="/store-owner/apply">Start Store Application →</a>
+    <a class="btn btn-primary" href="/market-stall/apply" style="background:var(--gold);color:var(--brown)!important;border:none">Apply for Market Stall (£15/mo) →</a>
   </div>
   <div class="cta-row">
-    <a class="btn btn-ghost" href="/store-owner/dashboard">Already approved? Store dashboard</a>
+    <a class="btn btn-ghost" href="/store-owner/dashboard">Already approved? Login to dashboard</a>
     <a class="btn btn-ghost" href="https://wa.me/447487588706?text=Hi%2C%20I%27m%20applying%20to%20list%20my%20store%20on%20Clip%20Services">WhatsApp us</a>
   </div>
-
-  <section class="panel" aria-labelledby="apply-h">
-    <h2 id="apply-h">Application form</h2>
-    <p style="font-size:14px;color:var(--muted);margin-bottom:20px;">Fields marked <span class="req">*</span> are required. We’ll never sell your data — see our <a href="/privacy-policy">Privacy Policy</a>.</p>
-
-    <form id="store-application-form" novalidate>
-      <fieldset class="form-section">
-        <legend>Business</legend>
-        <div class="field">
-          <label for="businessName">Trading / business name <span class="req">*</span></label>
-          <input type="text" id="businessName" name="businessName" required maxlength="200" autocomplete="organization" placeholder="e.g. Mama’s Caribbean Groceries">
-        </div>
-        <div class="grid2">
-          <div class="field">
-            <label for="listingType">How do you sell? <span class="req">*</span></label>
-            <select id="listingType" name="listingType" required>
-              <option value="">Select…</option>
-              <option value="physical_store">Physical shop / unit</option>
-              <option value="market_stall">Market stall (regular)</option>
-              <option value="online_only">Online-only (delivery / post)</option>
-              <option value="hybrid">Shop + stall / hybrid</option>
-            </select>
-          </div>
-          <div class="field">
-            <label for="yearsTrading">Years trading <span class="req">*</span></label>
-            <select id="yearsTrading" name="yearsTrading" required>
-              <option value="">Select…</option>
-              <option value="under1">Under 1 year</option>
-              <option value="1-3">1–3 years</option>
-              <option value="3-5">3–5 years</option>
-              <option value="5plus">5+ years</option>
-            </select>
-          </div>
-        </div>
-        <div class="field">
-          <span class="label-like" style="display:block;font-size:13px;font-weight:600;margin-bottom:8px;">Communities you primarily serve <span class="req">*</span> (tick all that apply)</span>
-          <div class="chk-grid" role="group" aria-label="Communities">
-            <label class="chk"><input type="checkbox" name="community" value="African"> African</label>
-            <label class="chk"><input type="checkbox" name="community" value="Caribbean"> Caribbean</label>
-            <label class="chk"><input type="checkbox" name="community" value="Asian"> Asian</label>
-          </div>
-          <p class="hint">We use this to help customers find you — not to exclude anyone.</p>
-        </div>
-        <div class="field">
-          <label for="productLines">What do you sell? <span class="req">*</span></label>
-          <textarea id="productLines" name="productLines" required maxlength="4000" placeholder="e.g. Fresh produce, spices, halal meat, hair products, fabrics…"></textarea>
-        </div>
-        <div class="field">
-          <label for="companyNumber">Company number (if Ltd) — optional</label>
-          <input type="text" id="companyNumber" name="companyNumber" maxlength="20" inputmode="numeric" autocomplete="off" placeholder="e.g. 12345678">
-        </div>
-        <div class="field">
-          <span style="display:block;font-size:13px;font-weight:600;margin-bottom:8px;">VAT registered?</span>
-          <div class="radio-row">
-            <label><input type="radio" name="vat" value="yes"> Yes</label>
-            <label><input type="radio" name="vat" value="no"> No</label>
-            <label><input type="radio" name="vat" value="unsure" checked> Not sure</label>
-          </div>
-        </div>
-        <div class="field">
-          <label for="foodReg">Food business / FSA registration (if applicable)</label>
-          <input type="text" id="foodReg" name="foodReg" maxlength="200" placeholder="Optional — helps us verify food sellers faster">
-        </div>
-        <div class="field">
-          <label for="website">Website or main social link — optional</label>
-          <input type="url" id="website" name="website" maxlength="500" placeholder="https://…">
-        </div>
-      </fieldset>
-
-      <fieldset class="form-section">
-        <legend>Contact &amp; location</legend>
-        <div class="grid2">
-          <div class="field">
-            <label for="contactName">Your full name <span class="req">*</span></label>
-            <input type="text" id="contactName" name="contactName" required maxlength="120" autocomplete="name" placeholder="Applicant name">
-          </div>
-          <div class="field">
-            <label for="phone">Mobile (WhatsApp) <span class="req">*</span></label>
-            <input type="tel" id="phone" name="phone" required maxlength="40" autocomplete="tel" placeholder="+44…">
-          </div>
-        </div>
-        <div class="field">
-          <label for="email">Email <span class="req">*</span></label>
-          <input type="email" id="email" name="email" required maxlength="120" autocomplete="email" placeholder="you@example.com">
-        </div>
-        <div class="field">
-          <label for="addressLine">Street address or trading location <span class="req">*</span></label>
-          <input type="text" id="addressLine" name="addressLine" required maxlength="200" autocomplete="street-address">
-        </div>
-        <div class="grid2">
-          <div class="field">
-            <label for="city">City <span class="req">*</span></label>
-            <input type="text" id="city" name="city" required maxlength="80" autocomplete="address-level2" placeholder="e.g. Manchester">
-          </div>
-          <div class="field">
-            <label for="postcode">Postcode <span class="req">*</span></label>
-            <input type="text" id="postcode" name="postcode" required maxlength="12" autocomplete="postal-code" placeholder="e.g. M1 1AA">
-          </div>
-        </div>
-      </fieldset>
-
-      <fieldset class="form-section">
-        <legend>Verification (optional)</legend>
-        <div class="field">
-          <label for="idDoc">Photo of ID (passport or driving licence) — optional</label>
-          <input type="file" id="idDoc" name="idDoc" accept="image/jpeg,image/png,image/webp,.pdf">
-          <p class="hint">JPEG, PNG, Webp or PDF. Max 2&nbsp;MB. Used only for seller verification.</p>
-        </div>
-      </fieldset>
-
-      <fieldset class="form-section">
-        <legend>Almost done</legend>
-        <div class="field">
-          <label for="howHeard">How did you hear about Clip Services?</label>
-          <select id="howHeard" name="howHeard">
-            <option value="">Select…</option>
-            <option value="whatsapp">WhatsApp / friend</option>
-            <option value="instagram">Instagram</option>
-            <option value="tiktok">TikTok</option>
-            <option value="market">At a market</option>
-            <option value="search">Google / search</option>
-            <option value="other">Other</option>
-          </select>
-        </div>
-        <div class="field">
-          <label class="chk">
-            <input type="checkbox" id="stallPlan" name="stallPlan">
-            I’m interested in the <strong>£15/month digital market stall</strong> add-on
-          </label>
-        </div>
-        <div class="field">
-          <label for="notes">Anything else we should know?</label>
-          <textarea id="notes" name="notes" maxlength="4000" placeholder="Allergen handling, collection times, delivery radius…"></textarea>
-        </div>
-        <div class="field">
-          <label class="chk">
-            <input type="checkbox" id="consent" name="consent" required>
-            I agree to the <a href="/terms" target="_blank" rel="noopener">Terms</a>, <a href="/privacy-policy" target="_blank" rel="noopener">Privacy Policy</a>, and <a href="/disclaimer" target="_blank" rel="noopener">Disclaimer</a> <span class="req">*</span>
-          </label>
-        </div>
-      </fieldset>
-
-      <button type="submit" class="btn btn-primary" id="submitBtn">Submit application</button>
-      <div id="formStatus" class="form-status" role="status" aria-live="polite"></div>
-    </form>
-  </section>
 
   <div class="panel">
     <h2>What you get</h2>
@@ -239,7 +93,7 @@ ul.bullets li{margin-bottom:6px;}
 
   <div class="panel" id="stall">
     <h2>Market stall add-on (£15/month)</h2>
-    <p>For traders who want a digital stall for “what’s selling today” — customers order and collect; grow beyond market day. Tick the box in the form or <a href="https://wa.me/447487588706?text=I%27m%20interested%20in%20the%20%C2%A315%2Fmonth%20stall%20plan">message us on WhatsApp</a>.</p>
+    <p>For traders who want a digital stall for “what’s selling today” — customers order and collect; grow beyond market day. Use the <a href="/market-stall/apply">market stall application</a> or <a href="https://wa.me/447487588706?text=I%27m%20interested%20in%20the%20%C2%A315%2Fmonth%20stall%20plan">message us on WhatsApp</a>.</p>
   </div>
 
   <div class="faq" id="faq">
@@ -250,158 +104,11 @@ ul.bullets li{margin-bottom:6px;}
   </div>
 
   <p style="margin-top:28px;font-size:14px;color:var(--muted);">Email: <a href="mailto:clipservices26@gmail.com">clipservices26@gmail.com</a></p>
+
+  <div class="cta-row" style="margin-top:24px">
+    <a class="btn btn-primary" href="/store-owner/apply">Start Store Application →</a>
+    <a class="btn btn-primary" href="/market-stall/apply" style="background:var(--gold);color:var(--brown)!important;border:none">Apply for Market Stall (£15/mo) →</a>
+  </div>
 </div>
-
-<script>
-(function () {
-  var form = document.getElementById("store-application-form");
-  var statusEl = document.getElementById("formStatus");
-  var submitBtn = document.getElementById("submitBtn");
-
-  function showStatus(ok, text) {
-    statusEl.className = "form-status " + (ok ? "ok" : "err");
-    statusEl.textContent = text;
-    statusEl.style.display = "block";
-  }
-
-  function buildMessage(data) {
-    var comm = data.communities.length ? data.communities.join(", ") : "(none selected)";
-    var lines = [
-      "[STORE APPLICATION]",
-      "",
-      "Business / trading name: " + data.businessName,
-      "Listing type: " + data.listingType,
-      "Years trading: " + data.yearsTrading,
-      "Communities served: " + comm,
-      "",
-      "Product lines / categories:",
-      data.productLines,
-      "",
-      "Company number (Ltd): " + (data.companyNumber || "—"),
-      "VAT registered: " + data.vat,
-      "Food / FSA reg: " + (data.foodReg || "—"),
-      "Website / social: " + (data.website || "—"),
-      "",
-      "Contact name: " + data.contactName,
-      "Email: " + data.email,
-      "Phone / WhatsApp: " + data.phone,
-      "Address: " + data.addressLine,
-      "City: " + data.city,
-      "Postcode: " + data.postcode,
-      "",
-      "How heard: " + (data.howHeard || "—"),
-      "Interested in £15/mo stall plan: " + (data.stallPlan ? "yes" : "no"),
-      "",
-      "Additional notes:",
-      data.notes || "—",
-    ];
-    return lines.join("\n");
-  }
-
-  function fileToAttachment(file) {
-    return new Promise(function (resolve, reject) {
-      if (file.size > 2 * 1024 * 1024) {
-        reject(new Error("File too large (max 2 MB)"));
-        return;
-      }
-      var r = new FileReader();
-      r.onload = function () {
-        var dataUrl = r.result;
-        var comma = dataUrl.indexOf(",");
-        var b64 = comma >= 0 ? dataUrl.slice(comma + 1) : dataUrl;
-        resolve({ name: file.name, type: file.type || "application/octet-stream", data: b64 });
-      };
-      r.onerror = function () {
-        reject(new Error("Could not read file"));
-      };
-      r.readAsDataURL(file);
-    });
-  }
-
-  form.addEventListener("submit", async function (e) {
-    e.preventDefault();
-    statusEl.style.display = "none";
-
-    var communities = Array.prototype.slice
-      .call(form.querySelectorAll('input[name="community"]:checked'))
-      .map(function (c) {
-        return c.value;
-      });
-    if (communities.length === 0) {
-      showStatus(false, "Please tick at least one community you serve.");
-      return;
-    }
-
-    var vatEl = form.querySelector('input[name="vat"]:checked');
-    var data = {
-      businessName: form.businessName.value.trim(),
-      listingType: form.listingType.value,
-      yearsTrading: form.yearsTrading.value,
-      communities: communities,
-      productLines: form.productLines.value.trim(),
-      companyNumber: form.companyNumber.value.trim(),
-      vat: vatEl ? vatEl.value : "",
-      foodReg: form.foodReg.value.trim(),
-      website: form.website.value.trim(),
-      contactName: form.contactName.value.trim(),
-      phone: form.phone.value.trim(),
-      email: form.email.value.trim(),
-      addressLine: form.addressLine.value.trim(),
-      city: form.city.value.trim(),
-      postcode: form.postcode.value.trim(),
-      howHeard: form.howHeard.value,
-      stallPlan: form.stallPlan.checked,
-      notes: form.notes.value.trim(),
-    };
-
-    if (!form.consent.checked) {
-      showStatus(false, "Please accept the Terms, Privacy Policy, and Disclaimer.");
-      return;
-    }
-
-    var message = buildMessage(data);
-    var payload = {
-      name: data.contactName,
-      email: data.email,
-      phone: data.phone,
-      applicationType: "store-owner",
-      message: message,
-      attachments: [],
-    };
-
-    var fileInput = document.getElementById("idDoc");
-    if (fileInput.files && fileInput.files[0]) {
-      try {
-        payload.attachments = [await fileToAttachment(fileInput.files[0])];
-      } catch (err) {
-        showStatus(false, err.message || "Could not attach file.");
-        return;
-      }
-    }
-
-    submitBtn.disabled = true;
-    try {
-      var res = await fetch("/api/contact", {
-        method: "POST",
-        headers: { "content-type": "application/json" },
-        body: JSON.stringify(payload),
-      });
-      var json = await res.json().catch(function () {
-        return {};
-      });
-      if (res.ok && json.ok) {
-        showStatus(true, "Application received. We’ll email you shortly and aim to respond within 48 hours. Check your spam folder.");
-        form.reset();
-      } else {
-        showStatus(false, (json && json.error) || "Something went wrong. Try again or WhatsApp us.");
-      }
-    } catch (err) {
-      showStatus(false, "Network error. Check your connection or message us on WhatsApp.");
-    } finally {
-      submitBtn.disabled = false;
-    }
-  });
-})();
-</script>
 </body>
 </html>

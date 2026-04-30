@@ -57,7 +57,9 @@
     { "source": "/customer/order-confirmed", "destination": "/customer/order-confirmed/index.html" },
     { "source": "/customer/order-confirmed/", "destination": "/customer/order-confirmed/index.html" },
     { "source": "/customer/review", "destination": "/customer/review/index.html" },
-    { "source": "/customer/review/", "destination": "/customer/review/index.html" }
+    { "source": "/customer/review/", "destination": "/customer/review/index.html" },
+    { "source": "/about", "destination": "/about/index.html" },
+    { "source": "/about/", "destination": "/about/index.html" }
   ],
   "crons": [
     {
