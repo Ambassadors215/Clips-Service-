@@ -283,8 +283,8 @@ footer a:hover{color:var(--gold-soft);}
         <a class="btn btn-gold" href="/store-owner">List Your Store</a>
       </div>
       <div class="trust-row" aria-label="Trust indicators">
-        <span class="trust-item">🏪 <strong id="trust-stores">—</strong> Stores &amp; Stalls Listed</span>
-        <span class="trust-item">🛒 <strong id="trust-orders">—</strong> Orders Processed</span>
+        <span class="trust-item" id="trust-stores-item" hidden>🏪 <strong id="trust-stores">—</strong> Stores &amp; Stalls Listed</span>
+        <span class="trust-item" id="trust-orders-item" hidden>🛒 <strong id="trust-orders">—</strong> Orders Processed</span>
         <span class="trust-item">🇬🇧 UK Registered Company</span>
         <span class="trust-item">🔒 Stripe Secure Payments</span>
       </div>
@@ -385,7 +385,7 @@ footer a:hover{color:var(--gold-soft);}
   </section>
 
   <!-- 5 BROWSE BY CITY -->
-  <section id="cities" aria-labelledby="city-title">
+  <section id="cities" aria-labelledby="city-title" hidden>
     <div class="wrap">
       <div class="section-head">
         <h2 id="city-title" class="font-display">Browse by city</h2>
@@ -396,7 +396,7 @@ footer a:hover{color:var(--gold-soft);}
   </section>
 
   <!-- 6 FEATURED STORES -->
-  <section class="alt" aria-labelledby="feat-title">
+  <section class="alt" id="featured-section" aria-labelledby="feat-title" hidden>
     <div class="wrap">
       <div class="section-head">
         <h2 id="feat-title" class="font-display">Featured stores</h2>
@@ -420,7 +420,7 @@ footer a:hover{color:var(--gold-soft);}
   </section>
 
   <!-- 8 LIVE IMPACT -->
-  <section class="impact" id="impact-stats" aria-labelledby="impact-title">
+  <section class="impact" id="impact-stats" aria-labelledby="impact-title" hidden>
     <div class="wrap">
       <h2 id="impact-title" class="font-display">Live impact</h2>
       <p class="impact-sub">Updated from our platform as stores join and orders are placed.</p>
@@ -557,10 +557,9 @@ footer a:hover{color:var(--gold-soft);}
     </div>
   </div>
   <div class="wrap footer-bottom">
-    <div class="social" aria-label="Social">
-      <a href="https://instagram.com/" rel="noopener noreferrer" target="_blank">Instagram</a>
-      <a href="https://tiktok.com/" rel="noopener noreferrer" target="_blank">TikTok</a>
-      <a href="https://wa.me/447487588706">WhatsApp</a>
+    <div class="social" aria-label="Contact">
+      <a href="https://wa.me/447487588706" rel="noopener noreferrer" target="_blank">WhatsApp</a>
+      <a href="mailto:clipservices26@gmail.com">Email</a>
     </div>
     <div>
       <a href="mailto:clipservices26@gmail.com">clipservices26@gmail.com</a>
@@ -578,16 +577,14 @@ footer a:hover{color:var(--gold-soft);}
 <script>
 (function () {
   const EVENTS = [
-    { id: "ramadan", title: "Ramadan", desc: "Halal products, dates, iftar essentials" },
-    { id: "eid-fitr", title: "Eid al-Fitr", desc: "Celebration food, sweets" },
-    { id: "eid-adha", title: "Eid al-Adha", desc: "Halal meat, celebration" },
-    { id: "ng-independence", title: "Nigerian Independence Day (1 Oct)", desc: "Nigerian ingredients, party food" },
-    { id: "bhm", title: "Black History Month (October)", desc: "African & Caribbean stores featured" },
-    { id: "diwali", title: "Diwali", desc: "Asian sweets, ghee, spices" },
-    { id: "carnival", title: "Caribbean Carnival Season", desc: "Jerk, festival food, rum cake" },
-    { id: "christmas", title: "Christmas", desc: "Plantain, goat meat, jollof, suya, festive items" },
-    { id: "gh-independence", title: "Ghanaian Independence Day (6 Mar)", desc: "Ghanaian groceries" },
-    { id: "cny", title: "Chinese New Year", desc: "Rice, sauces, noodles, dumplings" },
+    { id: "bhm", title: "Black History Month — October 2026", desc: "African & Caribbean stores featured" },
+    { id: "diwali", title: "Diwali — November 2026", desc: "Asian sweets, ghee, spices" },
+    { id: "christmas", title: "Christmas — December 2026", desc: "Plantain, goat meat, jollof, suya, festive items" },
+    { id: "carnival", title: "Caribbean Carnival Season — Summer 2026", desc: "Jerk, festival food, rum cake" },
+    { id: "eid-fitr", title: "Eid al-Fitr — March 2027", desc: "Celebration food, sweets" },
+    { id: "ramadan", title: "Ramadan — Feb–Mar 2027", desc: "Halal products, dates, iftar essentials" },
+    { id: "eid-adha", title: "Eid al-Adha — May 2027", desc: "Halal meat, celebration" },
+    { id: "cny", title: "Lunar New Year — Feb 2027", desc: "Rice, sauces, noodles, dumplings" },
   ];
 
   function initials(name) {
@@ -699,12 +696,14 @@ footer a:hover{color:var(--gold-soft);}
   function renderFeaturedScroll(items) {
     const track = document.getElementById("featured-scroll");
     if (!track) return;
+    const section = document.getElementById("featured-section");
     const use = items.slice(0, 12);
     if (!use.length) {
-      track.innerHTML =
-        '<p style="padding:24px;">No featured stores yet. <a href="/store-owner">Be the first to list</a>.</p>';
+      if (section) section.hidden = true;
+      track.innerHTML = "";
       return;
     }
+    if (section) section.hidden = false;
     track.innerHTML = use
       .map(function (item) {
         const name = item.role || "Store";
@@ -728,8 +727,16 @@ footer a:hover{color:var(--gold-soft);}
 
   function renderCities(stats) {
     const el = document.getElementById("city-grid");
-    if (!el || !stats || !stats.cities) return;
-    el.innerHTML = stats.cities
+    const section = document.getElementById("cities");
+    const cities = (stats && Array.isArray(stats.cities)) ? stats.cities.filter(function(c){ return c && Number(c.count) > 0; }) : [];
+    if (!el) return;
+    if (!cities.length) {
+      if (section) section.hidden = true;
+      el.innerHTML = "";
+      return;
+    }
+    if (section) section.hidden = false;
+    el.innerHTML = cities
       .map(function (c) {
         const slug = String(c.name || "")
           .toLowerCase()
@@ -782,16 +789,22 @@ footer a:hover{color:var(--gold-soft);}
   }
 
   function runImpactAnimation(stats) {
-    if (!stats) return;
+    const sec = document.getElementById("impact-stats");
+    if (!sec) return;
+    const s = (stats && stats.storesListed) || 0;
+    const o = (stats && stats.ordersProcessed) || 0;
+    const ci = (stats && stats.citiesServed) || 0;
+    const co = (stats && stats.communitiesRepresented) || 0;
+    if (s < 1 || o < 1) {
+      sec.hidden = true;
+      return;
+    }
+    sec.hidden = false;
     const obs = new IntersectionObserver(
       function (entries) {
         entries.forEach(function (entry) {
           if (!entry.isIntersecting) return;
           obs.disconnect();
-          const s = stats.storesListed || 0;
-          const o = stats.ordersProcessed || 0;
-          const ci = stats.citiesServed || 0;
-          const co = stats.communitiesRepresented || 24;
           animateCount(document.getElementById("impact-stores"), s, 1400);
           animateCount(document.getElementById("impact-orders"), o, 1400);
           animateCount(document.getElementById("impact-cities"), ci, 1400);
@@ -800,8 +813,7 @@ footer a:hover{color:var(--gold-soft);}
       },
       { threshold: 0.2 }
     );
-    const sec = document.querySelector(".impact");
-    if (sec) obs.observe(sec);
+    obs.observe(sec);
   }
 
   /* Tabs */
@@ -833,14 +845,24 @@ footer a:hover{color:var(--gold-soft);}
     renderCalendar();
 
     if (stats) {
-      document.getElementById("trust-stores").textContent = stats.storesListed ?? "0";
-      document.getElementById("trust-orders").textContent = stats.ordersProcessed ?? "0";
-      document.getElementById("impact-stores").dataset.target = String(stats.storesListed);
-      document.getElementById("impact-orders").dataset.target = String(stats.ordersProcessed);
-      document.getElementById("impact-cities").dataset.target = String(stats.citiesServed);
-      document.getElementById("impact-comm").dataset.target = String(stats.communitiesRepresented);
+      const storesN = Number(stats.storesListed) || 0;
+      const ordersN = Number(stats.ordersProcessed) || 0;
+      const trustStoresItem = document.getElementById("trust-stores-item");
+      const trustOrdersItem = document.getElementById("trust-orders-item");
+      if (storesN > 0 && trustStoresItem) {
+        document.getElementById("trust-stores").textContent = String(storesN);
+        trustStoresItem.hidden = false;
+      }
+      if (ordersN > 0 && trustOrdersItem) {
+        document.getElementById("trust-orders").textContent = String(ordersN);
+        trustOrdersItem.hidden = false;
+      }
+      document.getElementById("impact-stores").dataset.target = String(storesN);
+      document.getElementById("impact-orders").dataset.target = String(ordersN);
+      document.getElementById("impact-cities").dataset.target = String(stats.citiesServed || 0);
+      document.getElementById("impact-comm").dataset.target = String(stats.communitiesRepresented || 0);
     }
-    runImpactAnimation(stats || { storesListed: 0, ordersProcessed: 0, citiesServed: 0, communitiesRepresented: 24 });
+    runImpactAnimation(stats);
 
   });
 
