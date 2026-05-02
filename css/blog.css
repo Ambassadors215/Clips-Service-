@@ -208,11 +208,18 @@
 .blog-excerpt {
   font-size: 15px;
   color: var(--blog-muted);
-  margin: 0 0 auto;
+  margin: 0 0 8px;
   display: -webkit-box;
   -webkit-line-clamp: 3;
   -webkit-box-orient: vertical;
   overflow: hidden;
+}
+.blog-card-more {
+  margin: 4px 0 12px;
+}
+.blog-read-more {
+  font-weight: 700;
+  text-decoration: none;
 }
 .blog-card-meta {
   margin-top: 14px;

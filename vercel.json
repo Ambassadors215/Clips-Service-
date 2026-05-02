@@ -4,6 +4,8 @@
   "cleanUrls": true,
   "redirects": [
     { "source": "/index.html", "destination": "/", "permanent": true },
+    { "source": "/blog/", "destination": "/blog", "permanent": true },
+    { "source": "/blog/category/:cat/", "destination": "/blog/category/:cat", "permanent": true },
     { "source": "/categories/spices-staples", "destination": "/categories/spices-ingredients", "permanent": true },
     { "source": "/categories/fashion-fabric", "destination": "/categories/fashion-fabrics", "permanent": true },
     { "source": "/categories/drinks", "destination": "/categories/drinks-beverages", "permanent": true },
@@ -12,22 +14,42 @@
     { "source": "/categories/rice-grains-flour", "destination": "/categories/staples-grains", "permanent": true },
     {
       "source": "/blog/top-caribbean-ingredients-cooking-home",
-      "destination": "/blog/caribbean-cooking-ingredients-guide",
+      "destination": "/blog/essential-caribbean-ingredients-order-online",
       "permanent": true
     },
     {
       "source": "/blog/caribbean-cooking-essential-ingredients-buy-online",
-      "destination": "/blog/caribbean-cooking-ingredients-guide",
+      "destination": "/blog/essential-caribbean-ingredients-order-online",
+      "permanent": true
+    },
+    {
+      "source": "/blog/caribbean-cooking-ingredients-guide",
+      "destination": "/blog/essential-caribbean-ingredients-order-online",
       "permanent": true
     },
     {
       "source": "/blog/best-african-grocery-stores-manchester",
-      "destination": "/blog/african-caribbean-grocery-stores-manchester",
+      "destination": "/blog/guide-african-caribbean-asian-stores-manchester",
+      "permanent": true
+    },
+    {
+      "source": "/blog/african-caribbean-grocery-stores-manchester",
+      "destination": "/blog/guide-african-caribbean-asian-stores-manchester",
       "permanent": true
     },
     {
       "source": "/blog/halal-meat-online-birmingham",
-      "destination": "/blog/halal-meat-online-uk-guide",
+      "destination": "/blog/guide-african-caribbean-asian-stores-manchester",
+      "permanent": true
+    },
+    {
+      "source": "/blog/halal-meat-online-uk-guide",
+      "destination": "/blog/guide-african-caribbean-asian-stores-manchester",
+      "permanent": true
+    },
+    {
+      "source": "/blog/why-i-built-clip-services-founder-story",
+      "destination": "/blog",
       "permanent": true
     }
   ],
