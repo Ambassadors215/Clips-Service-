@@ -256,6 +256,35 @@
     return false;
   }
 
+  /** Map common UK areas returned by nominatim to a label in `#wel-city` / stores dropdown. */
+  function nearestWelCityLabel(placeName) {
+    var p = String(placeName || "").toLowerCase();
+    if (!p) return "";
+    if (/\b(greater )?manchester\b|\bsalford\b|\bstockport\b|\boldham\b|\bbolton\b|\bbury\b|\btrafford\b|\brochdale\b|\bwigan\b|\bcrewe\b|\btameside\b/.test(p))
+      return "Manchester";
+    if (/\blondon\b|\bwestminster\b|\bcroydon\b|\bcamden\b|\bislington\b|\btower hamlets\b|\bhackney\b|\blambeth\b|\bsouthwark\b|\blewisham\b|\bgreenwich\b|\bnewham\b|\benfield\b|\bharingey\b|\bwaltham forest\b|\bredbridge\b|\bbarking\b|\bmerton\b|\bstreatham\b|\bpeckham\b|\bealing\b|\bhounslow\b/.test(p))
+      return "London";
+    if (/\bbirmingham\b/.test(p) || /\bwest midlands\b/.test(p)) return "Birmingham";
+    if (/\bleeds\b/.test(p)) return "Leeds";
+    if (/\bleicester\b/.test(p)) return "Leicester";
+    if (/\bbristol\b/.test(p)) return "Bristol";
+    if (/\bliverpool\b/.test(p)) return "Liverpool";
+    if (/\bsheffield\b/.test(p)) return "Sheffield";
+    if (/\bnottingham\b/.test(p)) return "Nottingham";
+    if (/\bbradford\b/.test(p)) return "Bradford";
+    return "";
+  }
+
+  function welSelectionCityParam(citySel) {
+    if (!citySel || citySel.selectedIndex < 0) return "";
+    var opt = citySel.options[citySel.selectedIndex];
+    var v = String(opt.value || "").trim();
+    var t = String(opt.textContent || "").trim();
+    var out = v || t;
+    if (!out || out.toLowerCase().indexOf("all cities") >= 0 || out.toLowerCase().indexOf("skip") >= 0) return "";
+    return out;
+  }
+
   function showWelcome() {
     var w = document.getElementById("clip-pwa-welcome");
     if (!w) return;
@@ -295,6 +324,19 @@
       if (geoMsg) geoMsg.textContent = t || "";
     }
 
+    /** Same as tapping “Find stores near me”: persist city, dismiss, go to filtered /stores */
+    function finishWelcomeNavigate(rawCity) {
+      var cityParam = String(rawCity || "").trim();
+      try {
+        localStorage.setItem(PREF + "user_city", cityParam);
+        if (isStandalone()) localStorage.setItem(K_WELCOME, "1");
+        else markBrowserWelcomeDone();
+      } catch (e) {}
+      w.hidden = true;
+      tryDeferredInstallSoon();
+      location.href = cityParam ? "/stores?city=" + encodeURIComponent(cityParam) : "/stores";
+    }
+
     if (btnGeo) {
       btnGeo.onclick = function () {
         geoStatus("");
@@ -310,6 +352,7 @@
         btnGeo.disabled = true;
         navigator.geolocation.getCurrentPosition(
           function (pos) {
+            var navigated = false;
             var lat = pos.coords.latitude;
             var lon = pos.coords.longitude;
             fetch(
@@ -334,19 +377,35 @@
                   a.county ||
                   "";
                 if (!citySel) {
-                  geoStatus("Choose a city, then tap Find stores.");
+                  var fallback = nearestWelCityLabel(city) || city;
+                  if (fallback) {
+                    geoStatus("Taking you to stores…");
+                    navigated = true;
+                    finishWelcomeNavigate(fallback);
+                  } else geoStatus("Choose a city below, then tap Find stores.");
                   return;
                 }
-                if (pickCityOptionFromPlace(citySel, city))
-                  geoStatus("Matched nearby — tap “Find stores near me”.");
-                else if (city) geoStatus("Detected " + city + ". Pick your city if needed, then continue.");
+                var picked = city && pickCityOptionFromPlace(citySel, city);
+                var suggested = nearestWelCityLabel(city);
+                if (!picked && suggested) picked = pickCityOptionFromPlace(citySel, suggested);
+
+                var forNav = "";
+                if (picked) forNav = welSelectionCityParam(citySel);
+                if (!forNav && suggested) forNav = suggested;
+                if (!forNav && city) forNav = city;
+
+                if (forNav) {
+                  geoStatus("Taking you to stores…");
+                  navigated = true;
+                  finishWelcomeNavigate(forNav);
+                } else if (city) geoStatus("Detected " + city + ". Pick your city below, then tap Find stores.");
                 else geoStatus("Could not map coordinates to a city. Please choose below.");
               })
               .catch(function () {
                 geoStatus("Could not resolve your area. Pick a city below.");
               })
               .finally(function () {
-                btnGeo.disabled = false;
+                if (!navigated) btnGeo.disabled = false;
               });
           },
           function (err) {
@@ -365,16 +424,7 @@
     }
     if (st) {
       st.onclick = function () {
-        var c = (citySel && citySel.value) || "";
-        try {
-          localStorage.setItem(PREF + "user_city", c);
-          if (isStandalone()) localStorage.setItem(K_WELCOME, "1");
-          else markBrowserWelcomeDone();
-        } catch (e) {}
-        w.hidden = true;
-        tryDeferredInstallSoon();
-        var u = c ? "/stores?city=" + encodeURIComponent(c) : "/stores";
-        location.href = u;
+        finishWelcomeNavigate((citySel && citySel.value) || "");
       };
     }
   }
