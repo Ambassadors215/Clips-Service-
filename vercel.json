@@ -10,11 +10,31 @@
     { "source": "/categories/halal", "destination": "/categories/halal-products", "permanent": true },
     { "source": "/categories/meat-and-fish", "destination": "/categories/meat-fish", "permanent": true },
     { "source": "/categories/rice-grains-flour", "destination": "/categories/staples-grains", "permanent": true },
-    { "source": "/blog/top-caribbean-ingredients-cooking-home", "destination": "/blog/caribbean-cooking-essential-ingredients-buy-online", "permanent": true }
+    {
+      "source": "/blog/top-caribbean-ingredients-cooking-home",
+      "destination": "/blog/caribbean-cooking-ingredients-guide",
+      "permanent": true
+    },
+    {
+      "source": "/blog/caribbean-cooking-essential-ingredients-buy-online",
+      "destination": "/blog/caribbean-cooking-ingredients-guide",
+      "permanent": true
+    },
+    {
+      "source": "/blog/best-african-grocery-stores-manchester",
+      "destination": "/blog/african-caribbean-grocery-stores-manchester",
+      "permanent": true
+    },
+    {
+      "source": "/blog/halal-meat-online-birmingham",
+      "destination": "/blog/halal-meat-online-uk-guide",
+      "permanent": true
+    }
   ],
   "rewrites": [
     { "source": "/sitemap.xml", "destination": "/api/sitemap" },
     { "source": "/blog/rss.xml", "destination": "/api/blog-rss" },
+    { "source": "/blog/category/:cat", "destination": "/api/blog-html?blogCategory=:cat" },
     { "source": "/blog/:slug", "destination": "/api/blog-html?slug=:slug" },
     { "source": "/blog", "destination": "/api/blog-html" },
     { "source": "/blog/", "destination": "/api/blog-html" },
@@ -31,6 +51,8 @@
     { "source": "/", "destination": "/clip-services-marketplace" },
     { "source": "/admin", "destination": "/admin/index.html" },
     { "source": "/admin/", "destination": "/admin/index.html" },
+    { "source": "/admin/blog", "destination": "/admin/blog/index.html" },
+    { "source": "/admin/blog/", "destination": "/admin/blog/index.html" },
     { "source": "/provider", "destination": "/provider/index.html" },
     { "source": "/provider/", "destination": "/provider/index.html" },
     { "source": "/user", "destination": "/user/index.html" },

@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#8B3A3A" />
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+    <title>Blog — Clip Services Admin</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=DM+Sans:wght@400;600;700&display=swap" rel="stylesheet" />
+    <style>
+      :root {
+        --terracotta: #8b3a3a;
+        --gold: #d4a017;
+        --cream: #f5f0e8;
+        --brown: #2c1810;
+        --muted: #5c4033;
+        --border: #e0d6c8;
+      }
+      * {
+        box-sizing: border-box;
+      }
+      body {
+        margin: 0;
+        font-family: "DM Sans", system-ui, sans-serif;
+        background: var(--cream);
+        color: var(--brown);
+        min-height: 100vh;
+        line-height: 1.55;
+      }
+      header {
+        border-bottom: 2px solid rgba(139, 58, 58, 0.18);
+        background: rgba(255, 253, 248, 0.96);
+      }
+      .wrap {
+        max-width: 960px;
+        margin: 0 auto;
+        padding: 20px;
+      }
+      h1 {
+        font-family: "Playfair Display", Georgia, serif;
+        color: var(--terracotta);
+        margin: 0 0 8px;
+        font-size: 1.75rem;
+      }
+      .toolbar {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        align-items: center;
+        margin-bottom: 24px;
+      }
+      a.btn {
+        display: inline-flex;
+        align-items: center;
+        padding: 10px 16px;
+        border-radius: 10px;
+        font-weight: 700;
+        text-decoration: none;
+        font-size: 14px;
+      }
+      .btn-ghost {
+        border: 1px solid var(--border);
+        color: var(--brown);
+        background: #fff;
+      }
+      .btn-primary {
+        background: var(--terracotta);
+        color: #fff;
+      }
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        background: #fff;
+        border-radius: 14px;
+        overflow: hidden;
+        border: 1px solid var(--border);
+        box-shadow: 0 4px 20px rgba(44, 24, 16, 0.06);
+      }
+      th,
+      td {
+        padding: 12px 14px;
+        text-align: left;
+        border-bottom: 1px solid var(--border);
+        font-size: 14px;
+        vertical-align: top;
+      }
+      th {
+        font-size: 11px;
+        text-transform: uppercase;
+        letter-spacing: 0.06em;
+        background: rgba(212, 160, 23, 0.12);
+        color: var(--brown);
+      }
+      tr:last-child td {
+        border-bottom: none;
+      }
+      code {
+        font-size: 12px;
+        background: rgba(139, 58, 58, 0.08);
+        padding: 2px 6px;
+        border-radius: 4px;
+      }
+      .muted {
+        color: var(--muted);
+        font-size: 13px;
+        margin-bottom: 18px;
+      }
+      .pill {
+        display: inline-block;
+        padding: 3px 10px;
+        border-radius: 999px;
+        font-size: 11px;
+        font-weight: 700;
+        background: rgba(139, 58, 58, 0.1);
+        color: var(--terracotta);
+      }
+      .err {
+        padding: 14px;
+        background: #fef2f2;
+        border: 1px solid #fecaca;
+        border-radius: 10px;
+        color: #991b1b;
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <div class="wrap">
+        <h1>Blog</h1>
+        <p class="muted" style="margin: 0">
+          Live posts are served from <code>lib/blog-posts-export.js</code> — commit changes and deploy to publish. Optional: set <code>NEWSLETTER_WEBHOOK_URL</code> on Vercel so signups also hit your ESP.
+        </p>
+        <div class="toolbar">
+          <a class="btn btn-primary" href="/blog" target="_blank" rel="noopener noreferrer">Open public blog</a>
+          <a class="btn btn-ghost" href="/admin/">← Main admin</a>
+        </div>
+      </div>
+    </header>
+    <main class="wrap">
+      <div id="status"></div>
+      <div style="overflow-x: auto">
+        <table id="tbl" style="display: none">
+          <thead>
+            <tr>
+              <th>Title</th>
+              <th>Slug / URL</th>
+              <th>Category</th>
+              <th>Read</th>
+              <th>Dates</th>
+            </tr>
+          </thead>
+          <tbody id="tbody"></tbody>
+        </table>
+      </div>
+    </main>
+    <script>
+      (function () {
+        var statusEl = document.getElementById("status");
+        var tbody = document.getElementById("tbody");
+        var tbl = document.getElementById("tbl");
+        fetch("/api/blog-manifest")
+          .then(function (r) {
+            return r.json();
+          })
+          .then(function (j) {
+            if (!j || !j.ok || !j.posts) throw new Error("Bad response");
+            j.posts.forEach(function (p) {
+              var tr = document.createElement("tr");
+              var title = document.createElement("td");
+              title.innerHTML =
+                (p.featured ? '<span class="pill">Featured</span> ' : "") +
+                '<strong style="display:block;margin-top:6px">' +
+                escapeHtml(p.title) +
+                "</strong>";
+              var slug = document.createElement("td");
+              slug.innerHTML =
+                '<code>' +
+                escapeHtml(p.slug) +
+                '</code><br><a href="' +
+                encodeURI(p.url) +
+                '" target="_blank" rel="noopener noreferrer">View live</a>';
+              var cat = document.createElement("td");
+              cat.textContent = (p.category || "").replace(/-/g, " ");
+              var read = document.createElement("td");
+              read.textContent = (p.readMinutes || "?") + " min";
+              var dates = document.createElement("td");
+              dates.style.fontSize = "12px";
+              dates.style.color = "#5c4033";
+              dates.innerHTML =
+                escapeHtml(p.datePublished || "") +
+                (p.dateModified && p.dateModified !== p.datePublished
+                  ? "<br><span>Modified " + escapeHtml(p.dateModified) + "</span>"
+                  : "");
+              tr.appendChild(title);
+              tr.appendChild(slug);
+              tr.appendChild(cat);
+              tr.appendChild(read);
+              tr.appendChild(dates);
+              tbody.appendChild(tr);
+            });
+            tbl.style.display = "table";
+          })
+          .catch(function () {
+            statusEl.innerHTML = '<p class="err">Could not load <code>/api/blog-manifest</code>. Deploy the latest API or check the network.</p>';
+          });
+
+        function escapeHtml(s) {
+          return String(s || "")
+            .replace(/&/g, "&amp;")
+            .replace(/</g, "&lt;")
+            .replace(/>/g, "&gt;")
+            .replace(/"/g, "&quot;");
+        }
+      })();
+    </script>
+  </body>
+</html>

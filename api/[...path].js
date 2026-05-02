@@ -23,7 +23,9 @@ import productHtml from "../lib/handlers/product-html.js";
 import communityHtml from "../lib/handlers/community-html.js";
 import productSeoHtml from "../lib/handlers/product-seo-html.js";
 import blogHtml from "../lib/handlers/blog-html.js";
+import blogManifest from "../lib/handlers/blog-manifest.js";
 import blogRss from "../lib/handlers/blog-rss.js";
+import newsletterSignup from "../lib/handlers/newsletter-signup.js";
 import storeApplication from "../lib/handlers/store-application.js";
 import onboardingTrack from "../lib/handlers/onboarding-track.js";
 import storeOwnerApi from "../lib/handlers/store-owner-api.js";
@@ -59,6 +61,8 @@ const handlers = {
   "community-html": communityHtml,
   "product-seo-html": productSeoHtml,
   "blog-html": blogHtml,
+  "blog-manifest": blogManifest,
+  "newsletter-signup": newsletterSignup,
   "blog-rss": blogRss,
   "store-application": storeApplication,
   "onboarding-track": onboardingTrack,
@@ -103,6 +107,12 @@ function resolveRoute(pathname, search) {
   if (pathname === "/blog/rss.xml") return { key: "blog-rss", extraQuery: "" };
   if (pathname === "/blog" || pathname === "/blog/") {
     return { key: "blog-html", extraQuery: "" };
+  }
+  if ((r = m(/^\/blog\/category\/([^/]+)\/?$/))) {
+    return {
+      key: "blog-html",
+      extraQuery: `blogCategory=${encodeURIComponent(String(r[1]).toLowerCase())}`,
+    };
   }
   if ((r = m(/^\/blog\/([^/]+)\/?$/))) {
     return { key: "blog-html", extraQuery: `slug=${encodeURIComponent(r[1])}` };

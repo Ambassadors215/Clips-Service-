@@ -610,6 +610,15 @@ footer a:hover{color:var(--gold-soft);}
       </ul>
     </div>
   </div>
+  <div class="wrap footer-newsletter">
+    <p style="margin:0 0 8px;font-weight:700;font-size:14px;color:var(--gold-soft)">Weekly newsletter</p>
+    <p style="margin:0 0 14px;font-size:14px;line-height:1.5;opacity:.92">Get our weekly newsletter — new stores, recipes, and cultural guides delivered every Friday.</p>
+    <form method="POST" action="/api/newsletter-signup" style="display:flex;flex-wrap:wrap;gap:10px;align-items:center">
+      <input type="hidden" name="next" value="/blog#newsletter" />
+      <input type="email" name="email" required placeholder="Email" autocomplete="email" style="flex:1;min-width:200px;padding:10px 14px;border-radius:8px;border:1px solid rgba(245,240,232,.35);background:rgba(0,0,0,.15);color:#f5f0e8" />
+      <button type="submit" class="btn btn-gold">Subscribe</button>
+    </form>
+  </div>
   <div class="wrap footer-bottom">
     <div class="social" aria-label="Contact">
       <a href="https://wa.me/447487588706" rel="noopener noreferrer" target="_blank">WhatsApp</a>
@@ -623,8 +632,8 @@ footer a:hover{color:var(--gold-soft);}
   <p class="wrap" style="text-align:center;margin-top:12px;font-size:13px;opacity:.9;">
     <a href="/stores">Browse Stores</a> · <a href="/store-owner">List Your Store</a> · <a href="/blog">Blog</a> · <a href="/stores#faq">FAQ</a> · <a href="mailto:clipservices26@gmail.com">Contact</a> · <a href="/privacy-policy">Privacy</a> · <a href="/terms">Terms</a>
   </p>
-  <p class="wrap" style="text-align:center;margin-top:20px;font-size:13px;opacity:.85;">
-    © 2026 Clip Services Ltd, Manchester. UK Registered Company.
+  <p class="wrap" style="text-align:center;margin-top:20px;font-size:13px;opacity:.9;line-height:1.5">
+    © 2026 Clip Services Ltd — Company Registered in England &amp; Wales No. 17168420 · Manchester · UK Registered Company
   </p>
 </footer>
 
