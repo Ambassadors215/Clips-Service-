@@ -3,6 +3,7 @@
   var PREF = "clip_";
   var K_DISMISS = PREF + "pwa_dismiss_until";
   var K_WELCOME = PREF + "pwa_welcome_done";
+  var K_BROWSER_WELCOME_DONE = PREF + "browser_welcome_done";
   var K_SPLASH = PREF + "splash_v1";
   var K_PAGEV = PREF + "session_pv";
   var K_STANDALONE_SENT = PREF + "pwa_dau_today";
@@ -106,8 +107,24 @@
     }
   }
 
+  function isWelcomeOverlayVisible() {
+    var w = document.getElementById("clip-pwa-welcome");
+    return !!(w && !w.hidden && w.style.display !== "none");
+  }
+
+  /** Install bar only after modal dismissed / return visit — not overlapping first-time welcome */
+  function canOfferInstallBanner() {
+    try {
+      var pv = parseInt(sessionStorage.getItem(K_PAGEV) || "0", 10) || 0;
+      if (pv >= 2) return true;
+      if (localStorage.getItem(K_BROWSER_WELCOME_DONE) === "1") return true;
+    } catch (e) {}
+    return isStandalone();
+  }
+
   function showInstallBanner(bip) {
     if (installShown || isStandalone() || isDismissed()) return;
+    if (isWelcomeOverlayVisible() || !canOfferInstallBanner()) return;
     var b = document.getElementById("clip-pwa-install");
     if (!b || !bip) return;
     installShown = true;
@@ -129,6 +146,17 @@
 
   var deferredBip = null;
   var installShown = false;
+
+  /** After welcome dismissal, eligibility for bottom install banner may flip — retry once deferredBip exists. */
+  function tryDeferredInstallSoon() {
+    setTimeout(function () {
+      try {
+        if (installShown || isDismissed() || isStandalone() || !deferredBip) return;
+        showInstallBanner(deferredBip);
+      } catch (e) {}
+    }, 500);
+  }
+
   function wireInstall() {
     function tryShow() {
       if (installShown || isDismissed() || isStandalone() || !deferredBip) return;
@@ -198,25 +226,43 @@
     }, 1500);
   }
 
-  function showWelcome() {
-    if (!isStandalone()) return;
+  function markBrowserWelcomeDone() {
     try {
-      if (localStorage.getItem(K_WELCOME) === "1") return;
-    } catch (e) {
-      return;
-    }
+      localStorage.setItem(K_BROWSER_WELCOME_DONE, "1");
+    } catch (e) {}
+  }
+
+  function showWelcome() {
     var w = document.getElementById("clip-pwa-welcome");
     if (!w) return;
-    w.hidden = false;
-    // Persist "shown" immediately so returning visitors never see the modal again,
-    // even if they close the tab/app before clicking Skip / Find stores / city pick.
-    try {
-      localStorage.setItem(K_WELCOME, "1");
-    } catch (e) {}
 
-    w.querySelector("[data-wel-close]").onclick = function () {
-      w.hidden = true;
-    };
+    if (!isStandalone()) {
+      try {
+        if (localStorage.getItem(K_BROWSER_WELCOME_DONE) === "1") return;
+      } catch (e) {
+        return;
+      }
+      w.hidden = false;
+      w.querySelector("[data-wel-close]").onclick = function () {
+        w.hidden = true;
+        markBrowserWelcomeDone();
+        tryDeferredInstallSoon();
+      };
+    } else {
+      try {
+        if (localStorage.getItem(K_WELCOME) === "1") return;
+      } catch (e) {
+        return;
+      }
+      w.hidden = false;
+      try {
+        localStorage.setItem(K_WELCOME, "1");
+      } catch (e) {}
+      w.querySelector("[data-wel-close]").onclick = function () {
+        w.hidden = true;
+        tryDeferredInstallSoon();
+      };
+    }
     var btnGeo = w.querySelector("[data-wel-geo]");
     var citySel = w.querySelector("#wel-city");
     var st = w.querySelector("[data-wel-go]");
@@ -267,9 +313,11 @@
         var c = (citySel && citySel.value) || "";
         try {
           localStorage.setItem(PREF + "user_city", c);
-          localStorage.setItem(K_WELCOME, "1");
+          if (isStandalone()) localStorage.setItem(K_WELCOME, "1");
+          else markBrowserWelcomeDone();
         } catch (e) {}
         w.hidden = true;
+        tryDeferredInstallSoon();
         var u = c ? "/stores?city=" + encodeURIComponent(c) : "/stores";
         location.href = u;
       };

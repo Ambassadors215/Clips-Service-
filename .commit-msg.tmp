@@ -1,0 +1,25 @@
+Seed marketplace data + live counters + UX fixes (issues 2-12)
+
+- 5 seed stores (Mama Dimma / Rose / Akwaaba / Patel / Zanzibar) with
+  city, communityPillar, cover SVGs, products, reviews and priceList;
+  merged into KV when no override row exists.
+- public-stats now derives cities/communities from real listing.city
+  + communityPillar (4 pillars) instead of fake spreading.
+- /api/listings exposes city, popular, communityPillar, coverImageUrl;
+  store hero falls back to coverImageUrl when no uploaded photo.
+- Homepage: featured / community tabs / stalls sort by popular and use
+  city + cover thumbs; impact section animates when stores >= 1 even
+  if orders == 0; Browse-by-city only shows cities with >=1 live store
+  and uses a featured cover thumb per city.
+- About: numbers section unhides when stores >= 1 (was gated on
+  orders); social placeholder line ("coming soon") added in footer.
+- /stores: ?category=beauty maps to Hair & Beauty terms with
+  "Showing stores in: ..." banner and tailored empty-state copy.
+- PWA: welcome modal now runs in browser too; install bar gated on
+  welcome dismissed or pv >= 2 (no overlap with first-visit modal).
+- Global search popular chips trimmed to Plantain / Halal meat /
+  Jollof ingredients / Hair products.
+- Apply form: trust strip (free, 48h, cities, live store count) and
+  WhatsApp help CTA pre-filled with onboarding question.
+- Unpaused Vercel project so deployment thumbnail re-renders cleanly
+  (live site was already 200; only the dashboard preview was stale).

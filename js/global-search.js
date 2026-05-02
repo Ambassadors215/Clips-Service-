@@ -1,13 +1,6 @@
 (function () {
   var DEBOUNCE_MS = 200;
-  var POPULAR = [
-    "Plantain",
-    "Halal meat",
-    "Jollof ingredients",
-    "Hair products",
-    "Fufu flour",
-    "Caribbean food",
-  ];
+  var POPULAR = ["Plantain", "Halal meat", "Jollof ingredients", "Hair products"];
   var RECENT_KEY = "clip_recent_searches";
   var timer = null;
 

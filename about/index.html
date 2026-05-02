@@ -176,6 +176,7 @@ footer.foot a{color:var(--terracotta);text-decoration:none;font-weight:600;}
 <footer class="foot">
   <div class="wrap">
     <p>© 2026 Clip Services Ltd — Company Registered in England &amp; Wales No. 17168420 · Manchester · UK Registered Company.</p>
+    <p style="margin-top:10px;line-height:1.7">Instagram &amp; TikTok — follow us coming soon (@clipservice placeholders).</p>
     <p style="margin-top:6px;"><a href="/">Home</a> &middot; <a href="/stores">Stores</a> &middot; <a href="/store-owner">List your store</a> &middot; <a href="/blog">Blog</a> &middot; <a href="/privacy-policy">Privacy</a> &middot; <a href="/terms">Terms</a> &middot; <a href="/disclaimer">Disclaimer</a></p>
   </div>
 </footer>
@@ -185,8 +186,9 @@ footer.foot a{color:var(--terracotta);text-decoration:none;font-weight:600;}
 (function(){
   fetch("/api/public-stats").then(function(r){ return r.json(); }).then(function(j){
     if (!j || !j.ok) return;
-    var s = Number(j.storesListed)||0, o = Number(j.ordersProcessed)||0;
-    if (s < 1 || o < 1) return; // hide section unless real activity
+    var s = Number(j.storesListed)||0;
+    if (s < 1) return;
+    var o = Number(j.ordersProcessed)||0;
     var sec = document.getElementById("numbers-section");
     if (!sec) return;
     sec.hidden = false;

@@ -63,6 +63,7 @@ h1{font-family:"Playfair Display",Georgia,serif;font-size:clamp(1.75rem,4vw,2.25
   <h1 id="mission">African, Caribbean &amp; Asian Stores Across the UK</h1>
   <p class="lead" id="intro">Clip Services is the marketplace for diaspora-led independents: grocers, beauty suppliers, fabric sellers and market traders. Whether you’re searching for <strong>Nigerian ingredients in London</strong>, <strong>halal meat in Manchester</strong>, or <strong>Caribbean staples in Birmingham</strong>, browse stores by community and city — then pay securely with Stripe and get WhatsApp updates from many sellers. We’re growing UK-wide: every listing is a real independent you can order from, not a gig-economy middleman.</p>
   <p class="lead" id="categories">Independent African, Caribbean and Asian sellers across the UK. Pay securely with Stripe; order updates via WhatsApp and PWA.</p>
+  <p class="lead" id="active-filters" style="margin-bottom:16px;display:none" aria-live="polite"></p>
   <h2 id="cities" style="font-size:1.1rem;margin-bottom:10px;font-family:'Playfair Display',Georgia,serif">Filter</h2>
   <div class="toolbar">
     <label class="sr-only" for="q">Search</label>
@@ -86,7 +87,7 @@ h1{font-family:"Playfair Display",Georgia,serif;font-size:clamp(1.75rem,4vw,2.25
   </div>
 </header>
 <div class="grid" id="grid"></div>
-<p id="empty" style="text-align:center;display:none;padding:40px;">No stores match your filters. <a href="/store-owner">Open a store</a> or check back soon.</p>
+<p id="empty" style="text-align:center;display:none;padding:40px;line-height:1.6"></p>
 
 <section class="mission">
   <h2 style="font-family:'Playfair Display',Georgia,serif;margin-bottom:10px;">Our mission</h2>
@@ -104,17 +105,55 @@ h1{font-family:"Playfair Display",Georgia,serif;font-size:clamp(1.75rem,4vw,2.25
 (function(){
   const params = new URLSearchParams(location.search);
   const preCity = params.get("city") || "";
-  const preCat = params.get("category") || "";
+  var catSlugFromUrl = String(params.get("category") || "").toLowerCase().trim();
   const preEvent = params.get("event") || "";
   const preQ = params.get("q") || "";
   if(preCity) document.getElementById("city").value = preCity;
   if(preQ) document.getElementById("q").value = preQ;
   if(params.get("sort")==="nearest"){ document.getElementById("sort").value = "nearest"; }
 
+  var CAT_HAIR_BEAUTY = { label: "Hair & Beauty", terms: ["beauty", "hair", "cosmetic", "shea", "salon", "skincare", "makeup", "relaxer", "braids", "beard"] };
+  var CATEGORY_BY_SLUG = {
+    beauty: CAT_HAIR_BEAUTY,
+    "hair-beauty": CAT_HAIR_BEAUTY,
+    "hairbeauty": CAT_HAIR_BEAUTY,
+    spices: { label: "Spices", terms: ["spice", "spices", "seasoning", "masala", "berbere"] },
+    "fresh-produce": { label: "Fresh Produce", terms: ["fresh produce", "plantain", "pepper", "greens", "veg"] },
+    halal: { label: "Halal", terms: ["halal", "lamb", "mutton"] }
+  };
+
+  function humanizeSlug(s) {
+    if (!s) return "";
+    return s.replace(/-/g, " ").replace(/\b[a-z]/g, function (c) { return c.toUpperCase(); });
+  }
+
+  function resolveCategoryCfg(slug) {
+    if (!slug) return null;
+    var k = slug.toLowerCase().trim();
+    if (CATEGORY_BY_SLUG[k]) return CATEGORY_BY_SLUG[k];
+    var spaced = slug.replace(/\+/g, " ").trim();
+    return { label: humanizeSlug(spaced || slug), terms: spaced ? [spaced.toLowerCase()] : [k] };
+  }
+
+  function matchesCategory(it, cfg) {
+    if (!cfg) return true;
+    var blob = (it.role + " " + it.bio + " " + (it.services || []).join(" ") + " " + (it.category || "")).toLowerCase();
+    return cfg.terms.some(function (t) { return blob.indexOf(String(t || "").toLowerCase()) >= 0; });
+  }
+
+  function cityMatches(it, citySel) {
+    if (!citySel) return true;
+    var sel = citySel.trim().toLowerCase();
+    var listed = String(it.city || "").trim().toLowerCase();
+    if (listed && listed === sel) return true;
+    var blob = (it.role + " " + it.bio + " " + (it.services || []).join(" ")).toLowerCase();
+    return blob.indexOf(sel) >= 0;
+  }
+
   const COMM = {
-    african: ["african","nigeria","nigerian","ghana","ghanaian","kenya","west africa","jollof","fufu","egusi"],
+    african: ["african","nigeria","nigerian","ghana","ghanaian","kenya","west africa","jollof","fufu","egusi","somali","eritrean","ethiop"],
     caribbean: ["caribbean","jamaica","jamaican","jerk","plantain","ackee","barbados","trinidad"],
-    asian: ["asian","indian","pakistani","bangladeshi","bengali","halal","bazaar","basmati","curry"]
+    asian: ["asian","indian","pakistani","bangladeshi","bengali","halal","bazaar","basmati","curry","melton road"]
   };
   function matchesComm(item, key){
     if (!key) return true;
@@ -154,38 +193,66 @@ h1{font-family:"Playfair Display",Georgia,serif;font-size:clamp(1.75rem,4vw,2.25
       const j = await r.json();
       if(j.ok && Array.isArray(j.items)) items = j.items;
     } catch(e) {}
+
+    var categoryCfg = resolveCategoryCfg(catSlugFromUrl);
+
+    var filtEl = document.getElementById("active-filters");
+    if (filtEl) {
+      if (categoryCfg && categoryCfg.label) {
+        filtEl.innerHTML = "Showing stores in: <strong>" + esc(categoryCfg.label) + "</strong>";
+        filtEl.style.display = "block";
+      } else {
+        filtEl.innerHTML = "";
+        filtEl.style.display = "none";
+      }
+    }
+
     const q = (document.getElementById("q").value || "").toLowerCase();
     const city = document.getElementById("city").value;
     const comm = document.getElementById("community").value;
     const sort = document.getElementById("sort").value;
     const favs = getFav();
     let filtered = items.filter(function(it){
-      const blob = (it.role+" "+it.bio+" "+(it.services||[]).join(" ")).toLowerCase();
+      var blob = (it.role+" "+it.bio+" "+(it.services||[]).join(" ")).toLowerCase();
       if(q && blob.indexOf(q) < 0) return false;
-      if(preCat && blob.indexOf(preCat) < 0 && String(it.category||"").indexOf(preCat) < 0) return false;
-      if(city && blob.indexOf(city.toLowerCase()) < 0) return false;
+      if(catSlugFromUrl && !matchesCategory(it, categoryCfg)) return false;
+      if(city && !cityMatches(it, city)) return false;
       if(!matchesComm(it, comm)) return false;
       return true;
     });
-    if (sort === "name") filtered = filtered.slice().sort(function(a,b){ return (a.role||"").localeCompare(b.role||""); });
+    if (sort === "featured") filtered = filtered.slice().sort(function(a,b){ return ((b.popular===true)?1:0)-((a.popular===true)?1:0) || String(a.role||"").localeCompare(String(b.role||"")); });
+    else if (sort === "name") filtered = filtered.slice().sort(function(a,b){ return (a.role||"").localeCompare(b.role||""); });
     if (favs.length) {
       filtered = filtered.slice().sort(function(a,b){
-        const fa = favs.indexOf(String(a.id))>=0;
-        const fb = favs.indexOf(String(b.id))>=0;
+        var fa = favs.indexOf(String(a.id))>=0;
+        var fb = favs.indexOf(String(b.id))>=0;
         if (fa && !fb) return -1;
         if (!fa && fb) return 1;
         return 0;
       });
     }
-    const g = document.getElementById("grid");
-    document.getElementById("empty").style.display = filtered.length ? "none" : "block";
+    var g = document.getElementById("grid");
+    var empt = document.getElementById("empty");
+    if (!filtered.length) {
+      empt.style.display = "block";
+      var baseTxt = '<a href="/store-owner">Open a store</a> or check back soon.';
+      if (categoryCfg && categoryCfg.label) {
+        empt.innerHTML = "No stores match yet — be the first to list a " + esc(categoryCfg.label) + " store. " + baseTxt;
+      } else {
+        empt.innerHTML = "No stores match your filters. " + baseTxt;
+      }
+    } else {
+      empt.style.display = "none";
+    }
     g.innerHTML = filtered.map(card).join("") || "";
+
     function fillSection(key, elId){
       var el = document.getElementById(elId);
       if (!el) return;
       var sub = items.filter(function(it){ return matchesComm(it, key); });
-      if (q) sub = sub.filter(function(it){ var blob = (it.role+" "+it.bio+" ").toLowerCase(); return blob.indexOf(q) >= 0; });
-      if (city) sub = sub.filter(function(it){ return (it.role+" "+it.bio+" ").toLowerCase().indexOf(city.toLowerCase()) >= 0; });
+      if (q) sub = sub.filter(function(it){ var b = (it.role+" "+it.bio+" ").toLowerCase(); return b.indexOf(q) >= 0; });
+      if (city) sub = sub.filter(function(it){ return cityMatches(it, city); });
+      if (categoryCfg && catSlugFromUrl) sub = sub.filter(function(it){ return matchesCategory(it, categoryCfg); });
       el.innerHTML = sub.slice(0,6).map(card).join("") || '<p class="card">No matches — try <a href="/community/'+key+'">'+key+' hub</a>.</p>';
     }
     fillSection("african","grid-african");

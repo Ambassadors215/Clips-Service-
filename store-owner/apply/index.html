@@ -43,6 +43,8 @@ textarea{min-height:88px;resize:vertical}
 .btn-next{background:var(--t);color:var(--w)}
 .btn-next:disabled{opacity:.5;cursor:not-allowed}
 .btn-submit{background:linear-gradient(135deg,var(--g),#b8860b);color:var(--b);width:100%}
+.btn-wa{border:2px solid #128C7E;color:#075E54;background:#E8FFF8;text-decoration:none;display:inline-flex;align-items:center;justify-content:center;padding:14px 16px;border-radius:12px;font-weight:700;font-size:15px;font-family:inherit;min-height:52px}
+.btn-wa:hover{background:#DCF5EF}
 a{color:var(--t);font-weight:600}
 </style>
 </head>
@@ -60,8 +62,13 @@ a{color:var(--t);font-weight:600}
   </div>
 </div>
 
-<div class="wrap">
-  <div class="progress"><i id="prog" style="width:25%"></i></div>
+    <div class="trust-strip-form" role="presentation" style="margin:20px auto 14px;text-align:center;max-width:520px;line-height:1.75;font-size:14px;color:#5C4033">
+      <strong style="display:block;color:#8B3A3A;margin-bottom:8px">Before you apply</strong>
+      <span>✅ Free to apply</span> · <span>⏱️ Approved within 48 hours when details are complete</span><br>
+      Currently accepting listings in Manchester, London, Birmingham, Leeds &amp; Leicester.<br>
+      <a href="/stores">Already <span id="apply-live-count">5</span> stores live →</a>
+    </div>
+
   <p class="steps" id="stepLabel">Step 1 of 4 — Business info</p>
 
   <form id="f" novalidate>
@@ -152,7 +159,10 @@ a{color:var(--t);font-weight:600}
       <label class="chk"><input type="checkbox" id="terms"> <span>I agree to Clip Services <a href="/terms" target="_blank" rel="noopener">Terms of Service</a>, <a href="/privacy-policy" target="_blank" rel="noopener">Privacy Policy</a>, and Marketplace Guidelines.</span></label>
 
       <div class="nav" style="margin-top:16px"><button type="button" class="btn btn-back" id="back3">Back</button></div>
-      <button type="submit" class="btn btn-submit" style="margin-top:14px;width:100%">Apply to list my store →</button>
+      <div style="display:flex;gap:12px;flex-wrap:wrap;margin-top:14px;align-items:stretch">
+        <a class="btn-wa" style="flex:1;min-width:min(280px,100%)" href="https://wa.me/447487588706?text=Hi%2C%20I%20need%20help%20applying%20to%20list%20my%20store%20on%20Clip%20Services." target="_blank" rel="noopener">Need help? WhatsApp us</a>
+        <button type="submit" class="btn btn-submit" style="flex:2;min-width:min(280px,100%);margin-top:0;width:auto">Apply to list my store →</button>
+      </div>
     </div>
   </form>
 </div>
@@ -179,6 +189,13 @@ a{color:var(--t);font-weight:600}
   });
 
   fetch("/api/onboarding-track", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ event: "view_store_apply" }) }).catch(function(){});
+
+  fetch("/api/public-stats").then(function(r){ return r.json(); }).then(function(j){
+    if (!j || !j.ok) return;
+    var n = Number(j.storesListed) || 0;
+    var el = document.getElementById("apply-live-count");
+    if (el && n > 0) el.textContent = String(n);
+  }).catch(function(){});
 
   var step = 1;
   var labels = ["Business info","Contact","Products & delivery","Review & apply"];
