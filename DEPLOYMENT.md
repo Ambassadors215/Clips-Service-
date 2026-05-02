@@ -1,3 +1,4 @@
+<!-- Touch: refresh Vercel deployment thumbnail after accidental pause window. -->
 # Deploying Clip Services + Dim's Haircare (one repo)
 
 Both Vercel projects can use **the same Git branch** and **the same `vercel.json`**. The correct homepage is chosen by **hostname** in `middleware.js`:
