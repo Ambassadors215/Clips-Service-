@@ -25,6 +25,7 @@ import productSeoHtml from "../lib/handlers/product-seo-html.js";
 import blogHtml from "../lib/handlers/blog-html.js";
 import blogManifest from "../lib/handlers/blog-manifest.js";
 import blogRss from "../lib/handlers/blog-rss.js";
+import blogRssLanding from "../lib/handlers/blog-rss-landing.js";
 import newsletterSignup from "../lib/handlers/newsletter-signup.js";
 import storeApplication from "../lib/handlers/store-application.js";
 import onboardingTrack from "../lib/handlers/onboarding-track.js";
@@ -64,6 +65,7 @@ const handlers = {
   "blog-manifest": blogManifest,
   "newsletter-signup": newsletterSignup,
   "blog-rss": blogRss,
+  "blog-rss-landing": blogRssLanding,
   "store-application": storeApplication,
   "onboarding-track": onboardingTrack,
   "store-owner": storeOwnerApi,
@@ -105,6 +107,8 @@ function resolveRoute(pathname, search) {
 
   if (pathname === "/sitemap.xml") return { key: "sitemap", extraQuery: "" };
   if (pathname === "/blog/rss.xml") return { key: "blog-rss", extraQuery: "" };
+  if (pathname === "/blog/feed" || pathname === "/blog/feed/")
+    return { key: "blog-rss-landing", extraQuery: "" };
   if (pathname === "/blog" || pathname === "/blog/") {
     return { key: "blog-html", extraQuery: "" };
   }

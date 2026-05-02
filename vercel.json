@@ -51,11 +51,14 @@
       "source": "/blog/why-i-built-clip-services-founder-story",
       "destination": "/blog",
       "permanent": true
-    }
+    },
+    { "source": "/blog/rss", "destination": "/blog/feed", "permanent": false }
   ],
   "rewrites": [
     { "source": "/sitemap.xml", "destination": "/api/sitemap" },
     { "source": "/blog/rss.xml", "destination": "/api/blog-rss" },
+    { "source": "/blog/feed/", "destination": "/api/blog-rss-landing" },
+    { "source": "/blog/feed", "destination": "/api/blog-rss-landing" },
     { "source": "/blog/category/:cat", "destination": "/api/blog-html?blogCategory=:cat" },
     { "source": "/blog/:slug", "destination": "/api/blog-html?slug=:slug" },
     { "source": "/blog", "destination": "/api/blog-html" },
