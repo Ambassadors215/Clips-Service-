@@ -1,0 +1,40 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#3a1209"/>
+      <stop offset="0.55" stop-color="#7a2412"/>
+      <stop offset="1" stop-color="#b04f1d"/>
+    </linearGradient>
+    <radialGradient id="glow" cx="0.85" cy="0.15" r="0.7">
+      <stop offset="0" stop-color="#f8d29a" stop-opacity="0.35"/>
+      <stop offset="1" stop-color="#7a2412" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <rect width="1200" height="630" fill="url(#bg)"/>
+  <rect width="1200" height="630" fill="url(#glow)"/>
+
+  <!-- accent dots, kente-inspired -->
+  <g opacity="0.25" fill="#f8d29a">
+    <circle cx="80" cy="80" r="6"/><circle cx="120" cy="80" r="6"/><circle cx="160" cy="80" r="6"/>
+    <circle cx="80" cy="120" r="6"/><circle cx="120" cy="120" r="6"/>
+    <circle cx="80" cy="550" r="6"/><circle cx="120" cy="550" r="6"/><circle cx="160" cy="550" r="6"/>
+    <circle cx="80" cy="510" r="6"/><circle cx="120" cy="510" r="6"/>
+  </g>
+
+  <!-- thin gold rule -->
+  <rect x="80" y="200" width="60" height="4" fill="#f6c66a"/>
+
+  <!-- brand wordmark -->
+  <text x="80" y="270" font-family="Georgia, 'Times New Roman', serif" font-size="84" font-weight="700" fill="#fff8ec">Clip Services</text>
+
+  <!-- tagline line 1 -->
+  <text x="80" y="345" font-family="Helvetica, Arial, sans-serif" font-size="40" font-weight="600" fill="#f8d29a">African, Caribbean &amp; Asian</text>
+  <text x="80" y="395" font-family="Helvetica, Arial, sans-serif" font-size="40" font-weight="600" fill="#f8d29a">marketplace  across the UK</text>
+
+  <!-- supporting line -->
+  <text x="80" y="465" font-family="Helvetica, Arial, sans-serif" font-size="24" font-weight="400" fill="#fff" opacity="0.85">Independent stores · Market traders · Same-week delivery</text>
+
+  <!-- url chip -->
+  <rect x="80" y="510" width="280" height="56" rx="28" fill="#fff8ec"/>
+  <text x="220" y="546" text-anchor="middle" font-family="Helvetica, Arial, sans-serif" font-size="22" font-weight="700" fill="#7a2412">clipservice.app</text>
+</svg>
