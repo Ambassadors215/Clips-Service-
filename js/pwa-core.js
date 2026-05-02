@@ -208,11 +208,14 @@
     var w = document.getElementById("clip-pwa-welcome");
     if (!w) return;
     w.hidden = false;
+    // Persist "shown" immediately so returning visitors never see the modal again,
+    // even if they close the tab/app before clicking Skip / Find stores / city pick.
+    try {
+      localStorage.setItem(K_WELCOME, "1");
+    } catch (e) {}
+
     w.querySelector("[data-wel-close]").onclick = function () {
       w.hidden = true;
-      try {
-        localStorage.setItem(K_WELCOME, "1");
-      } catch (e) {}
     };
     var btnGeo = w.querySelector("[data-wel-geo]");
     var citySel = w.querySelector("#wel-city");

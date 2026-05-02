@@ -113,6 +113,20 @@ section.alt{background:var(--white);}
 .mini-card h3{font-size:17px;margin-bottom:8px;color:var(--terracotta);}
 .mini-card p{font-size:14px;color:var(--brown-muted);}
 
+/* Popular products preview */
+.pp-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:14px;}
+@media (min-width:640px){.pp-grid{grid-template-columns:repeat(3,1fr);}}
+@media (min-width:900px){.pp-grid{grid-template-columns:repeat(4,1fr);}}
+@media (min-width:1100px){.pp-grid{grid-template-columns:repeat(6,1fr);}}
+.pp-card{background:var(--white);border:1px solid var(--cream-dark);border-radius:var(--radius-sm);padding:14px 12px;text-align:center;text-decoration:none;color:var(--brown);transition:box-shadow .2s,border-color .2s,transform .15s;display:flex;flex-direction:column;align-items:center;gap:6px;position:relative;}
+.pp-card:hover{box-shadow:var(--shadow-hover);border-color:var(--gold);transform:translateY(-2px);}
+.pp-card .pp-emoji{font-size:2.5rem;line-height:1;display:block;margin-top:4px;}
+.pp-card .pp-name{font-size:14px;font-weight:700;margin:4px 0 2px;color:var(--brown);}
+.pp-card .pp-tag{font-size:11px;color:var(--brown-muted);text-transform:uppercase;letter-spacing:.04em;}
+.pp-badge{position:absolute;top:8px;right:8px;background:var(--gold);color:var(--brown);font-size:10px;font-weight:700;padding:3px 7px;border-radius:999px;text-transform:uppercase;letter-spacing:.04em;}
+.pp-foot{text-align:center;color:var(--brown-muted);font-size:14px;margin-top:24px;}
+.pp-foot a{font-weight:700;color:var(--terracotta);}
+
 /* Categories */
 .cat-rows{display:flex;flex-direction:column;gap:32px;}
 .cat-row h3{font-size:14px;text-transform:uppercase;letter-spacing:.08em;color:var(--terracotta);margin-bottom:14px;font-weight:700;}
@@ -305,10 +319,9 @@ footer a:hover{color:var(--gold-soft);}
     </div>
   </section>
 
-  <div class="wrap" id="clip-recent-wrap" style="max-width:1180px" aria-label="Recently viewed">
+  <div class="wrap" id="clip-recent-wrap" style="max-width:1180px" aria-label="Recently viewed" hidden>
     <h2 class="font-display" style="font-size:1.35rem;margin:0 0 12px">Recently viewed</h2>
-    <p class="hero-sub" id="clip-recent-empty" style="text-align:left;margin-bottom:0">No recent stores yet — browse below.</p>
-    <div class="clip-recent-grid" id="clip-recent-stores" style="display:none"></div>
+    <div class="clip-recent-grid" id="clip-recent-stores"></div>
   </div>
 
   <!-- 2 COMMUNITY NAVIGATOR -->
@@ -367,22 +380,46 @@ footer a:hover{color:var(--gold-soft);}
             <a class="cat-cell" href="/categories/meat-fish"><span class="ico">🥩</span>Meat &amp; Protein</a>
             <a class="cat-cell" href="/categories/staples-grains"><span class="ico">🌾</span>Staples &amp; Grains</a>
             <a class="cat-cell" href="/categories/oils-condiments"><span class="ico">🫙</span>Oils &amp; Condiments</a>
-            <a class="cat-cell" href="/categories/ready-meals"><span class="ico">🍲</span>Ready Meals &amp; Snacks</a>
-            <a class="cat-cell" href="/categories/drinks"><span class="ico">🥤</span>Drinks &amp; Beverages</a>
+            <a class="cat-cell" href="/categories/spices-ingredients"><span class="ico">🌶️</span>Spices &amp; Ingredients</a>
+            <a class="cat-cell" href="/categories/ready-meals"><span class="ico">🍲</span>Ready Meals</a>
+            <a class="cat-cell" href="/categories/snacks-sweets"><span class="ico">🍫</span>Snacks &amp; Sweets</a>
+            <a class="cat-cell" href="/categories/drinks-beverages"><span class="ico">🥤</span>Drinks &amp; Beverages</a>
           </div>
         </div>
         <div class="cat-row">
           <h3>Non-food</h3>
           <div class="cat-grid">
-            <a class="cat-cell" href="/stores?category=beauty"><span class="ico">💇</span>Hair &amp; Beauty</a>
-            <a class="cat-cell" href="/stores?category=fashion"><span class="ico">👗</span>Fashion &amp; Fabric</a>
-            <a class="cat-cell" href="/stores?category=homeware"><span class="ico">🏠</span>Homeware &amp; Décor</a>
-            <a class="cat-cell" href="/stores?category=wellness"><span class="ico">🌿</span>Health &amp; Wellness</a>
-            <a class="cat-cell" href="/stores?category=culture"><span class="ico">🎵</span>Culture &amp; Lifestyle</a>
+            <a class="cat-cell" href="/categories/hair-beauty"><span class="ico">💇</span>Hair &amp; Beauty</a>
+            <a class="cat-cell" href="/categories/fashion-fabrics"><span class="ico">👗</span>Fashion &amp; Fabric</a>
             <a class="cat-cell" href="/categories/halal-products"><span class="ico">🕌</span>Halal Products</a>
           </div>
         </div>
       </div>
+    </div>
+  </section>
+
+  <!-- 3b POPULAR PRODUCTS PREVIEW -->
+  <section aria-labelledby="popular-products-title">
+    <div class="wrap">
+      <div class="section-head">
+        <h2 id="popular-products-title" class="font-display">Popular products on Clip Services</h2>
+        <p>Authentic African, Caribbean and Asian groceries that mainstream supermarkets rarely stock — coming online from independent stores near you.</p>
+      </div>
+      <div class="pp-grid" id="pp-grid">
+        <a class="pp-card" href="/search?q=plantain"><span class="pp-badge">Coming soon</span><span class="pp-emoji" aria-hidden="true">🍌</span><span class="pp-name">Plantain</span><span class="pp-tag">Fresh produce</span></a>
+        <a class="pp-card" href="/search?q=fufu+flour"><span class="pp-badge">Coming soon</span><span class="pp-emoji" aria-hidden="true">🌾</span><span class="pp-name">Fufu Flour</span><span class="pp-tag">Staples &amp; grains</span></a>
+        <a class="pp-card" href="/search?q=jerk+seasoning"><span class="pp-badge">Coming soon</span><span class="pp-emoji" aria-hidden="true">🌶️</span><span class="pp-name">Jerk Seasoning</span><span class="pp-tag">Spices</span></a>
+        <a class="pp-card" href="/search?q=basmati+rice"><span class="pp-badge">Coming soon</span><span class="pp-emoji" aria-hidden="true">🍚</span><span class="pp-name">Basmati Rice</span><span class="pp-tag">Staples &amp; grains</span></a>
+        <a class="pp-card" href="/categories/fashion-fabrics"><span class="pp-badge">Coming soon</span><span class="pp-emoji" aria-hidden="true">🪡</span><span class="pp-name">Ankara Fabric</span><span class="pp-tag">Fashion &amp; fabric</span></a>
+        <a class="pp-card" href="/categories/halal-products"><span class="pp-badge">Coming soon</span><span class="pp-emoji" aria-hidden="true">🥩</span><span class="pp-name">Halal Lamb</span><span class="pp-tag">Halal products</span></a>
+        <a class="pp-card" href="/search?q=coconut+milk"><span class="pp-badge">Coming soon</span><span class="pp-emoji" aria-hidden="true">🥥</span><span class="pp-name">Coconut Milk</span><span class="pp-tag">Oils &amp; condiments</span></a>
+        <a class="pp-card" href="/search?q=scotch+bonnet"><span class="pp-badge">Coming soon</span><span class="pp-emoji" aria-hidden="true">🌶️</span><span class="pp-name">Scotch Bonnet</span><span class="pp-tag">Fresh produce</span></a>
+        <a class="pp-card" href="/search?q=suya+spice"><span class="pp-badge">Coming soon</span><span class="pp-emoji" aria-hidden="true">🌿</span><span class="pp-name">Suya Spice</span><span class="pp-tag">Spices</span></a>
+        <a class="pp-card" href="/search?q=yam"><span class="pp-badge">Coming soon</span><span class="pp-emoji" aria-hidden="true">🍠</span><span class="pp-name">Yam</span><span class="pp-tag">Fresh produce</span></a>
+        <a class="pp-card" href="/search?q=goat+meat"><span class="pp-badge">Coming soon</span><span class="pp-emoji" aria-hidden="true">🐐</span><span class="pp-name">Goat Meat</span><span class="pp-tag">Meat &amp; protein</span></a>
+        <a class="pp-card" href="/search?q=garri"><span class="pp-badge">Coming soon</span><span class="pp-emoji" aria-hidden="true">🥣</span><span class="pp-name">Garri</span><span class="pp-tag">Staples &amp; grains</span></a>
+      </div>
+      <p class="pp-foot">Looking for something specific? <a href="/search">Search the full catalogue</a> · <a href="/store-owner">Are you a seller? List your products</a></p>
     </div>
   </section>
 
@@ -399,7 +436,7 @@ footer a:hover{color:var(--gold-soft);}
   </section>
 
   <!-- 5 BROWSE BY CITY -->
-  <section id="cities" aria-labelledby="city-title" hidden>
+  <section id="cities" aria-labelledby="city-title">
     <div class="wrap">
       <div class="section-head">
         <h2 id="city-title" class="font-display">Browse by city</h2>
@@ -739,31 +776,48 @@ footer a:hover{color:var(--gold-soft);}
       .join("");
   }
 
+  const CANONICAL_CITIES = [
+    { slug: "manchester", name: "Manchester" },
+    { slug: "london", name: "London" },
+    { slug: "birmingham", name: "Birmingham" },
+    { slug: "leeds", name: "Leeds" },
+    { slug: "leicester", name: "Leicester" },
+    { slug: "bradford", name: "Bradford" },
+    { slug: "bristol", name: "Bristol" },
+    { slug: "liverpool", name: "Liverpool" },
+    { slug: "sheffield", name: "Sheffield" },
+    { slug: "nottingham", name: "Nottingham" },
+  ];
+
   function renderCities(stats) {
     const el = document.getElementById("city-grid");
     const section = document.getElementById("cities");
-    const cities = (stats && Array.isArray(stats.cities)) ? stats.cities.filter(function(c){ return c && Number(c.count) > 0; }) : [];
     if (!el) return;
-    if (!cities.length) {
-      if (section) section.hidden = true;
-      el.innerHTML = "";
-      return;
+
+    const counts = {};
+    if (stats && Array.isArray(stats.cities)) {
+      stats.cities.forEach(function (c) {
+        if (!c || !c.name) return;
+        const k = String(c.name).toLowerCase().replace(/\s+/g, "-").replace(/[^a-z0-9-]/g, "");
+        counts[k] = Number(c.count) || 0;
+      });
     }
+
     if (section) section.hidden = false;
-    el.innerHTML = cities
+    el.innerHTML = CANONICAL_CITIES
       .map(function (c) {
-        const slug = String(c.name || "")
-          .toLowerCase()
-          .replace(/\s+/g, "-")
-          .replace(/[^a-z0-9-]/g, "");
-        const cityUrl = slug ? "/cities/" + slug : "/stores";
+        const n = counts[c.slug] || 0;
+        const big = n > 0 ? String(n) : "—";
+        const sub = n > 0 ? (n === 1 ? "1 store" : n + " stores") : "Coming soon";
         return (
-          '<a class="city-card" href="' +
-          cityUrl +
+          '<a class="city-card" href="/cities/' +
+          c.slug +
           '"><div class="n">' +
-          c.count +
+          big +
           '</div><div class="l">' +
           escapeHtml(c.name) +
+          '</div><div style="font-size:12px;color:var(--brown-muted);margin-top:4px">' +
+          sub +
           "</div></a>"
         );
       })
@@ -885,21 +939,20 @@ footer a:hover{color:var(--gold-soft);}
   (function recent() {
     try {
       var st = JSON.parse(localStorage.getItem("clip_recent_stores_v1") || "[]");
-      if (!Array.isArray(st) || !st.length) return;
+      if (!Array.isArray(st)) return;
+      var rows = st.filter(function (r) { return r && r.id; });
+      if (!rows.length) return;
       var grid = document.getElementById("clip-recent-stores");
       var sec = document.getElementById("clip-recent-wrap");
-      var empty = document.getElementById("clip-recent-empty");
       if (!grid || !sec) return;
-      sec.classList.add("show");
-      grid.style.display = "grid";
-      if (empty) empty.style.display = "none";
-      grid.innerHTML = st
+      grid.innerHTML = rows
         .map(function (r) {
-          if (!r || !r.id) return "";
           var h = r.slug ? "/stores/" + encodeURIComponent(r.slug) : "/store/" + encodeURIComponent(r.id);
           return '<a href="' + h + '">' + (r.name || "Store") + " →</a>";
         })
         .join("");
+      sec.hidden = false;
+      sec.classList.add("show");
     } catch (e) {}
   })();
 </script>
