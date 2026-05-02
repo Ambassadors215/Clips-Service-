@@ -52,6 +52,12 @@
       c[String(idx)] = (Number(c[String(idx)]) || 0) + 1;
       localStorage.setItem(k, JSON.stringify(c));
     } catch (e) {}
+    try {
+      if (!sessionStorage.getItem("clip_first_bask_evt")) {
+        sessionStorage.setItem("clip_first_bask_evt", "1");
+        document.dispatchEvent(new Event("clip-first-basket"));
+      }
+    } catch (e) {}
     var qEl = document.getElementById("gs-q");
     sendSearchEvent("quick_add", qEl ? qEl.value.trim() : "");
     var el = document.getElementById("gs-toast");

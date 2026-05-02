@@ -188,6 +188,12 @@ a.ph-link{display:block}
       c[String(idx)] = (Number(c[String(idx)])||0)+1;
       localStorage.setItem(k, JSON.stringify(c));
     }catch(e){}
+    try{
+      if (!sessionStorage.getItem("clip_first_bask_evt")) {
+        sessionStorage.setItem("clip_first_bask_evt", "1");
+        document.dispatchEvent(new Event("clip-first-basket"));
+      }
+    }catch(e){}
     sendSearchEvent("quick_add", lastSearchTerm);
     toast("Added \u2014 open the store to checkout");
   }
