@@ -265,18 +265,16 @@
       }
     });
 
+    /** Popular chips live inside `#gs-dd`. Do not stopPropagation on the whole panel — it blocked this handler when the dropdown was bubbled only to `document`. */
     host.addEventListener("click", function (e) {
-      var t = e.target;
-      if (t && t.getAttribute && t.getAttribute("data-pop")) {
-        input.value = t.getAttribute("data-pop");
-        recentPush(input.value);
-        dd.classList.add("open");
-        runFetch();
-      }
-    });
-
-    dd.addEventListener("click", function (e) {
-      e.stopPropagation();
+      var chip = e.target.closest && e.target.closest("[data-pop]");
+      if (!chip) return;
+      var term = chip.getAttribute("data-pop");
+      if (!term) return;
+      input.value = term;
+      recentPush(term);
+      dd.classList.add("open");
+      runFetch();
     });
 
     dd.addEventListener(
