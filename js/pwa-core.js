@@ -232,6 +232,30 @@
     } catch (e) {}
   }
 
+  function pickCityOptionFromPlace(citySel, detectedCity) {
+    if (!citySel || !detectedCity) return false;
+    var place = String(detectedCity)
+      .toLowerCase()
+      .replace(/\s+/g, " ")
+      .trim();
+    if (!place) return false;
+    for (var i = 0; i < citySel.options.length; i++) {
+      var opt = citySel.options[i];
+      var val = String(opt.value || "").trim().toLowerCase();
+      var label = String(opt.text || opt.textContent || "")
+        .trim()
+        .toLowerCase();
+      if ((!val || val === "") && (!label || label.indexOf("all cities") >= 0 || label.indexOf("skip") >= 0)) continue;
+      var key = val || label;
+      if (!key || key.indexOf("/") >= 0) continue;
+      if (place.indexOf(key) >= 0 || key.indexOf(place.split(" ")[0]) >= 0) {
+        citySel.selectedIndex = i;
+        return true;
+      }
+    }
+    return false;
+  }
+
   function showWelcome() {
     var w = document.getElementById("clip-pwa-welcome");
     if (!w) return;
@@ -242,69 +266,100 @@
       } catch (e) {
         return;
       }
-      w.hidden = false;
-      w.querySelector("[data-wel-close]").onclick = function () {
-        w.hidden = true;
-        markBrowserWelcomeDone();
-        tryDeferredInstallSoon();
-      };
     } else {
       try {
         if (localStorage.getItem(K_WELCOME) === "1") return;
       } catch (e) {
         return;
       }
-      w.hidden = false;
       try {
         localStorage.setItem(K_WELCOME, "1");
       } catch (e) {}
-      w.querySelector("[data-wel-close]").onclick = function () {
+    }
+
+    w.hidden = false;
+
+    var closeBtn = w.querySelector("[data-wel-close]");
+    if (closeBtn)
+      closeBtn.onclick = function () {
         w.hidden = true;
+        if (!isStandalone()) markBrowserWelcomeDone();
         tryDeferredInstallSoon();
       };
-    }
+
     var btnGeo = w.querySelector("[data-wel-geo]");
     var citySel = w.querySelector("#wel-city");
     var st = w.querySelector("[data-wel-go]");
+    var geoMsg = w.querySelector("#wel-geo-status");
+    function geoStatus(t) {
+      if (geoMsg) geoMsg.textContent = t || "";
+    }
+
     if (btnGeo) {
       btnGeo.onclick = function () {
-        if (!navigator.geolocation) {
+        geoStatus("");
+        if (!window.isSecureContext) {
+          geoStatus("Location needs HTTPS. Try picking a city below.");
           return;
         }
+        if (!navigator.geolocation) {
+          geoStatus("This browser doesn't support location. Pick a city below.");
+          return;
+        }
+        geoStatus("Getting your location…");
         btnGeo.disabled = true;
         navigator.geolocation.getCurrentPosition(
           function (pos) {
             var lat = pos.coords.latitude;
             var lon = pos.coords.longitude;
-            fetch("https://nominatim.openstreetmap.org/reverse?lat=" + lat + "&lon=" + lon + "&format=jsonv2&accept-language=en", { headers: { "Accept-Charset": "utf-8" } })
+            fetch(
+              "https://nominatim.openstreetmap.org/reverse?lat=" +
+                encodeURIComponent(lat) +
+                "&lon=" +
+                encodeURIComponent(lon) +
+                "&format=jsonv2&accept-language=en",
+              { headers: { "Accept-Charset": "utf-8", "Accept-Language": "en-GB,en;q=0.9" }, mode: "cors", credentials: "omit" }
+            )
               .then(function (r) {
-                return r.json();
+                return r.ok ? r.json() : {};
               })
               .then(function (j) {
                 var a = (j && j.address) || {};
-                var city = a.city || a.town || a.village || a.county || "";
-                if (city && citySel) {
-                  for (var i = 0; i < citySel.options.length; i++) {
-                    if (citySel.options[i].value && city.toLowerCase().indexOf(citySel.options[i].value.toLowerCase()) >= 0) {
-                      citySel.selectedIndex = i;
-                      break;
-                    }
-                    if (citySel.options[i].value === city) {
-                      citySel.value = city;
-                      break;
-                    }
-                  }
+                var city =
+                  a.city ||
+                  a.town ||
+                  a.village ||
+                  a.city_district ||
+                  a.borough ||
+                  a.county ||
+                  "";
+                if (!citySel) {
+                  geoStatus("Choose a city, then tap Find stores.");
+                  return;
                 }
+                if (pickCityOptionFromPlace(citySel, city))
+                  geoStatus("Matched nearby — tap “Find stores near me”.");
+                else if (city) geoStatus("Detected " + city + ". Pick your city if needed, then continue.");
+                else geoStatus("Could not map coordinates to a city. Please choose below.");
               })
-              .catch(function () {})
+              .catch(function () {
+                geoStatus("Could not resolve your area. Pick a city below.");
+              })
               .finally(function () {
                 btnGeo.disabled = false;
               });
           },
-          function () {
+          function (err) {
             btnGeo.disabled = false;
+            var msg = "Could not read your location. Pick a city below.";
+            try {
+              if (err && err.code === err.PERMISSION_DENIED) msg = "Location access denied. Allow location for this site, or choose a city.";
+              else if (err && err.code === err.POSITION_UNAVAILABLE) msg = "Position unavailable. Try again or choose a city.";
+              else if (err && err.code === err.TIMEOUT) msg = "Location timed out. Try again or pick a city.";
+            } catch (_e3) {}
+            geoStatus(msg);
           },
-          { enableHighAccuracy: true, maximumAge: 6e4, timeout: 12e3 }
+          { enableHighAccuracy: false, maximumAge: 60000, timeout: 15000 }
         );
       };
     }
