@@ -76,26 +76,45 @@
     }, 1600);
   }
 
-  function mount() {
-    var host = document.getElementById("global-search-mount");
-    if (!host) return;
-
-    host.innerHTML =
-      '<div class="gs-bar" role="search">' +
+  function buildBarHtml() {
+    return (
+      '<form class="gs-bar" role="search" action="/search" method="get">' +
       '<div class="gs-bar-inner">' +
       '<a class="gs-home" href="/">Clip Services</a>' +
       '<div class="gs-field-wrap">' +
       '<div class="gs-input-wrap">' +
-      '<input type="search" class="gs-input" id="gs-q" placeholder="Search products, stores, or stalls…" autocomplete="off" aria-label="Search" />' +
+      '<input type="search" class="gs-input" id="gs-q" name="q" placeholder="Search products, stores, or stalls…" autocomplete="off" aria-label="Search products, stores, or stalls" />' +
       "</div>" +
       '<div class="gs-dd" id="gs-dd"></div>' +
       "</div>" +
-      '<a href="/search" style="font-size:14px;font-weight:600;color:#8b3a3a">All results</a>' +
+      '<button type="submit" class="gs-submit" aria-label="Search">Search</button>' +
+      '<a class="gs-all" href="/search">All results</a>' +
       "</div>" +
-      "</div>";
+      "</form>"
+    );
+  }
+
+  function mount() {
+    var host = document.getElementById("global-search-mount");
+    if (!host) return;
+
+    // If page already server-rendered the bar inside the mount, don't overwrite it —
+    // just enhance it. Otherwise render a fresh bar.
+    if (!host.querySelector("#gs-q")) {
+      host.innerHTML = buildBarHtml();
+    }
 
     var input = document.getElementById("gs-q");
     var dd = document.getElementById("gs-dd");
+    if (!input) return;
+    // Ensure dropdown container exists even on server-rendered markup.
+    if (!dd) {
+      dd = document.createElement("div");
+      dd.id = "gs-dd";
+      dd.className = "gs-dd";
+      var wrap = input.closest(".gs-field-wrap") || input.parentNode;
+      if (wrap) wrap.appendChild(dd);
+    }
 
     function renderEmpty() {
       var rec = recentGet();

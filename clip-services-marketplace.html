@@ -254,7 +254,21 @@ footer a:hover{color:var(--gold-soft);}
     <p style="text-align:center;margin-top:16px"><button type="button" data-wel-close style="background:none;border:none;color:var(--terracotta);font-weight:600;cursor:pointer">Skip for now</button></p>
   </div>
 </div>
-<div id="global-search-mount"></div>
+<div id="global-search-mount">
+  <form class="gs-bar" role="search" action="/search" method="get">
+    <div class="gs-bar-inner">
+      <a class="gs-home" href="/">Clip Services</a>
+      <div class="gs-field-wrap">
+        <div class="gs-input-wrap">
+          <input type="search" class="gs-input" id="gs-q" name="q" placeholder="Search products, stores, or stalls…" autocomplete="off" aria-label="Search products, stores, or stalls" />
+        </div>
+        <div class="gs-dd" id="gs-dd"></div>
+      </div>
+      <button type="submit" class="gs-submit" aria-label="Search">Search</button>
+      <a class="gs-all" href="/search">All results</a>
+    </div>
+  </form>
+</div>
 <div class="topbar" role="status">
   <strong>Clip Services Ltd</strong> · UK registered · <span id="topbar-tagline">African, Caribbean & Asian Marketplace — Your Community, Online</span>
 </div>

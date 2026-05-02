@@ -158,3 +158,61 @@
 body.gs-pad-top {
   padding-top: 0;
 }
+
+.gs-submit {
+  flex-shrink: 0;
+  background: var(--gs-terracotta);
+  color: #fff;
+  border: none;
+  padding: 12px 18px;
+  border-radius: 12px;
+  font-weight: 700;
+  font-size: 14px;
+  cursor: pointer;
+  font-family: inherit;
+}
+
+.gs-submit:hover {
+  background: #6f2e2e;
+}
+
+.gs-all {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--gs-terracotta);
+  text-decoration: none;
+  flex-shrink: 0;
+}
+
+.gs-all:hover {
+  text-decoration: underline;
+}
+
+@media (max-width: 640px) {
+  .gs-bar-inner {
+    padding: 8px 12px;
+    gap: 8px;
+  }
+  .gs-bar a.gs-home {
+    font-size: 1rem;
+  }
+  .gs-field-wrap {
+    flex: 1 1 100%;
+    order: 3;
+    min-width: 0;
+  }
+  .gs-input {
+    font-size: 16px;
+    padding: 10px 14px 10px 38px;
+  }
+  .gs-input-wrap::before {
+    left: 12px;
+  }
+  .gs-submit {
+    padding: 10px 14px;
+    font-size: 13px;
+  }
+  .gs-all {
+    display: none;
+  }
+}
