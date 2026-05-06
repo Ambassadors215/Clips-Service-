@@ -321,6 +321,7 @@ footer a:hover{color:var(--gold-soft);}
         <span class="trust-item" id="trust-orders-item" hidden>🛒 <strong id="trust-orders">—</strong> Orders Processed</span>
         <span class="trust-item">🇬🇧 UK Registered Company</span>
         <span class="trust-item">🔒 Stripe Secure Payments</span>
+        <span class="trust-item" id="trust-traffic-item" hidden></span>
       </div>
     </div>
   </section>
@@ -1005,6 +1006,28 @@ footer a:hover{color:var(--gold-soft);}
       const ordersN = Number(stats.ordersProcessed) || 0;
       const trustStoresItem = document.getElementById("trust-stores-item");
       const trustOrdersItem = document.getElementById("trust-orders-item");
+      var trafficEl = document.getElementById("trust-traffic-item");
+      function fmtCt(n) {
+        return Math.max(0, Math.floor(Number(n) || 0)).toLocaleString("en-GB");
+      }
+      if (trafficEl && stats.traffic && Number(stats.traffic.totalPageViews) > 0) {
+        var tr = stats.traffic;
+        var tv = fmtCt(tr.totalPageViews);
+        var uv = fmtCt(tr.uniqueVisitors7d);
+        var chunks = [];
+        if (Number(tr.uniqueVisitors7d) > 0) {
+          chunks.push(
+            "Roughly <strong>" +
+              uv +
+              '</strong> people visited in the last 7&nbsp;days <span title="Fingerprint is hashed IP + browser data; we cannot identify individuals.">(estimate)</span>'
+          );
+        }
+        chunks.push(
+          '<strong>' + tv + '</strong> visits <span title="First-party tally of page loads recorded by Clip Services.">all time</span>'
+        );
+        trafficEl.innerHTML = "👥 " + chunks.join(" · ");
+        trafficEl.hidden = false;
+      }
       if (storesN > 0 && trustStoresItem) {
         document.getElementById("trust-stores").textContent = String(storesN);
         trustStoresItem.hidden = false;
@@ -1046,5 +1069,6 @@ footer a:hover{color:var(--gold-soft);}
 <script src="/js/pwa-core.js" defer></script>
 <script src="/js/clip-whatsapp-float.js" defer></script>
 <script src="/js/global-search.js" defer></script>
+<script src="/site-track.js" defer></script>
 </body>
 </html>
