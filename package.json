@@ -17,6 +17,7 @@
     "vercel:env:push": "node scripts/vercel-push-env.mjs",
     "vercel:env:ls": "node scripts/vercel-env-list.mjs",
     "vercel:smoke": "node scripts/vercel-smoke.mjs",
+    "smoke": "node scripts/smoke-local.mjs",
     "vercel:git-status": "node scripts/vercel-git-status.mjs"
   },
   "dependencies": {

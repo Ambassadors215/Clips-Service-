@@ -257,6 +257,110 @@ const server = http.createServer(async (req, res) => {
       return send(res, 405, { "content-type": "text/plain; charset=utf-8" }, "Method Not Allowed");
     }
 
+    const p = apiPath || "/";
+
+    /** Match Vercel rewrites locally so store/city/category URLs resolve like production. */
+    const stubReq = (urlWithQuery) => ({
+      method: req.method,
+      headers: req.headers || {},
+      url: urlWithQuery,
+    });
+
+    const mProd = p.match(/^\/store\/([^/]+)\/p\/(\d+)\/([^/]+)$/);
+    if (mProd) {
+      const { default: ph } = await import("./lib/handlers/product-html.js");
+      const q =
+        `/api/product-html?storeId=` +
+        encodeURIComponent(decodeURIComponent(mProd[1])) +
+        "&idx=" +
+        encodeURIComponent(mProd[2]) +
+        "&slug=" +
+        encodeURIComponent(mProd[3]);
+      return ph(stubReq(q), res);
+    }
+
+    const mStoreSlug = p.match(/^\/stores\/([^/]+)$/);
+    if (mStoreSlug && mStoreSlug[1].toLowerCase() !== "index.html") {
+      const { default: sh } = await import("./lib/handlers/store-html.js");
+      const q =
+        "/api/store-html?slug=" + encodeURIComponent(decodeURIComponent(mStoreSlug[1]));
+      return sh(stubReq(q), res);
+    }
+
+    const mStoreId = p.match(/^\/store\/([^/]+)$/);
+    if (mStoreId && mStoreId[1]) {
+      const { default: sh2 } = await import("./lib/handlers/store-html.js");
+      const q =
+        "/api/store-html?id=" + encodeURIComponent(decodeURIComponent(mStoreId[1]));
+      return sh2(stubReq(q), res);
+    }
+
+    const mCity = p.match(/^\/cities\/([^/]+)$/);
+    if (mCity) {
+      const { default: cityH } = await import("./lib/handlers/city-html.js");
+      const q =
+        "/api/city-html?city=" + encodeURIComponent(mCity[1].toLowerCase());
+      return cityH(stubReq(q), res);
+    }
+
+    const mCat = p.match(/^\/categories\/([^/]+)$/);
+    if (mCat) {
+      const { default: catH } = await import("./lib/handlers/category-html.js");
+      const q =
+        "/api/category-html?slug=" + encodeURIComponent(mCat[1].toLowerCase());
+      return catH(stubReq(q), res);
+    }
+
+    const mComm = p.match(/^\/community\/([^/]+)$/);
+    if (mComm) {
+      const { default: cmH } = await import("./lib/handlers/community-html.js");
+      const q =
+        "/api/community-html?slug=" + encodeURIComponent(mComm[1].toLowerCase());
+      return cmH(stubReq(q), res);
+    }
+
+    const mPseo = p.match(/^\/products\/([^/]+)$/);
+    if (mPseo) {
+      const { default: pseo } = await import("./lib/handlers/product-seo-html.js");
+      const q =
+        "/api/product-seo-html?slug=" + encodeURIComponent(mPseo[1].toLowerCase());
+      return pseo(stubReq(q), res);
+    }
+
+    if (p === "/blog/rss.xml") {
+      const { default: blogRss } = await import("./lib/handlers/blog-rss.js");
+      return blogRss(stubReq("/api/blog-rss"), res);
+    }
+    if (p === "/blog/feed") {
+      const { default: rssLand } = await import("./lib/handlers/blog-rss-landing.js");
+      return rssLand(stubReq("/api/blog-rss-landing"), res);
+    }
+    if (p === "/blog") {
+      const { default: blogIndex } = await import("./lib/handlers/blog-html.js");
+      return blogIndex(stubReq("/api/blog-html"), res);
+    }
+    const mBlogCat = p.match(/^\/blog\/category\/([^/]+)$/);
+    if (mBlogCat) {
+      const { default: blogCatH } = await import("./lib/handlers/blog-html.js");
+      const q =
+        "/api/blog-html?blogCategory=" + encodeURIComponent(mBlogCat[1].toLowerCase());
+      return blogCatH(stubReq(q), res);
+    }
+    const mBlogPost = p.match(/^\/blog\/([^/]+)$/);
+    if (mBlogPost) {
+      const tail = mBlogPost[1];
+      const low = tail.toLowerCase();
+      if (low !== "category" && low !== "feed" && low !== "rss.xml") {
+        const { default: blogPost } = await import("./lib/handlers/blog-html.js");
+        return blogPost(stubReq("/api/blog-html?slug=" + encodeURIComponent(tail)), res);
+      }
+    }
+
+    if (p === "/sitemap.xml") {
+      const { default: sm } = await import("./lib/handlers/sitemap.js");
+      return sm(stubReq("/api/sitemap"), res);
+    }
+
     if (url.pathname === "/index.html") {
       const loc = "/" + (url.search || "");
       return send(res, 301, { Location: loc }, undefined);
