@@ -780,6 +780,11 @@
             ? '<tr><td colspan="6" style="text-align:center;padding:32px;color:var(--faint)">No KV listings. Save <strong>ADMIN_TOKEN</strong> and click <strong>Refresh</strong>.</td></tr>'
             : list
                 .map((m) => {
+                  const st = listingStatusMarkup(m);
+                  const slug = publicStoreSlugPreview(m);
+                  const storeHref = `/stores/${encodeURIComponent(slug)}`;
+                  const idAttr = attrEsc(m.id);
+                  const idShow = escHtml(m.id);
                   const stKey = String(m.applicationStatus || "").toLowerCase();
                   let ar = "";
                   if (stKey === "pending") {
