@@ -20,6 +20,51 @@ import {
 } from "../../lib/kv-store.js";
 import { notifyBookingStatusCustomer } from "../../lib/notify.js";
 import { waNotifyStoreApproved } from "../../lib/whatsapp-notify.js";
+import { sendEmail, isEmailConfigured } from "../../lib/email.js";
+import { siteUrl } from "../../lib/site-url.js";
+import { publicStoreSlug } from "../../lib/seo-html.js";
+
+function escEmailHtml(s) {
+  return String(s ?? "")
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;");
+}
+
+function notifyApprovedMerchantEmail(listing) {
+  const to = String(listing?.email || "").trim();
+  if (!to || !isEmailConfigured()) return;
+  const base = siteUrl().replace(/\/$/, "");
+  const slug = publicStoreSlug(listing);
+  const storeUrl = `${base}/stores/${encodeURIComponent(slug)}`;
+  const dashUrl = `${base}/store-owner/dashboard`;
+  const name = escEmailHtml(listing.ownerName || listing.role || "there");
+  const store = escEmailHtml(listing.role || "Your store");
+  const html = `<p>Hi ${name},</p>
+<p>Good news — <strong>${store}</strong> is approved on Clip Services. Your storefront is live for customers.</p>
+<p><a href="${escEmailHtml(storeUrl)}">Open your store page</a></p>
+<p>Sign in to add products and manage orders: <a href="${escEmailHtml(dashUrl)}">${escEmailHtml(dashUrl)}</a> (use the same email you applied with).</p>
+<p>Thanks for listing with Clip Services.</p>`;
+  return sendEmail({
+    to,
+    subject: `Approved — ${String(listing.role || "your store").slice(0, 80)} is live on Clip Services`,
+    html,
+  });
+}
+
+function notifyRejectedMerchantEmail(listing) {
+  const to = String(listing?.email || "").trim();
+  if (!to || !isEmailConfigured()) return;
+  const store = escEmailHtml(listing.role || "Your application");
+  const html = `<p>Hi ${escEmailHtml(listing.ownerName || "there")},</p>
+<p>Thank you for applying to Clip Services. We're unable to onboard <strong>${store}</strong> at this time.</p>
+<p>If you have questions, reply to this email.</p>`;
+  return sendEmail({
+    to,
+    subject: "Update on your Clip Services store application",
+    html,
+  });
+}
 
 async function handlePing(req, res) {
   return endJson(res, 200, { ok: true });
@@ -120,7 +165,7 @@ async function handleMarketplacePublish(req, res) {
   } catch {
     return endJson(res, 400, { ok: false, error: "Invalid JSON" });
   }
-  const id = String(payload?.id || "").trim().slice(0, 32);
+  const id = String(payload?.id || "").trim().slice(0, 96);
   const email = String(payload?.email || "").trim().slice(0, 120);
   const role = String(payload?.role || "").trim().slice(0, 200);
   const bio = String(payload?.bio || "").trim().slice(0, 4000);
@@ -150,7 +195,10 @@ async function handleMarketplacePublish(req, res) {
       (applicationStatus === "approved" || applicationStatus === "active")
     ) {
       const next = await getMarketplaceListingById(id);
-      if (next) void waNotifyStoreApproved(next).catch((e) => console.error("WA_APPROVED", e));
+      if (next) {
+        void waNotifyStoreApproved(next).catch((e) => console.error("WA_APPROVED", e));
+        void notifyApprovedMerchantEmail(next).catch((e) => console.error("EMAIL_APPROVED", e));
+      }
     }
     return endJson(res, 200, { ok: true });
   } catch (e) {
@@ -283,6 +331,56 @@ async function handleSearchAnalytics(req, res) {
   }
 }
 
+/** Approve or reject an existing onboarding listing by id (no manual re-enter of fields). */
+async function handleListingApplicationReview(req, res) {
+  if (req.method !== "POST") return endJson(res, 405, { ok: false, error: "Method Not Allowed" });
+  let payload;
+  try {
+    payload = JSON.parse(await readBody(req));
+  } catch {
+    return endJson(res, 400, { ok: false, error: "Invalid JSON" });
+  }
+  const id = String(payload?.id || "").trim();
+  const decision = String(payload?.decision || "").trim().toLowerCase();
+  if (!id) return endJson(res, 400, { ok: false, error: "Missing id" });
+  if (!["approve", "reject"].includes(decision)) {
+    return endJson(res, 400, { ok: false, error: 'decision must be "approve" or "reject"' });
+  }
+  try {
+    const prev = await getMarketplaceListingById(id);
+    if (!prev) return endJson(res, 404, { ok: false, error: "Listing not found" });
+    const wasPending = String(prev.applicationStatus || "").toLowerCase() === "pending";
+
+    if (decision === "approve") {
+      await upsertMarketplaceListing({
+        id,
+        applicationStatus: "approved",
+      });
+      const next = await getMarketplaceListingById(id);
+      if (wasPending && next) {
+        void waNotifyStoreApproved(next).catch((e) => console.error("WA_APPROVED", e));
+        void notifyApprovedMerchantEmail(next).catch((e) => console.error("EMAIL_APPROVED", e));
+      }
+    } else {
+      await upsertMarketplaceListing({
+        id,
+        applicationStatus: "rejected",
+      });
+      if (wasPending) {
+        void notifyRejectedMerchantEmail(prev).catch((e) => console.error("EMAIL_REJECTED", e));
+      }
+    }
+    return endJson(res, 200, {
+      ok: true,
+      applicationStatus: decision === "approve" ? "approved" : "rejected",
+      listedOnWebsite: decision === "approve",
+    });
+  } catch (e) {
+    console.error("ADMIN_LISTING_REVIEW", e);
+    return endJson(res, 500, { ok: false, error: e.message || "Review failed" });
+  }
+}
+
 async function handleMarketplaceUnpublish(req, res) {
   if (req.method !== "POST") return endJson(res, 405, { ok: false, error: "Method Not Allowed" });
   let payload;
@@ -310,6 +408,7 @@ const ROUTES = {
   marketplace: handleMarketplace,
   "marketplace-publish": handleMarketplacePublish,
   "marketplace-unpublish": handleMarketplaceUnpublish,
+  "listing-application-review": handleListingApplicationReview,
   contacts: handleContacts,
   providers: handleProviders,
   "update-booking": handleUpdateBooking,

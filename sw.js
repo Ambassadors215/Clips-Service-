@@ -1,5 +1,5 @@
 /* Clip Services PWA v9 — offline, precache, network-first for listings */
-const CACHE = "clip-services-v10";
+const CACHE = "clip-services-v11";
 const OFFLINE_PAGE = "/offline.html";
 const PRECACHE = [
   "/",
@@ -97,10 +97,11 @@ self.addEventListener("fetch", (event) => {
     return;
   }
 
-  // Short cache for public listings (GET only)
+  // Fresh listings grid after admin approvals (avoid HTTP disk cache staleness).
   if (url.pathname === "/api/listings" || url.pathname === "/api/public-stats") {
+    const netReq = new Request(req, { cache: "no-store" });
     event.respondWith(
-      fetch(req)
+      fetch(netReq)
         .then((res) => {
           if (res && res.ok) {
             const c = res.clone();

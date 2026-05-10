@@ -9,7 +9,7 @@
     <meta http-equiv="Pragma" content="no-cache" />
     <link rel="manifest" href="/manifest.webmanifest" />
     <title>Clip Services Admin</title>
-    <!-- admin-ui-build: 2026-04-terracotta -->
+    <!-- admin-ui-build: 2026-05-store-approval -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Syne:wght@600;700;800&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
@@ -244,15 +244,16 @@
           <div class="workspace-label">Admin Dashboard</div>
           <div class="workspace-name">Clip Services</div>
           <div class="workspace-desc" style="font-size:12px;opacity:.9;margin-bottom:10px"><strong>Build</strong> · Admin UI <strong style="color:var(--terracotta)">terracotta theme</strong> v2026.04 · API: <span class="mono">onboarding-stats</span>, <span class="mono">platform-stats</span>. Missing styles = stale cache — hard-refresh.</div>
-          <div class="workspace-desc"><strong>Launch checklist:</strong> (1) <em>Applications</em> — review applicants. (2) <em>Publish to site</em> — adds their card on the marketplace and links their email so requests route to <span class="mono">/provider/</span> or <span class="mono">/store-owner/dashboard</span>. (3) <em>Stripe Connect</em> — same numeric <span class="mono">Provider ID</span> as the listing so payouts work. (4) <em>Negotiations</em> — only needed if no listing match; otherwise the store is notified automatically.</div>
+          <div class="workspace-desc"><strong>Launch checklist:</strong> (1) <strong>Store onboarding</strong> or <strong>Marketplace listings</strong> — find <strong>Pending review</strong> rows from website applications and click <strong>Approve & publish</strong> so the store appears on the site; owners get WhatsApp and email when those are configured. (2) <strong>Applications</strong> tab — legacy contact-form leads only; use <strong>Publish to site</strong> only when onboarding from scratch. (3) <strong>Stripe Connect</strong> — same listing ID so payouts work. (4) <strong>Negotiations</strong> — only needed if no listing match.</div>
         </div>
 
         <details class="operator-panel">
           <summary>For operators — full workflow reference</summary>
           <div class="operator-body">
             <ol>
-              <li><strong>Applications tab:</strong> Read each submission. When you are ready to onboard someone, click <strong>Publish to site</strong>. Enter a unique <span class="mono">Listing ID</span> (e.g. <span class="mono">9</span>) and the <strong>exact email</strong> they will use to sign in at <span class="mono">/provider/</span> or <span class="mono">/store-owner/dashboard</span> (one-time email code; set <span class="mono">SESSION_SECRET</span> on Vercel). That creates their public card and links new bookings to them.</li>
-              <li><strong>Marketplace listings tab:</strong> See everyone who is live on the homepage. <strong>Remove</strong> takes their card off the site (data stays in bookings/negotiations history).</li>
+              <li><strong>Website store / stall applies:</strong> Each submission creates a <strong>KV marketplace listing</strong> with ID like <span class="mono">APP‑…</span> and status <strong>pending</strong> (hidden from the public directory). Open <strong>Store onboarding</strong> or <strong>Marketplace listings</strong> → <strong>Approve & publish</strong>. The owner receives WhatsApp and email when approved (if Meta / Brevo are configured). They sign in at <span class="mono">/store-owner/dashboard</span> with their application email.</li>
+              <li><strong>Applications tab:</strong> Shown submissions are from the legacy <strong>contact</strong> form only — not the store apply wizard. Use <strong>Publish to site</strong> there only when inventing a new listing ID for that lead.</li>
+              <li><strong>Marketplace listings tab:</strong> All KV profiles including drafts. Pending rows are sorted first. <strong>Remove</strong> deletes the listing entirely.</li>
               <li><strong>Stripe Connect tab:</strong> Create Connect with the <strong>same ID</strong> as the marketplace listing so card payments can route the store’s share automatically after the customer pays.</li>
               <li><strong>Customer journey:</strong> They book from the marketplace → request appears under <strong>Negotiations</strong> and in their <span class="mono">/user/</span> dashboard → store owner sends a price → customer accepts or counters → customer pays in <span class="mono">/user/</span> when agreed.</li>
               <li><strong>Negotiations tab (manual assign):</strong> Use only when a booking used a generic seed card (no published listing) or the store email is missing. Paste their email and <strong>Assign Provider</strong> so they see the thread on <span class="mono">/provider/</span> or <span class="mono">/store-owner/dashboard</span>.</li>
@@ -379,7 +380,7 @@
 
             <div id="contactsView" class="hide">
               <p class="muted" style="margin:0;padding:14px 20px;font-size:12px;line-height:1.55;border-bottom:1px solid var(--border);background:rgba(139,58,58,.06);">
-                <strong style="color:var(--terracotta)">Store owner applications</strong> — click <strong>Publish to site</strong> to add a marketplace card and link this email to new requests. Listing ID should match Stripe Connect ID when you use payouts.
+                <strong style="color:var(--terracotta)">Contact form submissions</strong> — these rows come from the site contact form (<span class="mono">KEY_CONTACTS</span>), not the dedicated store-owner apply wizard. Store applications appear under <strong>Store onboarding</strong> and as <strong>Pending review</strong> in Marketplace. Use <strong>Publish to site</strong> only when onboarding a legacy lead manually.
               </p>
               <div style="overflow-x:auto;">
               <table>
@@ -391,7 +392,7 @@
 
             <div id="onboardingView" class="hide">
               <p class="muted" style="margin:0;padding:14px 20px;font-size:12px;line-height:1.55;border-bottom:1px solid var(--border);background:rgba(212,160,23,.08);">
-                <strong style="color:var(--amber)">Store &amp; stall onboarding</strong> — views increment when someone opens an apply form; submissions when they send. Set listing <span class="mono">applicationStatus</span> to <span class="mono">approved</span> or <span class="mono">active</span> when you onboard them (draft <span class="mono">pending</span> listings stay off the public directory).
+                <strong style="color:var(--amber)">Store &amp; stall onboarding</strong> — website applications create marketplace rows with status <strong>pending</strong> (not shown in /api/listings). Use <strong>Approve & publish</strong> on each row when review is complete. Owners receive WhatsApp and email on approval when configured.
               </p>
               <p class="muted" style="margin:0;padding:12px 20px 0;font-size:11px;color:var(--terracotta)"><strong>Platform overview</strong> — marketplace orders, GMV, and activation (stores with at least one product, excluding pending drafts).</p>
               <div id="platformMetrics" class="dash-grid" style="padding:16px 20px 8px;"></div>
@@ -406,17 +407,18 @@
               <div id="onboardingMetrics" class="dash-grid" style="padding:16px 20px;"></div>
               <div style="overflow-x:auto;">
                 <table>
-                  <thead><tr><th>When</th><th>Ref</th><th>Flow</th><th>Business / name</th><th>Email</th><th>WhatsApp</th><th>City / detail</th></tr></thead>
+                  <thead><tr><th>When</th><th>Ref</th><th>Flow</th><th>KV listing</th><th>Review status</th><th>Business / name</th><th>Email</th><th>WhatsApp</th><th>City / detail</th><th style="min-width:200px">Actions</th></tr></thead>
                   <tbody id="onboardingTbody"></tbody>
                 </table>
               </div>
             </div>
 
             <div id="marketplaceView" class="hide" style="padding:20px;">
-              <p class="muted" style="margin-bottom:16px;font-size:12px;line-height:1.55;">These listings are merged into the homepage service grid (<span class="mono">/api/listings</span>). Customers who book notify the provider email on file.</p>
+              <p class="muted" style="margin-bottom:16px;font-size:12px;line-height:1.55;">Approved listings are included in <span class="mono">/api/listings</span> and discoverable like other stores. Rows with <strong>Pending review</strong> stay off the public directory until you approve.</p>
+              <p class="muted" style="margin-bottom:12px;font-size:11px;line-height:1.5;"><strong>Sorted:</strong> pending first, then rejected, then live.</p>
               <div style="overflow-x:auto;">
                 <table>
-                  <thead><tr><th>Listing ID</th><th>Display name</th><th>Store email</th><th>Category</th><th>Actions</th></tr></thead>
+                  <thead><tr><th>Status</th><th>Listing ID</th><th>Display name</th><th>Store email</th><th>Category</th><th style="min-width:240px">Actions</th></tr></thead>
                   <tbody id="marketplaceTbody"></tbody>
                 </table>
               </div>
@@ -435,7 +437,7 @@
             </div>
 
             <div id="providersView" class="hide" style="padding:20px;">
-              <p class="muted" style="margin-top:0;margin-bottom:16px;"><strong>Stripe Connect</strong> — use the same numeric ID as the marketplace listing (Connect “provider” ID) so card payments can split to their account.</p>
+              <p class="muted" style="margin-top:0;margin-bottom:16px;"><strong>Stripe Connect</strong> — use the same <strong>Listing ID</strong> as Marketplace (digits or <span class="mono">APP‑…</span> from applications) so card payments route to their account.</p>
               <div id="providersStatus" class="status"></div>
               <div style="overflow-x:auto;">
                 <table>
@@ -461,7 +463,7 @@
       <div id="publishModal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.72);z-index:100;align-items:flex-start;justify-content:center;padding:24px;overflow-y:auto;">
         <div style="background:var(--card);border:1px solid var(--border);border-radius:var(--radius);max-width:520px;width:100%;margin:24px auto;padding:24px;box-shadow:0 24px 80px rgba(0,0,0,.5);">
           <h3 style="font-family:'Syne',sans-serif;font-size:18px;font-weight:700;margin-bottom:8px;">Publish store to marketplace</h3>
-          <p class="muted" style="font-size:12px;margin-bottom:16px;line-height:1.5;">Creates a bookable card and links this email to new customer requests. Listing ID should match Stripe Connect account ID if you use payouts.</p>
+          <p class="muted" style="font-size:12px;margin-bottom:16px;line-height:1.5;"><strong>New listing?</strong> Use a numeric ID aligned with Stripe Connect if you charge by card through Connect. Otherwise open an existing onboarding row from the tables below and approve it — IDs like <span class="mono">APP‑…</span> are assigned automatically.</p>
           <div style="display:grid;gap:10px;">
             <div><div class="muted" style="font-size:11px;margin-bottom:4px;">Listing ID *</div><input class="input" id="pub-id" placeholder="e.g. 9" /></div>
             <div><div class="muted" style="font-size:11px;margin-bottom:4px;">Store owner email *</div><input class="input" id="pub-email" type="email" /></div>
@@ -476,9 +478,14 @@
                   <option value="cleaning">Cleaning</option>
                   <option value="handyman">Handyman</option>
                   <option value="dog">Dog walking</option>
-                  <option value="grocery">Groceries</option>
+                  <option value="grocery">Groceries (alias)</option>
+                  <option value="groceries">Groceries</option>
+                  <option value="hair-beauty">Hair &amp; beauty</option>
+                  <option value="fashion">Fashion</option>
+                  <option value="halal">Halal</option>
+                  <option value="stall">Market stall</option>
                   <option value="delivery">Delivery</option>
-                  <option value="beauty">Hair &amp; beauty</option>
+                  <option value="beauty">Beauty (legacy)</option>
                   <option value="tech">Tech</option>
                 </select>
               </div>
@@ -534,6 +541,8 @@
         platform: null,
         searchAnalytics: null
       };
+
+      let searchRenderTimer = null;
 
       const el = {
         tokenInput: document.getElementById("tokenInput"),
@@ -638,6 +647,71 @@
         return "https://wa.me/" + d;
       }
 
+      function attrEsc(s) {
+        return String(s ?? "").replace(/&/g, "&amp;").replace(/"/g, "&quot;").replace(/'/g, "&#39;");
+      }
+
+      function slugifyAdmin(s) {
+        return (
+          String(s || "")
+            .toLowerCase()
+            .replace(/[^a-z0-9]+/g, "-")
+            .replace(/^-|-$/g, "")
+            .slice(0, 80) || "item"
+        );
+      }
+
+      function publicStoreSlugPreview(m) {
+        const sid = String(m?.id || "x").replace(/[^a-zA-Z0-9]/g, "").slice(0, 24);
+        const base = slugifyAdmin(m?.role || "store");
+        return `${base}-${sid}`.replace(/-+/g, "-").toLowerCase().slice(0, 120);
+      }
+
+      function listingStatusMarkup(m) {
+        const s = String(m?.applicationStatus || "").toLowerCase();
+        if (s === "pending") return '<span class="badge warn">Pending review</span>';
+        if (s === "approved") return '<span class="badge success">Approved (live)</span>';
+        if (s === "active") return '<span class="badge success">Active</span>';
+        if (s === "rejected") return '<span class="badge danger">Rejected</span>';
+        return '<span class="badge neutral">Live (legacy)</span>';
+      }
+
+      function marketplaceSortRank(m) {
+        const s = String(m?.applicationStatus || "").toLowerCase();
+        if (s === "pending") return 0;
+        if (s === "rejected") return 1;
+        if (s === "approved") return 2;
+        if (s === "active") return 3;
+        return 5;
+      }
+
+      async function listingApplicationReview(id, decision) {
+        const lid = String(id || "").trim();
+        if (!lid) return;
+        if (decision === "reject") {
+          const ok = confirm(
+            "Reject this application? The store stays off the public directory. The applicant may receive an email if Brevo is configured."
+          );
+          if (!ok) return;
+        }
+        try {
+          await api("/api/admin?action=listing-application-review", {
+            method: "POST",
+            body: JSON.stringify({ id: lid, decision }),
+          });
+          setStatus(
+            el.dataStatus,
+            decision === "approve"
+              ? "Approved — listing is visible on the site (unless rejected or removed)."
+              : "Marked as rejected.",
+            "ok"
+          );
+          await refreshAll();
+        } catch (e) {
+          setStatus(el.dataStatus, e?.message || "Update failed", "err");
+        }
+      }
+
       function renderNegotiations() {
         const list = filterRows(state.negotiations);
         if (!list.length) {
@@ -694,17 +768,40 @@
 
       function renderMarketplaceTable() {
         if (!el.marketplaceTbody) return;
-        const list = filterRows(state.marketplace);
-        el.marketplaceTbody.innerHTML = list.length === 0
-          ? '<tr><td colspan="5" style="text-align:center;padding:32px;color:var(--faint)">No published listings. Open <strong>Applications</strong> and click <strong>Publish to site</strong>.</td></tr>'
-          : list.map((m) => `
-              <tr>
-                <td class="mono">${escHtml(m.id)}</td>
-                <td style="font-weight:500">${escHtml(m.role)}</td>
-                <td class="muted" style="font-size:12px">${escHtml(m.email)}</td>
-                <td>${escHtml(m.category)}</td>
-                <td><button type="button" class="btn btn-danger" style="font-size:12px;padding:6px 12px" data-mp-remove="${escHtml(m.id)}">Remove</button></td>
-              </tr>`).join("");
+        const list = filterRows(state.marketplace)
+          .slice()
+          .sort((a, b) => {
+            const rd = marketplaceSortRank(a) - marketplaceSortRank(b);
+            if (rd !== 0) return rd;
+            return String(b.updatedAt || "").localeCompare(String(a.updatedAt || ""));
+          });
+        el.marketplaceTbody.innerHTML =
+          list.length === 0
+            ? '<tr><td colspan="6" style="text-align:center;padding:32px;color:var(--faint)">No KV listings. Save <strong>ADMIN_TOKEN</strong> and click <strong>Refresh</strong>.</td></tr>'
+            : list
+                .map((m) => {
+                  const stKey = String(m.applicationStatus || "").toLowerCase();
+                  let ar = "";
+                  if (stKey === "pending") {
+                    ar = `<button type="button" class="btn btn-primary" style="font-size:11px;padding:6px 10px" data-mp-approve="${idAttr}">Approve &amp; publish</button><button type="button" class="btn btn-danger" style="font-size:11px;padding:6px 10px;background:rgba(185,28,28,.12)" data-mp-reject="${idAttr}">Reject</button>`;
+                  } else if (stKey === "rejected") {
+                    ar = `<button type="button" class="btn btn-primary" style="font-size:11px;padding:6px 10px" data-mp-approve="${idAttr}">Approve &amp; publish</button>`;
+                  }
+                  const editBtn = `<button type="button" class="btn btn-ghost" style="font-size:11px;padding:6px 10px" data-mp-edit="${idAttr}">Edit card</button>`;
+                  const rm = `<button type="button" class="btn btn-danger" style="font-size:11px;padding:6px 10px" data-mp-remove="${idAttr}">Remove</button>`;
+                  const prevLabel =
+                    stKey === "pending" ? "Draft preview" : stKey === "rejected" ? "URL (approve first)" : "Public store";
+                  const prev = `<a href="${attrEsc(storeHref)}" target="_blank" rel="noopener" style="font-size:11px;font-weight:600">${escHtml(prevLabel)}</a>`;
+                  return `<tr>
+                  <td style="vertical-align:middle">${st}</td>
+                  <td class="mono" style="vertical-align:middle">${idShow}</td>
+                  <td style="font-weight:500;vertical-align:middle">${escHtml(m.role)}</td>
+                  <td class="muted" style="font-size:12px;vertical-align:middle">${escHtml(m.email)}</td>
+                  <td style="vertical-align:middle">${escHtml(m.category)}</td>
+                  <td style="vertical-align:middle"><div class="actions">${ar}<span>${editBtn}${rm}</span><span class="muted" style="margin-left:6px;font-size:11px;display:inline-block;vertical-align:middle">${prev}</span></div></td>
+                  </tr>`;
+                })
+                .join("");
       }
 
       function renderOnboarding() {
@@ -752,7 +849,7 @@
         const ob = state.onboarding;
         if (!ob || !ob.ok) {
           el.onboardingMetrics.innerHTML = '<p class="muted" style="grid-column:1/-1;padding:8px 4px">Sign in and refresh to load onboarding analytics.</p>';
-          el.onboardingTbody.innerHTML = '<tr><td colspan="7" style="text-align:center;padding:32px;color:var(--faint)">No data — check token and click Refresh.</td></tr>';
+          el.onboardingTbody.innerHTML = '<tr><td colspan="10" style="text-align:center;padding:32px;color:var(--faint)">No data — check token and click Refresh.</td></tr>';
         } else {
         const c = ob.counters || {};
         const lc = ob.listingCounts || {};
@@ -777,22 +874,46 @@
         `;
         const apps = ob.recentApplications || [];
         el.onboardingTbody.innerHTML = apps.length === 0
-          ? '<tr><td colspan="7" style="text-align:center;padding:32px;color:var(--faint)">No applications logged yet.</td></tr>'
+          ? '<tr><td colspan="10" style="text-align:center;padding:32px;color:var(--faint)">No applications logged yet.</td></tr>'
           : apps.map((a) => {
+            const lid = String(a.listingId || "").trim();
+            const lv = lid ? state.marketplace.find((x) => String(x.id) === lid) : null;
+            const rowStatus = lv ? listingStatusMarkup(lv) : '<span class="badge neutral">—</span>';
             const when = a.createdAt ? timeAgo(a.createdAt) + " · " + new Date(a.createdAt).toLocaleString() : "—";
             const flow = a.flow === "stall" ? "Stall" : a.flow === "store" ? "Store" : escHtml(a.flow || "—");
             const biz = a.flow === "stall" ? escHtml(a.fullName || "—") : escHtml(a.storeName || "—");
-            const cityOr = a.flow === "stall"
-              ? escHtml(a.city || "") + (a.marketLocation ? " · " + escHtml(a.marketLocation) : "")
-              : escHtml(a.city || "") + (a.postcode ? " · " + escHtml(a.postcode) : "");
+            const cityOr =
+              a.flow === "stall"
+                ? escHtml(a.city || "") + (a.marketLocation ? " · " + escHtml(a.marketLocation) : "")
+                : escHtml(a.city || "") + (a.postcode ? " · " + escHtml(a.postcode) : "");
+            const kvCell = lid ? `<span class="mono">${escHtml(lid)}</span>` : "—";
+            const stKey = lv ? String(lv.applicationStatus || "").toLowerCase() : "";
+            let acts = "";
+            if (lid && lv) {
+              const idAttr = attrEsc(lid);
+              const pendingBtns =
+                stKey === "pending"
+                  ? `<button type="button" class="btn btn-primary" style="font-size:11px;padding:6px 10px" data-o-approve="${idAttr}">Approve &amp; publish</button><button type="button" class="btn btn-danger" style="font-size:11px;padding:6px 10px;background:rgba(185,28,28,.12)" data-o-reject="${idAttr}">Reject</button>`
+                  : stKey === "rejected"
+                    ? `<button type="button" class="btn btn-primary" style="font-size:11px;padding:6px 10px" data-o-approve="${idAttr}">Approve &amp; publish</button>`
+                    : "";
+              acts = `<div class="actions" style="gap:6px">${pendingBtns}<button type="button" class="btn btn-ghost" style="font-size:11px;padding:6px 10px" data-o-edit="${idAttr}">Edit card</button></div>`;
+            } else if (lid) {
+              acts = '<span class="muted" style="font-size:11px">Refresh to load listing — or use Marketplace tab.</span>';
+            } else {
+              acts = "—";
+            }
             return `<tr>
               <td class="muted" style="font-size:12px;max-width:200px">${escHtml(when)}</td>
               <td class="mono">${escHtml(a.ref || "—")}</td>
               <td>${flow}</td>
+              <td class="mono" style="font-size:12px">${kvCell}</td>
+              <td>${rowStatus}</td>
               <td style="font-weight:500">${biz}</td>
               <td class="muted" style="font-size:12px">${escHtml(a.email || "—")}</td>
               <td class="mono" style="font-size:12px">${escHtml(a.whatsapp || "—")}</td>
               <td class="muted" style="font-size:12px">${cityOr || "—"}</td>
+              <td style="vertical-align:top;padding-top:14px">${acts}</td>
             </tr>`;
           }).join("");
         }
@@ -821,6 +942,31 @@
             el.noResultTerms.innerHTML = (sa.noResultsTerms || []).slice(0, 15).map((x) => `<li>${escHtml(x.term)} <span class="muted">(${x.count})</span></li>`).join("") || '<li class="muted">None logged</li>';
           }
         }
+      }
+
+      function openListingEditorFromRow(m) {
+        if (!m || !m.id) return;
+        document.getElementById("pub-id").value = m.id;
+        document.getElementById("pub-email").value = m.email || "";
+        document.getElementById("pub-role").value = m.role || "";
+        document.getElementById("pub-bio").value = m.bio || "";
+        document.getElementById("pub-services").value = (Array.isArray(m.services) ? m.services.join(", ") : "").trim();
+        const catEl = document.getElementById("pub-category");
+        const cat = String(m.category || "").trim();
+        catEl.value = [...catEl.options].some((o) => o.value === cat) ? cat : "groceries";
+        const iconEl = document.getElementById("pub-icon");
+        const ic = String(m.icon || "").trim();
+        iconEl.value = [...iconEl.options].some((o) => o.value === ic) ? ic : "plus";
+        document.getElementById("pub-popular").checked = Boolean(m.popular);
+        const pubNeg = document.getElementById("pub-negotiation");
+        if (pubNeg) pubNeg.checked = m.negotiationEnabled !== false;
+        const pubAps = document.getElementById("pub-appstatus");
+        if (pubAps) {
+          const aps = String(m.applicationStatus || "").toLowerCase();
+          pubAps.value = ["pending", "approved", "active", "rejected"].includes(aps) ? aps : "";
+        }
+        setStatus(el.pubStatus, "", null);
+        el.publishModal.style.display = "flex";
       }
 
       function openPublishModal(email, name) {
@@ -961,7 +1107,13 @@
           state.onboarding = obData.ok ? obData : null;
           state.platform = platData.ok ? platData : null;
           state.searchAnalytics = searchData.ok ? searchData : null;
-          setStatus(el.dataStatus, `${state.bookings.length} bookings · ${state.negotiations.length} negotiations · ${state.marketplace.length} live listings · ${state.contacts.length} applications`, "ok");
+          const pendingReview = state.marketplace.filter((x) => String(x.applicationStatus || "").toLowerCase() === "pending")
+            .length;
+          setStatus(
+            el.dataStatus,
+            `${state.bookings.length} bookings · ${state.negotiations.length} negotiations · ${state.marketplace.length} KV listings (${pendingReview} pending review) · ${state.contacts.length} contact submissions`,
+            "ok"
+          );
           render();
         } catch (e) {
           setStatus(el.dataStatus, e?.message || "Failed to load", "err");
@@ -994,7 +1146,10 @@
       });
 
       el.refreshBtn?.addEventListener("click", refreshAll);
-      el.searchInput?.addEventListener("input", render);
+      el.searchInput?.addEventListener("input", () => {
+        clearTimeout(searchRenderTimer);
+        searchRenderTimer = setTimeout(() => render(), 140);
+      });
 
       el.contactsTbody?.addEventListener("click", (e) => {
         const btn = e.target.closest("[data-open-publish]");
@@ -1002,7 +1157,25 @@
         openPublishModal(btn.getAttribute("data-pub-email"), btn.getAttribute("data-pub-name"));
       });
 
-      el.marketplaceTbody.addEventListener("click", async (e) => {
+      el.marketplaceTbody?.addEventListener("click", async (e) => {
+        const editBtn = e.target.closest("[data-mp-edit]");
+        if (editBtn) {
+          const idRaw = editBtn.getAttribute("data-mp-edit") || "";
+          const m = state.marketplace.find((x) => String(x.id) === idRaw);
+          if (m) openListingEditorFromRow(m);
+          else setStatus(el.dataStatus, "Listing not loaded — click Refresh.", "err");
+          return;
+        }
+        const apBtn = e.target.closest("[data-mp-approve]");
+        if (apBtn) {
+          await listingApplicationReview(apBtn.getAttribute("data-mp-approve"), "approve");
+          return;
+        }
+        const rjBtn = e.target.closest("[data-mp-reject]");
+        if (rjBtn) {
+          await listingApplicationReview(rjBtn.getAttribute("data-mp-reject"), "reject");
+          return;
+        }
         const btn = e.target.closest("[data-mp-remove]");
         if (!btn) return;
         const id = btn.getAttribute("data-mp-remove");
@@ -1013,6 +1186,26 @@
           await refreshAll();
         } catch (err) {
           setStatus(el.dataStatus, err.message || "Remove failed", "err");
+        }
+      });
+
+      el.onboardingTbody?.addEventListener("click", async (e) => {
+        const apBtn = e.target.closest("[data-o-approve]");
+        if (apBtn) {
+          await listingApplicationReview(apBtn.getAttribute("data-o-approve"), "approve");
+          return;
+        }
+        const rjBtn = e.target.closest("[data-o-reject]");
+        if (rjBtn) {
+          await listingApplicationReview(rjBtn.getAttribute("data-o-reject"), "reject");
+          return;
+        }
+        const edBtn = e.target.closest("[data-o-edit]");
+        if (edBtn) {
+          const idRaw = edBtn.getAttribute("data-o-edit") || "";
+          const m = state.marketplace.find((x) => String(x.id) === idRaw);
+          if (m) openListingEditorFromRow(m);
+          else setStatus(el.dataStatus, "Listing not loaded — click Refresh.", "err");
         }
       });
 
