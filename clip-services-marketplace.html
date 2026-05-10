@@ -84,7 +84,8 @@ header.site{background:var(--white);border-bottom:1px solid var(--cream-dark);po
 .btn-gold:hover{filter:brightness(1.05);}
 
 /* Hero */
-.hero{padding:48px 0 56px;background:linear-gradient(165deg,var(--cream) 0%,#EDE8E0 50%,var(--cream-dark) 100%);position:relative;overflow:hidden;}
+.hero{padding:52px 0 60px;background:linear-gradient(165deg,var(--cream) 0%,#EDE8E0 50%,var(--cream-dark) 100%);position:relative;overflow:hidden;}
+.hero.marketplace .hero-inner{text-align:center;}
 .hero::before{content:"";position:absolute;inset:0;background:url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%238B3A3A' fill-opacity='0.04'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4V0H2v4H0v2h4v4H2v2h4v2h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");opacity:.6;pointer-events:none;}
 .hero-inner{position:relative;z-index:1;text-align:center;max-width:920px;margin:0 auto;}
 .hero h1{font-family:"Playfair Display",Georgia,serif;font-size:clamp(1.85rem,5vw,3rem);font-weight:800;color:var(--brown);line-height:1.12;margin-bottom:16px;}
@@ -161,14 +162,64 @@ section.alt{background:var(--white);}
 .city-card .city-thumb{width:100%;height:74px;border-radius:10px;margin:0 0 12px;background:linear-gradient(120deg,var(--forest),var(--terracotta)) center/cover no-repeat;background-color:var(--cream-dark);}
 .store-card-img.has-cover{background:none!important;}
 
+/* Hero — marketplace */
+.hero.marketplace{background:linear-gradient(145deg,#FFF9F4 0%,var(--cream) 38%,#EEDFCC 100%);}
+.hero .hero-kicker{display:inline-flex;align-items:center;gap:8px;background:rgba(212,160,23,.22);border:1px solid rgba(139,58,58,.18);padding:10px 18px;border-radius:999px;font-size:14px;font-weight:700;color:var(--terracotta);margin-bottom:18px;font-family:Inter,sans-serif;}
+.hero h1{font-family:"Playfair Display",Georgia,serif;font-size:clamp(2rem,5.5vw,3.35rem);}
+.hero-sub{max-width:720px!important;}
+.hero-strap{font-size:16px;color:var(--forest);font-weight:600;margin:-8px auto 22px;line-height:1.45;font-family:Inter,sans-serif;}
+
+/* Browse by heritage */
+.culture-browse{padding:48px 0 56px;}
+.culture-intro{max-width:720px;margin:0 auto;text-align:center;}
+.culture-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:28px;}
+@media(min-width:640px){.culture-grid{grid-template-columns:repeat(3,1fr);gap:14px}}
+@media(min-width:900px){.culture-grid{grid-template-columns:repeat(5,1fr);}}
+.culture-card{display:flex;flex-direction:column;align-items:flex-start;text-align:left;padding:18px 16px;background:var(--white);border:2px solid var(--cream-dark);border-radius:var(--radius);cursor:pointer;font:inherit;color:var(--brown);font-weight:600;font-size:15px;transition:border-color .2s,transform .15s,box-shadow .2s;min-height:56px;line-height:1.25;}
+@media(min-width:900px){.culture-card:nth-child(n+10){grid-column:span 1;}}
+.culture-grid .culture-card:last-child:nth-child(9){grid-column:span 3;}
+@media(min-width:900px){.culture-grid .culture-card:last-child:nth-child(9){grid-column:span 1;}}
+.culture-card:hover,.culture-card:focus-visible{border-color:var(--gold);box-shadow:var(--shadow-hover);transform:translateY(-2px);}
+.culture-card small{display:block;margin-top:4px;font-weight:500;font-size:13px;color:var(--brown-muted);}
+.culture-card.on{border-color:var(--terracotta);background:rgba(212,160,23,.09);}
+.hero-pill-note{font-size:14px;color:var(--brown-muted);margin-top:16px;line-height:1.5;font-style:italic;}
+.filter-hint{font-size:14px;color:var(--terracotta);text-align:center;margin:12px 0 0;font-weight:600;}
+.filter-hint:empty{display:none;}
+
+/* Featured product grid */
+.fp-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:16px;margin-top:8px;}
+@media(min-width:640px){.fp-grid{grid-template-columns:repeat(3,1fr);}}
+@media(min-width:980px){.fp-grid{grid-template-columns:repeat(4,1fr);}}
+.fp-card{background:var(--white);border:1px solid var(--cream-dark);border-radius:var(--radius);overflow:hidden;display:flex;flex-direction:column;transition:opacity .35s,border-color .2s;}
+.fp-card.culture-hide{opacity:.22;pointer-events:none;filter:grayscale(.25);}
+.fp-img{width:100%;aspect-ratio:4/3;object-fit:cover;background:linear-gradient(120deg,var(--cream-dark),var(--cream));}
+.fp-body{padding:14px;display:flex;flex-direction:column;flex:1;gap:6px;}
+.fp-title{font-size:15px;font-weight:700;line-height:1.3;color:var(--brown);}
+.fp-price{font-family:Inter,sans-serif;font-weight:800;color:var(--terracotta);font-size:1.1rem;}
+.fp-store{font-size:13px;color:var(--brown-muted);}
+.fp-card .btn-add{margin-top:auto;width:100%;min-height:48px;background:var(--terracotta);color:var(--white);border:none;border-radius:var(--radius-sm);font-weight:600;font-size:14px;cursor:pointer;}
+.fp-card .btn-add:hover{background:var(--terracotta-dark);}
+#basket-flash{position:fixed;bottom:100px;left:50%;transform:translateX(-50%);z-index:10001;background:var(--forest);color:var(--cream);padding:12px 22px;border-radius:999px;font-weight:600;box-shadow:var(--shadow);opacity:0;pointer-events:none;transition:opacity .25s;font-size:15px;}
+
+/* Pilot merchant cards */
+.featured-note{text-align:center;font-size:14px;color:var(--brown-muted);max-width:640px;margin:0 auto 20px;line-height:1.5;}
+.pilot-badge-chip{display:inline-block;background:rgba(212,160,23,.35);border:1px solid var(--gold);color:var(--brown);padding:6px 12px;font-size:12px;font-weight:800;text-transform:none;border-radius:999px;margin-bottom:10px;font-family:Inter,sans-serif;letter-spacing:.02em;}
+.herit-chip{display:inline-flex;align-items:center;padding:5px 10px;font-size:12px;background:var(--cream);border:1px solid var(--cream-dark);border-radius:999px;color:var(--brown-muted);margin:2px;font-weight:600;}
+.store-card-actions{display:flex;flex-direction:column;gap:10px;margin-top:auto;}
+.ver-wrap{display:flex;align-items:center;gap:10px;margin:8px 0 6px;font-size:13px;color:var(--forest);font-weight:700;}
+
 /* Featured scroll */
 .featured-wrap{overflow:hidden;margin:0 -20px;padding:0 20px;}
 @media (min-width:768px){.featured-wrap{margin:0 -32px;padding:0 32px;}}
 .featured-track{display:flex;gap:18px;overflow-x:auto;scroll-snap-type:x mandatory;padding-bottom:12px;-webkit-overflow-scrolling:touch;scrollbar-width:thin;}
 .featured-track::-webkit-scrollbar{height:8px;}
 .featured-track::-webkit-scrollbar-thumb{background:var(--cream-dark);border-radius:4px;}
-.store-card{flex:0 0 min(300px,85vw);scroll-snap-align:start;background:var(--white);border-radius:var(--radius);border:1px solid var(--cream-dark);overflow:hidden;box-shadow:var(--shadow);}
-.store-card-img{height:120px;background:linear-gradient(120deg,var(--forest),var(--terracotta));display:flex;align-items:center;justify-content:center;font-size:2.5rem;}
+.store-card{
+  flex:0 0 min(300px,85vw);scroll-snap-align:start;background:var(--white);border-radius:var(--radius);border:1px solid var(--cream-dark);overflow:hidden;box-shadow:var(--shadow);
+  transition:opacity .35s,filter .35s,border-color .2s;
+}
+.store-card.culture-hide{opacity:.22;pointer-events:none;filter:grayscale(.35);}
+.store-card-img{height:150px;background:linear-gradient(120deg,var(--forest),var(--terracotta));display:flex;align-items:center;justify-content:center;font-size:2.5rem;}
 .store-card-body{padding:16px;}
 .store-card-body h3{font-size:1.1rem;margin-bottom:4px;}
 .store-card-body .city{font-size:13px;color:var(--brown-muted);}
@@ -308,14 +359,18 @@ footer a:hover{color:var(--gold-soft);}
 
 <main id="main">
   <!-- 1 HERO -->
-  <section class="hero" aria-labelledby="hero-title">
+  <section class="hero marketplace" aria-labelledby="hero-title">
     <div class="wrap hero-inner">
-      <h1 id="hero-title" class="font-display">The UK's African, Caribbean &amp; Asian Marketplace</h1>
-      <p class="hero-sub">Discover and shop from independent African, Caribbean and Asian stores and market stalls across the UK. Authentic products. Real community. Order online.</p>
+      <p class="hero-kicker" role="presentation">🏪 Marketplace · multicultural groceries · independent stores across the UK</p>
+      <h1 id="hero-title" class="font-display">Shop the tastes you grew up with — from real local stores</h1>
+      <p class="hero-strap font-display" style="font-size:clamp(1.05rem,2.5vw,1.35rem);color:var(--terracotta)">Find multicultural groceries from independent shops and stalls you can trust.</p>
+      <p class="hero-sub">Independent African, Caribbean, and Asian grocers list here with their full shelves — not one central warehouse pretending to speak for everyone. Search, browse by heritage, add to basket, then collect or arrange delivery straight with the trader.</p>
       <div class="hero-cta">
-        <a class="btn btn-primary" href="/stores">Browse Stores &amp; Stalls</a>
-        <a class="btn btn-gold" href="/store-owner">List Your Store</a>
+        <a class="btn btn-primary" href="/stores">Browse all stores</a>
+        <a class="btn btn-gold" href="#browse-culture">Shop by heritage</a>
+        <a class="btn btn-secondary" href="/store-owner">List your shop</a>
       </div>
+      <p class="hero-pill-note">Real shops · Real ingredients · Receipts handled safely with Stripe</p>
       <div class="trust-row" aria-label="Trust indicators">
         <span class="trust-item" id="trust-stores-item" hidden>🏪 <strong id="trust-stores">—</strong> Stores &amp; Stalls Listed</span>
         <span class="trust-item" id="trust-orders-item" hidden>🛒 <strong id="trust-orders">—</strong> Orders Processed</span>
@@ -323,6 +378,53 @@ footer a:hover{color:var(--gold-soft);}
         <span class="trust-item">🔒 Stripe Secure Payments</span>
         <span class="trust-item" id="trust-traffic-item" hidden></span>
       </div>
+    </div>
+  </section>
+
+  <!-- 2 FEATURED PILOT STORES -->
+  <section class="alt" id="featured-section" aria-labelledby="feat-title">
+    <div class="wrap">
+      <div class="section-head">
+        <h2 id="feat-title" class="font-display">Featured pilot storefronts</h2>
+      </div>
+      <p class="featured-note">Five friendly independents onboarding with Clip right now — each keeps their WhatsApp hustle, storefront story, and checkout on their page.</p>
+      <div class="featured-wrap">
+        <div class="featured-track" id="featured-scroll" aria-label="Featured pilot grocery stores"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 3 FEATURED GROCERIES (live pilot lines) -->
+  <section aria-labelledby="featured-products-title">
+    <div class="wrap">
+      <div class="section-head">
+        <h2 id="featured-products-title" class="font-display">Featured groceries tonight</h2>
+        <p>Live lines from onboarding pilot shelves — tap <strong>Add to basket</strong> then open the trader’s storefront to tweak quantities and checkout with Stripe.</p>
+      </div>
+      <div class="fp-grid" id="featured-products-grid" aria-live="polite"><p style="grid-column:1/-1;color:var(--brown-muted);text-align:center">Loading storefront picks…</p></div>
+      <p class="pp-foot" style="margin-top:28px"><a href="/stores">Meet every pilot storefront</a> · Questions? <a href="https://wa.me/447487588706">WhatsApp us</a></p>
+    </div>
+  </section>
+
+  <section class="alt culture-browse" id="browse-culture" aria-labelledby="browse-culture-title">
+    <div class="wrap">
+      <div class="culture-intro section-head">
+        <h2 id="browse-culture-title" class="font-display">Browse by heritage</h2>
+        <p>Tap a culture to spotlight matching pilot stores and the basket-ready picks above — your local aisle, distilled for phone screens.</p>
+      </div>
+      <div class="culture-grid" role="group" aria-label="Filter marketplace by heritage">
+        <button type="button" class="culture-card" data-culture="nigerian">Nigerian<small>Jollof nights &amp; pepper soup cupboards</small></button>
+        <button type="button" class="culture-card" data-culture="ghanaian">Ghanaian<small>Banku, shito, fabric yards</small></button>
+        <button type="button" class="culture-card" data-culture="jamaican">Jamaican<small>Jerk marinades · hard dough rituals</small></button>
+        <button type="button" class="culture-card" data-culture="trinidadian">Trinidadian<small>Doubles-friendly spice counters</small></button>
+        <button type="button" class="culture-card" data-culture="indian">Indian<small>Ghee, chai spices, lentils</small></button>
+        <button type="button" class="culture-card" data-culture="pakistani">Pakistani<small>Atta sacks, grills, pickles</small></button>
+        <button type="button" class="culture-card" data-culture="caribbean">All Caribbean<small>Jamaican + Trinidadian shelves</small></button>
+        <button type="button" class="culture-card" data-culture="african">Pan-African<small>Manchester + London corridors</small></button>
+        <button type="button" class="culture-card" data-culture="asian">Pan-Asian &amp; Middle Eastern<small>From basmati to za'atar aisles</small></button>
+      </div>
+      <p class="filter-hint" id="culture-filter-hint" role="status" aria-live="polite"></p>
+      <p style="text-align:center;margin-top:16px;font-size:15px;color:var(--brown-muted);max-width:560px;margin-left:auto;margin-right:auto">Prefer to clear the filter? <button type="button" class="btn btn-secondary" id="culture-clear" style="min-height:44px;margin-top:8px">Show every pilot store again</button></p>
     </div>
   </section>
 
@@ -405,32 +507,8 @@ footer a:hover{color:var(--gold-soft);}
     </div>
   </section>
 
-  <!-- 3b POPULAR PRODUCTS PREVIEW -->
-  <section aria-labelledby="popular-products-title">
-    <div class="wrap">
-      <div class="section-head">
-        <h2 id="popular-products-title" class="font-display">Popular products on Clip Services</h2>
-        <p>Authentic African, Caribbean and Asian groceries that mainstream supermarkets rarely stock — coming online from independent stores near you.</p>
-      </div>
-      <div class="pp-grid" id="pp-grid">
-        <a class="pp-card" href="/search?q=plantain"><span class="pp-badge">Coming soon</span><span class="pp-emoji" aria-hidden="true">🍌</span><span class="pp-name">Plantain</span><span class="pp-tag">Fresh produce</span></a>
-        <a class="pp-card" href="/search?q=fufu+flour"><span class="pp-badge">Coming soon</span><span class="pp-emoji" aria-hidden="true">🌾</span><span class="pp-name">Fufu Flour</span><span class="pp-tag">Staples &amp; grains</span></a>
-        <a class="pp-card" href="/search?q=jerk+seasoning"><span class="pp-badge">Coming soon</span><span class="pp-emoji" aria-hidden="true">🌶️</span><span class="pp-name">Jerk Seasoning</span><span class="pp-tag">Spices</span></a>
-        <a class="pp-card" href="/search?q=basmati+rice"><span class="pp-badge">Coming soon</span><span class="pp-emoji" aria-hidden="true">🍚</span><span class="pp-name">Basmati Rice</span><span class="pp-tag">Staples &amp; grains</span></a>
-        <a class="pp-card" href="/categories/fashion-fabrics"><span class="pp-badge">Coming soon</span><span class="pp-emoji" aria-hidden="true">🪡</span><span class="pp-name">Ankara Fabric</span><span class="pp-tag">Fashion &amp; fabric</span></a>
-        <a class="pp-card" href="/categories/halal-products"><span class="pp-badge">Coming soon</span><span class="pp-emoji" aria-hidden="true">🥩</span><span class="pp-name">Halal Lamb</span><span class="pp-tag">Halal products</span></a>
-        <a class="pp-card" href="/search?q=coconut+milk"><span class="pp-badge">Coming soon</span><span class="pp-emoji" aria-hidden="true">🥥</span><span class="pp-name">Coconut Milk</span><span class="pp-tag">Oils &amp; condiments</span></a>
-        <a class="pp-card" href="/search?q=scotch+bonnet"><span class="pp-badge">Coming soon</span><span class="pp-emoji" aria-hidden="true">🌶️</span><span class="pp-name">Scotch Bonnet</span><span class="pp-tag">Fresh produce</span></a>
-        <a class="pp-card" href="/search?q=suya+spice"><span class="pp-badge">Coming soon</span><span class="pp-emoji" aria-hidden="true">🌿</span><span class="pp-name">Suya Spice</span><span class="pp-tag">Spices</span></a>
-        <a class="pp-card" href="/search?q=yam"><span class="pp-badge">Coming soon</span><span class="pp-emoji" aria-hidden="true">🍠</span><span class="pp-name">Yam</span><span class="pp-tag">Fresh produce</span></a>
-        <a class="pp-card" href="/search?q=goat+meat"><span class="pp-badge">Coming soon</span><span class="pp-emoji" aria-hidden="true">🐐</span><span class="pp-name">Goat Meat</span><span class="pp-tag">Meat &amp; protein</span></a>
-        <a class="pp-card" href="/search?q=garri"><span class="pp-badge">Coming soon</span><span class="pp-emoji" aria-hidden="true">🥣</span><span class="pp-name">Garri</span><span class="pp-tag">Staples &amp; grains</span></a>
-      </div>
-      <p class="pp-foot">Looking for something specific? <a href="/search">Search the full catalogue</a> · <a href="/store-owner">Are you a seller? List your products</a></p>
-    </div>
-  </section>
 
-  <!-- 4 LOCAL MARKET -->
+
   <section class="alt" aria-labelledby="market-title">
     <div class="wrap">
       <div class="section-head">
@@ -453,20 +531,8 @@ footer a:hover{color:var(--gold-soft);}
     </div>
   </section>
 
-  <!-- 6 FEATURED STORES -->
-  <section class="alt" id="featured-section" aria-labelledby="feat-title" hidden>
-    <div class="wrap">
-      <div class="section-head">
-        <h2 id="feat-title" class="font-display">Featured stores</h2>
-        <p>Independent shops and traders you can order from today.</p>
-      </div>
-      <div class="featured-wrap">
-        <div class="featured-track" id="featured-scroll" aria-label="Featured stores"></div>
-      </div>
-    </div>
-  </section>
 
-  <!-- 7 CULTURAL CALENDAR -->
+
   <section aria-labelledby="cal-title">
     <div class="wrap">
       <div class="section-head">
@@ -481,7 +547,7 @@ footer a:hover{color:var(--gold-soft);}
   <section class="impact" id="impact-stats" aria-labelledby="impact-title" hidden>
     <div class="wrap">
       <h2 id="impact-title" class="font-display">Live impact</h2>
-      <p class="impact-sub">Updated from our platform as stores join and orders are placed.</p>
+      <p class="impact-sub">These numbers refresh from our live register whenever new stores join Clip Services and customers complete bookings.</p>
       <div class="impact-grid">
         <div class="impact-stat"><div class="impact-num" data-target="0" id="impact-stores">0</div><div class="impact-label">Stores &amp; Stalls Listed</div></div>
         <div class="impact-stat"><div class="impact-num" data-target="0" id="impact-orders">0</div><div class="impact-label">Orders Processed</div></div>
@@ -542,7 +608,7 @@ footer a:hover{color:var(--gold-soft);}
         </div>
         <div class="why-card">
           <h3>For store owners</h3>
-          <p>Get your store online in 48 hours. No website needed. No technical skills needed. We handle the platform, payments, and customer trust — you focus on your products.</p>
+          <p>Get your store online in 48 hours. No website needed. No technical skills needed. We handle secure payments and online ordering — you focus on stocking your shelves beautifully.</p>
         </div>
         <div class="why-card">
           <h3>Low commission model</h3>
@@ -641,6 +707,8 @@ footer a:hover{color:var(--gold-soft);}
   </p>
 </footer>
 
+<div id="basket-flash" role="status" aria-live="polite" aria-atomic="true"></div>
+
 <script src="/js/clip-cookie.js" defer></script>
 
 <script>
@@ -652,7 +720,31 @@ footer a:hover{color:var(--gold-soft);}
     { id: "christmas", title: "Christmas", date: "December 2026", desc: "Plantain, goat, seasoned rice mixes & celebration pantry hauls.", href: "/stores?q=christmas+groceries" },
     { id: "nigeria-national", title: "Nigerian Independence Day", date: "1 Oct 2026", desc: "Jollof supplies, puff-puff mixes, fabrics & owambe-party essentials.", href: "/stores?q=jollof+ingredients" },
     { id: "carnival", title: "Caribbean carnival season", date: "Jun–Aug 2026", desc: "Sorrel, jerk, flags & coolers — traders stocking carnival weekends.", href: "/stores?q=jerk+sorrel" },
+  const FEATURED_PRODUCT_PICKS = [
+    ["seed-mama-dimma-african-grocery-mcr", 0],
+    ["seed-mama-dimma-african-grocery-mcr", 1],
+    ["seed-mama-dimma-african-grocery-mcr", 2],
+    ["seed-rose-caribbean-market-bhx", 1],
+    ["seed-patel-asian-supermarket-leicester", 2],
+    ["seed-patel-asian-supermarket-leicester", 0],
+    ["seed-rose-caribbean-market-bhx", 0],
+    ["seed-mama-dimma-african-grocery-mcr", 3],
+    ["seed-mama-dimma-african-grocery-mcr", 7],
+    ["seed-mama-dimma-african-grocery-mcr", 6],
+    ["seed-zanzibar-spice-house-leeds", 1],
+    ["seed-akwaaba-ghanaian-store-london", 3],
   ];
+
+  const PILOT_RANK = {
+    "seed-mama-dimma-african-grocery-mcr": 0,
+    "seed-rose-caribbean-market-bhx": 1,
+    "seed-patel-asian-supermarket-leicester": 2,
+    "seed-akwaaba-ghanaian-store-london": 3,
+    "seed-zanzibar-spice-house-leeds": 4,
+  };
+
+  var ACTIVE_CULTURE = "";
+  var LISTINGS_GLOBAL = [];
 
   function initials(name) {
     return String(name || "S")
@@ -689,15 +781,236 @@ footer a:hover{color:var(--gold-soft);}
   function bucketCommunityTab(item, blob) {
     var p = String(item.communityPillar || "").toLowerCase();
     if (p === "caribbean") return 1;
-    if (p === "south-asian") return 2;
-    if (p === "african" || p === "east-african") return 0;
+    if (p === "south-asian" || p === "south-east-asian") return 2;
+    if (p === "african" || p === "east-african" || p === "west-african") return 0;
     if (
       /\b(caribbean|jamaica|jamaican|jerk)\b/i.test(blob) ||
       /\b(caribbean|jamaican)\b/i.test(item.category || "")
     )
       return 1;
-    if (/\b(halal|basmati|punjabi|bengali|indian grocer|south asian)/i.test(blob)) return 2;
+    if (/\b(halal|basmati|punjabi|bengali|indian grocer|south asian|za'atar)\b/i.test(blob)) return 2;
     return 0;
+  }
+
+  function storeMatchesCulture(store, cultureKey) {
+    if (!cultureKey) return true;
+    var k = String(cultureKey || "")
+      .toLowerCase()
+      .trim();
+    var pillar = String(store.communityPillar || "").toLowerCase();
+    var ht = (store.heritageTags || [])
+      .map(function (x) {
+        return String(x || "").toLowerCase();
+      })
+      .join(" ");
+    var blob =
+      ht +
+      " " +
+      (store.role || "") +
+      " " +
+      String(store.city || "").toLowerCase() +
+      " " +
+      pillar;
+    blob = blob.toLowerCase();
+
+    function has(re) {
+      return re.test(ht) || re.test(blob);
+    }
+
+    switch (k) {
+      case "nigerian":
+        return /\bnigeria|nigerian\b/.test(ht) || /\bnigeria\b/.test(blob);
+      case "ghanaian":
+        return /\bghana|ghanaian\b/.test(ht) || /\bghana\b/.test(blob);
+      case "jamaican":
+        return pillar === "caribbean" && /\bjamaican\b/.test(ht);
+      case "trinidadian":
+        return pillar === "caribbean" && /\btrinidad|trini\b/i.test(ht + " " + blob);
+      case "indian":
+        return /\bindian\b/.test(ht);
+      case "pakistani":
+        return /\bpakistan|pakistani\b/.test(ht);
+      case "caribbean":
+        return pillar === "caribbean" || /\bjamaican|trinidad|caribbean\b/.test(ht);
+      case "african":
+        return pillar === "west-african" || /\bnigeria|ghanaian|ghanai|west african\b/.test(ht);
+      case "asian":
+        return (
+          pillar === "south-asian" ||
+          pillar === "south-east-asian" ||
+          /\bindian|pakistan|south east|middle east|south asian\b/.test(ht) ||
+          /\bza'atar|tahini|lemongrass|thai|coconut milk\b/i.test(blob)
+        );
+      default:
+        return true;
+    }
+  }
+
+  function bumpCartQty(listingId, idx, delta) {
+    var id = String(listingId || "");
+    if (!id) return false;
+    var key = "clipCart:" + id;
+    var c = {};
+    try {
+      c = JSON.parse(localStorage.getItem(key) || "{}") || {};
+    } catch (_) {
+      c = {};
+    }
+    if (typeof c !== "object" || c === null) c = {};
+    var k = String(idx);
+    var next = Math.max(0, (parseInt(String(c[k] || "0"), 10) || 0) + (delta || 0));
+    if (next > 999) next = 999;
+    if (next < 1) delete c[k];
+    else c[k] = next;
+    try {
+      localStorage.setItem(key, JSON.stringify(c));
+    } catch (_) {}
+    return true;
+  }
+
+  function toastBasket(note) {
+    var el = document.getElementById("basket-flash");
+    if (!el || !note) return;
+    el.textContent = note;
+    el.style.opacity = "1";
+    clearTimeout(window.__clipBasketFlashT);
+    window.__clipBasketFlashT = setTimeout(function () {
+      el.style.opacity = "0";
+    }, 2600);
+  }
+
+  function buildStoreMap(rows) {
+    var m = {};
+    (rows || []).forEach(function (s) {
+      if (s && s.id) m[String(s.id)] = s;
+    });
+    return m;
+  }
+
+  function renderFeaturedProducts(rows) {
+    var grid = document.getElementById("featured-products-grid");
+    if (!grid) return;
+    var stores = buildStoreMap(rows);
+    function rowForPid(id, ix) {
+      var st = stores[id];
+      if (!st || !Array.isArray(st.productPreview)) return null;
+      return (
+        st.productPreview.find(function (r) {
+          return Number(r.idx) === ix;
+        }) || null
+      );
+    }
+
+    function cultureHideCls(st) {
+      if (!ACTIVE_CULTURE) return "";
+      return storeMatchesCulture(st, ACTIVE_CULTURE) ? "" : " culture-hide";
+    }
+
+    var pieces = FEATURED_PRODUCT_PICKS.map(function (pair, order) {
+      var sid = pair[0];
+      var ix = pair[1];
+      var st = stores[sid];
+      var pr = rowForPid(sid, ix);
+      if (!st || !pr) return "";
+
+      var storeUrl =
+        st.storeSlug ? "/stores/" + encodeURIComponent(st.storeSlug) : st.id ? "/store/" + encodeURIComponent(st.id) : "/stores";
+      var img = pr.thumbUrl
+        ? '<img class="fp-img" src="' +
+          escapeHtml(pr.thumbUrl) +
+          '" alt="" loading="lazy" decoding="async" referrerpolicy="no-referrer"/>'
+        : '<div class="fp-img"></div>';
+
+      return (
+        '<article class="fp-card' +
+        cultureHideCls(st) +
+        '" data-listing="' +
+        escapeHtml(sid) +
+        '" data-order="' +
+        order +
+        '">' +
+        img +
+        '<div class="fp-body">' +
+        '<div class="fp-title">' +
+        escapeHtml(pr.item || "Groceries") +
+        '</div>' +
+        '<div class="fp-price">' +
+        escapeHtml(pr.price || "£0") +
+        '</div>' +
+        '<div class="fp-store">' +
+        escapeHtml(st.role || "Independent store") +
+        " · " +
+        escapeHtml(String(st.city || "").trim() || "UK") +
+        "</div>" +
+        '<button type="button" class="btn-add" data-listing="' +
+        escapeHtml(st.id) +
+        '" data-idx="' +
+        ix +
+        '">Add to basket</button>' +
+        '<a class="btn btn-secondary" style="margin-top:8px;text-align:center;min-height:44px;display:inline-flex;align-items:center;justify-content:center;text-decoration:none" href="' +
+        storeUrl +
+        '">Checkout on storefront</a></div></article>'
+      );
+    }).filter(Boolean);
+
+    grid.innerHTML =
+      pieces.join("") ||
+      '<p style="grid-column:1/-1;text-align:center;">Catalogue rows will appear here once storefronts sync · <a href="/stores">Browse stores</a></p>';
+
+    if (!window.__fpGridBound && grid) {
+      window.__fpGridBound = true;
+      grid.addEventListener("click", function (e) {
+        var btn = e.target && e.target.closest ? e.target.closest(".btn-add") : null;
+        if (!btn) return;
+        var lid = btn.getAttribute("data-listing");
+        var ix = btn.getAttribute("data-idx");
+        if (!lid || ix === undefined || ix === null) return;
+        bumpCartQty(lid, ix, +1);
+        var stRow = rows.find(function (r) {
+          return String(r.id) === String(lid);
+        });
+        toastBasket("Saved to basket · " + (stRow ? stRow.role : "Checkout on their store page."));
+      });
+    }
+
+  }
+
+  function setCultureCardsUi() {
+    document.querySelectorAll(".culture-card").forEach(function (card) {
+      var k = card.getAttribute("data-culture") || "";
+      card.classList.toggle("on", k === ACTIVE_CULTURE);
+      card.setAttribute("aria-pressed", k === ACTIVE_CULTURE ? "true" : "false");
+    });
+    var hi = document.getElementById("culture-filter-hint");
+    if (hi) {
+      hi.textContent = ACTIVE_CULTURE
+        ? "Showing pilot shelves that cook with " +
+          ACTIVE_CULTURE.charAt(0).toUpperCase() +
+          ACTIVE_CULTURE.slice(1).replace(/-/g, " ") +
+          " flair. Other cards stay softly dimmed."
+        : "";
+    }
+  }
+
+  function pushCultureHistory() {
+    try {
+      var url = new URL(location.href.split("#")[0]);
+      if (ACTIVE_CULTURE) url.searchParams.set("culture", ACTIVE_CULTURE);
+      else url.searchParams.delete("culture");
+      history.replaceState({}, "", url);
+    } catch (_) {}
+  }
+
+  function applyCultureFilter(key) {
+    ACTIVE_CULTURE = String(key || "")
+      .toLowerCase()
+      .trim();
+    pushCultureHistory();
+    setCultureCardsUi();
+    if (Array.isArray(LISTINGS_GLOBAL) && LISTINGS_GLOBAL.length) {
+      renderFeaturedProducts(LISTINGS_GLOBAL);
+      renderFeaturedScroll(LISTINGS_GLOBAL);
+    }
   }
 
   function sortPopular(a, b) {
@@ -787,48 +1100,91 @@ footer a:hover{color:var(--gold-soft);}
       .join("");
   }
 
-  function renderFeaturedScroll(items) {
+  function whatsAppHref(phoneRaw) {
+    var d = String(phoneRaw || "").replace(/\D/g, "");
+    if (d.startsWith("0")) d = "44" + d.slice(1);
+    else if (d.length >= 10 && !d.startsWith("44")) d = "44" + d;
+    return d.length >= 10
+      ? "https://wa.me/" +
+          d +
+          "?text=" +
+          encodeURIComponent("Hi — I'm browsing Clip Services — quick question about an order.")
+      : "https://wa.me/447487588706";
+  }
+
+  function isPilotListing(it) {
+    return (
+      String(it.pilotBadge || "")
+        .toLowerCase()
+        .indexOf("pilot") !== -1
+    );
+  }
+
+  function renderFeaturedScroll(rows) {
     const track = document.getElementById("featured-scroll");
     if (!track) return;
-    const section = document.getElementById("featured-section");
-    const use = items
-      .slice()
-      .sort(function (a, b) {
-        return (
-          (b.popular === true ? 1 : 0) - (a.popular === true ? 1 : 0) ||
-          String(a.role || "").localeCompare(String(b.role || ""), "en", { sensitivity: "base" })
-        );
-      })
-      .slice(0, 12);
-    if (!use.length) {
-      if (section) section.hidden = true;
-      track.innerHTML = "";
-      return;
-    }
-    if (section) section.hidden = false;
-    track.innerHTML = use
+    LISTINGS_GLOBAL = (rows || []).slice();
+    var pilots = (rows || []).filter(isPilotListing);
+    pilots.sort(function (a, b) {
+      var ra =
+        PILOT_RANK[String(a.id)] !== undefined && PILOT_RANK[String(a.id)] !== null ? PILOT_RANK[String(a.id)] : 999;
+      var rb =
+        PILOT_RANK[String(b.id)] !== undefined && PILOT_RANK[String(b.id)] !== null ? PILOT_RANK[String(b.id)] : 999;
+      if (ra !== rb) return ra - rb;
+      return sortPopular(a, b);
+    });
+    if (!pilots.length) pilots = (rows || []).slice();
+
+    track.innerHTML = pilots
       .map(function (item) {
-        const name = item.role || "Store";
-        const cats = (item.services || []).slice(0, 3).join(" · ") || item.category || "Groceries";
-        var city = String(item.city || "").trim() || "";
-        const shopHref = item.storeSlug ? "/stores/" + encodeURIComponent(item.storeSlug) : (item.id ? "/store/" + encodeURIComponent(item.id) : "/stores");
+        var name = item.role || "Store";
+        var tags = Array.isArray(item.heritageTags) ? item.heritageTags.slice(0, 6) : [];
+        var badges = tags
+          .map(function (t) {
+            return '<span class="herit-chip">' + escapeHtml(t) + "</span>";
+          })
+          .join("") || "";
+        var cityFull = String(item.city || "").trim() || "";
+        var shopHref =
+          item.storeSlug ? "/stores/" + encodeURIComponent(item.storeSlug) : item.id ? "/store/" + encodeURIComponent(item.id) : "/stores";
         var cover = item.coverImageUrl
           ? '<div class="store-card-img has-cover" style="background-image:url(\'' +
             escapeHtml(item.coverImageUrl).replace(/'/g, "%27") +
             "');background-size:cover;background-position:center\"></div>"
           : '<div class="store-card-img" aria-hidden="true">🏪</div>';
+        var pilotLab = escapeHtml(item.pilotBadge || "Pilot — Onboarding");
+        var ver = item.verified
+          ? '<div class="ver-wrap" aria-label="Approved seller"><span aria-hidden="true">✅</span> <span>Verified seller</span></div>'
+          : "";
+        var wa = whatsAppHref(item.whatsappPhone);
+        var hide = ACTIVE_CULTURE && !storeMatchesCulture(item, ACTIVE_CULTURE) ? " culture-hide" : "";
         return (
-          '<article class="store-card">' +
+          '<article class="store-card' +
+          hide +
+          '" data-listing="' +
+          escapeHtml(item.id || "") +
+          '">' +
           cover +
-          '<div class="store-card-body"><h3>' +
+          '<div class="store-card-body">' +
+          '<span class="pilot-badge-chip">' +
+          pilotLab +
+          "</span>" +
+          "<h3>" +
           escapeHtml(name) +
-          '</h3><div class="city">' +
-          escapeHtml(city) +
-          '</div><div class="store-cats">' +
-          escapeHtml(cats) +
-          '</div><p class="stars" style="font-size:13px;color:var(--brown-muted);margin:6px 0" aria-label="Reviews">Customer reviews on profile</p><a class="btn btn-primary" style="width:100%;margin-top:12px" href="' +
+          "</h3>" +
+          '<div class="city">' +
+          escapeHtml(cityFull) +
+          '</div>' +
+          (badges ? '<div class="store-tags" style="margin:10px -2px;line-height:1.4">' + badges + "</div>" : "") +
+          ver +
+          '<div class="store-card-actions"><a class="btn btn-primary" style="width:100%;min-height:48px" href="' +
           shopHref +
-          '">Shop Now</a></div></article>'
+          '">Shop Store</a>' +
+          '<a class="btn btn-secondary" style="width:100%;min-height:48px;display:inline-flex;align-items:center;justify-content:center;text-decoration:none" href="' +
+          wa +
+          '" rel="noopener noreferrer" target="_blank">WhatsApp the counter</a></div>' +
+          "</div>" +
+          "</article>"
         );
       })
       .join("");
@@ -995,11 +1351,33 @@ footer a:hover{color:var(--gold-soft);}
 
   document.addEventListener("DOMContentLoaded", async function () {
     const [items, stats] = await Promise.all([loadListings(), loadStats()]);
+    LISTINGS_GLOBAL = items.slice();
+    try {
+      var cu = new URLSearchParams(location.search).get("culture");
+      if (cu) ACTIVE_CULTURE = String(cu || "").toLowerCase().trim();
+    } catch (_e2) {}
+
     fillFeatured(items);
     renderStalls(items);
+    renderFeaturedProducts(items);
     renderFeaturedScroll(items);
+
     renderCities(stats, items);
     renderCalendar();
+    setCultureCardsUi();
+
+    document.querySelectorAll(".culture-card").forEach(function (btn) {
+      btn.addEventListener("click", function () {
+        var k = btn.getAttribute("data-culture") || "";
+        applyCultureFilter(ACTIVE_CULTURE === k ? "" : k);
+      });
+    });
+    var clr = document.getElementById("culture-clear");
+    if (clr) {
+      clr.addEventListener("click", function () {
+        applyCultureFilter("");
+      });
+    }
 
     if (stats) {
       const storesN = Number(stats.storesListed) || 0;
@@ -1036,10 +1414,14 @@ footer a:hover{color:var(--gold-soft);}
         document.getElementById("trust-orders").textContent = String(ordersN);
         trustOrdersItem.hidden = false;
       }
-      document.getElementById("impact-stores").dataset.target = String(storesN);
-      document.getElementById("impact-orders").dataset.target = String(ordersN);
-      document.getElementById("impact-cities").dataset.target = String(stats.citiesServed || 0);
-      document.getElementById("impact-comm").dataset.target = String(stats.communitiesRepresented || 0);
+      var iSt = document.getElementById("impact-stores");
+      var iOr = document.getElementById("impact-orders");
+      var iCi = document.getElementById("impact-cities");
+      var iCo = document.getElementById("impact-comm");
+      if (iSt) iSt.dataset.target = String(storesN);
+      if (iOr) iOr.dataset.target = String(ordersN);
+      if (iCi) iCi.dataset.target = String(stats.citiesServed || 0);
+      if (iCo) iCo.dataset.target = String(stats.communitiesRepresented || 0);
     }
     runImpactAnimation(stats);
 
