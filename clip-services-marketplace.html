@@ -205,10 +205,13 @@ img{max-width:100%;display:block}
 .mp-foot-h{font-size:.69rem;font-weight:800;text-transform:uppercase;letter-spacing:.09em;color:var(--text-dark);margin:0 0 14px}
 .mp-foot a{display:block;color:#4b5563;font-weight:500;text-decoration:none;margin-bottom:10px;font-size:.84rem}
 .mp-foot a:hover{color:var(--oja-blue)}
-.mp-foot-payments{max-width:1240px;margin:0 auto;padding:0 20px 20px;display:flex;flex-wrap:wrap;align-items:center;gap:14px 24px;justify-content:center;border-bottom:1px solid var(--mp-border)}
+.mp-foot-payments{max-width:1240px;margin:0 auto;padding:0 20px 20px;display:flex;flex-wrap:wrap;align-items:center;gap:10px 18px;justify-content:center;border-bottom:1px solid var(--mp-border)}
 .mp-foot-paylab{font-size:.75rem;color:#9ca3af;font-weight:600}
+.mp-foot-paynote{font-size:.72rem;color:#9ca3af;font-weight:500;max-width:520px;text-align:center}
 .mp-pay-badges{display:flex;flex-wrap:wrap;gap:8px;align-items:center;justify-content:center}
-.mp-pay-badge{font-size:.65rem;font-weight:700;color:#9ca3af;border:1px solid #e5e7eb;border-radius:4px;padding:6px 10px;letter-spacing:.04em;background:#fff}
+.mp-pay-badge{font-size:.65rem;font-weight:700;color:#9ca3af;border:1px solid #e5e7eb;border-radius:6px;padding:6px 10px;letter-spacing:.04em;background:#fff;display:inline-flex;align-items:center;gap:6px}
+.mp-pay-stripe{padding:5px 12px}
+.mp-pay-stripe svg{display:block}
 .mp-foot-bar{max-width:1240px;margin:0 auto;padding:18px 20px;display:flex;flex-wrap:wrap;gap:14px;align-items:center;justify-content:space-between;font-size:.76rem;color:#9ca3af}
 .mp-foot-legal{display:flex;flex-wrap:wrap;gap:14px 18px;align-items:center}
 .mp-foot-legal a{color:#6b7280;font-weight:600}
@@ -467,16 +470,14 @@ main{display:block}
       <a href="mailto:clipservices26@gmail.com">Contact us</a>
     </div>
   </div>
-  <div class="mp-foot-payments" aria-label="Payment methods">
-    <span class="mp-foot-paylab">We accept</span>
+  <div class="mp-foot-payments" aria-label="Payment processor">
+    <span class="mp-foot-paylab">Payments by</span>
     <div class="mp-pay-badges">
-      <span class="mp-pay-badge">Visa</span>
-      <span class="mp-pay-badge">Mastercard</span>
-      <span class="mp-pay-badge">Amex</span>
-      <span class="mp-pay-badge">Stripe</span>
-      <span class="mp-pay-badge">Apple Pay</span>
-      <span class="mp-pay-badge">Google Pay</span>
+      <span class="mp-pay-badge mp-pay-stripe">
+        <svg width="44" height="18" viewBox="0 0 60 25" aria-hidden="true" focusable="false"><path d="M59.5 14.4c0-4.3-2.1-7.6-6-7.6-4 0-6.4 3.4-6.4 7.6 0 5 2.8 7.5 6.9 7.5 2 0 3.5-.5 4.7-1.1v-3.3c-1.2.6-2.5.9-4.2.9-1.7 0-3.2-.6-3.4-2.7h8.5c-.1-.1-.1-1-.1-1.3zm-8.5-1.6c0-2 1.2-2.8 2.4-2.8 1.1 0 2.3.8 2.3 2.8h-4.7zm-10.9-6c-1.7 0-2.7.8-3.3 1.4l-.2-1.1h-3.7v19.4l4.2-.9V21c.6.5 1.6 1 3.1 1 3.2 0 6-2.5 6-7.7 0-4.7-2.9-7.5-6.1-7.5zm-1 11.4c-1 0-1.6-.4-2-.8l0-6.5c.4-.5 1.1-.8 2-.8 1.6 0 2.6 1.7 2.6 4 0 2.4-1.1 4.1-2.6 4.1zM23 5.7l4.2-.9V1.4l-4.2.9v3.4zm0 1.3h4.2v14.4H23V7zm-4.5 1.2L18.2 7h-3.6v14.4h4.2v-9.7c1-1.3 2.7-1 3.2-.9V7c-.5-.2-2.5-.5-3.5 1.2zm-8.3-4.8L6.1 4.3l0 13.4c0 2.4 1.8 4.2 4.3 4.2 1.4 0 2.4-.3 3-.6V18c-.5.2-3.1.9-3.1-1.4v-5.6h3.1V7H10.2l0-3.6zM4.2 11c0-.7.6-1 1.5-1 1.4 0 3.1.4 4.4 1.1V7.2c-1.5-.6-3-.8-4.4-.8-3.6 0-6 1.9-6 5.1 0 4.9 6.8 4.1 6.8 6.2 0 .8-.7 1.1-1.7 1.1-1.5 0-3.5-.6-5-1.5v4c1.6.7 3.3 1 5 1 3.7 0 6.2-1.8 6.2-5.1 0-5.2-6.8-4.3-6.8-6.2z" fill="#635bff"/></svg>
+      </span>
     </div>
+    <span class="mp-foot-paynote">Card, Apple Pay &amp; Google Pay all handled on Stripe’s secure checkout — we never see your card details.</span>
   </div>
   <div class="mp-foot-bar">
     <span>Copyright © 2026 Clip Services Ltd · Company No. 17168420 · Manchester, UK</span>
