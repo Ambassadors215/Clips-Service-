@@ -187,8 +187,9 @@
             var oo = document.getElementById("to-orders");
             oo.style.display = "block";
             var qe = (q.get("email") || "").trim();
-            if (qe.indexOf("@") > 0) oo.href = "/customer/orders/?email=" + encodeURIComponent(qe);
-            else oo.href = "/customer/orders/";
+            var trackUrl = "/customer/orders/?ref=" + encodeURIComponent(o.ref);
+            if (qe.indexOf("@") > 0) trackUrl += "&email=" + encodeURIComponent(qe);
+            oo.href = trackUrl;
             try {
               if (!localStorage.getItem("clip_notify_asked") && "Notification" in window && Notification.permission === "default") {
                 var pp = document.getElementById("push-pitch");
