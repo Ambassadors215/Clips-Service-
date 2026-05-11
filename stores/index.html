@@ -182,7 +182,7 @@ h1{font-family:"Playfair Display",Georgia,serif;font-size:clamp(1.75rem,4vw,2.25
     const storeHref = item.storeSlug ? "/stores/"+encodeURIComponent(item.storeSlug) : (item.id ? "/store/"+encodeURIComponent(item.id) : "/stores");
     const isF = item.id && getFav().indexOf(String(item.id))>=0;
     const hb = isF?'\u2665':'\u2661';
-    return '<article class="card"><button type="button" class="fav-btn'+(isF?" fav-on":"")+'" data-fav="'+esc(String(item.id||""))+'" title="Save">'+hb+'</button><h2><a href="'+storeHref+'">'+esc(name)+'</a></h2><div class="meta">'+esc(cats)+'</div><p>'+esc(bio || "Independent seller on Clip Services.")+'</p><p style="margin-top:12px"><a href="'+storeHref+'">View store page</a> · <a href="/user/">Order / track</a> · <a href="https://wa.me/447487588706">WhatsApp</a></p></article>';
+    return '<article class="card"><button type="button" class="fav-btn'+(isF?" fav-on":"")+'" data-fav="'+esc(String(item.id||""))+'" title="Save">'+hb+'</button><h2><a href="'+storeHref+'">'+esc(name)+'</a></h2><div class="meta">'+esc(cats)+'</div><p>'+esc(bio || "Independent seller on Clip Services.")+'</p><p style="margin-top:12px"><a href="'+storeHref+'">View store page</a> · <a href="/customer/orders/">Order / track</a> · <a href="https://wa.me/447487588706">WhatsApp</a></p></article>';
   }
   function esc(s){ const d=document.createElement("div"); d.textContent=s; return d.innerHTML; }
 
