@@ -4,22 +4,21 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Clip Services — African, Caribbean &amp; Asian Marketplace UK | Shop Online</title>
-<meta name="description" content="Find and order from African, Caribbean and Asian independent stores across the UK. Authentic food, hair, beauty and fashion. Secure card payments. Collect or get delivery.">
-<meta name="theme-color" content="#8B3A3A">
+<meta name="description" content="Shop African, Caribbean and Asian groceries, hair, beauty and fashion from UK independents. Secure card payments. Collect or get delivery.">
+<meta name="theme-color" content="#0f2744">
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect rx='18' width='100' height='100' fill='%238B3A3A'/><text x='50' y='68' text-anchor='middle' font-size='48' font-family='Georgia' font-weight='700' fill='%23D4A017'>C</text></svg>">
 <meta property="og:type" content="website">
-<meta property="og:title" content="Clip Services — African, Caribbean &amp; Asian Marketplace UK | Shop Online">
-<meta property="og:description" content="Find and order from African, Caribbean and Asian independent stores across the UK. Authentic food, hair, beauty and fashion. Secure card payments. Collect or get delivery.">
+<meta property="og:title" content="Clip Services — African, Caribbean &amp; Asian Marketplace UK">
+<meta property="og:description" content="Shop African, Caribbean and Asian groceries, hair, beauty and fashion from UK independents.">
 <meta property="og:url" content="https://clipservice.app/">
 <meta property="og:image" content="https://clipservice.app/icons/og-cover.svg">
 <meta property="og:image:type" content="image/svg+xml">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
-<meta property="og:image:alt" content="Clip Services — UK marketplace for African, Caribbean and Asian stores">
 <meta property="og:locale" content="en_GB">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Clip Services — African, Caribbean &amp; Asian Marketplace UK">
-<meta name="twitter:description" content="Find and order from African, Caribbean and Asian independent stores across the UK. Secure card payments.">
+<meta name="twitter:description" content="Shop UK independents. Secure card payments.">
 <meta name="twitter:image" content="https://clipservice.app/icons/og-cover.svg">
 <link rel="canonical" href="https://clipservice.app/">
 <link rel="stylesheet" href="/css/global-search.css">
@@ -33,1424 +32,703 @@
 <meta name="mobile-web-app-capable" content="yes">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;800&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
-:root {
-  --terracotta: #8B3A3A;
-  --terracotta-dark: #6B2E2E;
-  --gold: #D4A017;
-  --gold-soft: #E8C547;
-  --cream: #F5F0E8;
-  --cream-dark: #E8DFD4;
-  --brown: #2C1810;
-  --brown-muted: #5C4033;
-  --forest: #2D5016;
-  --white: #FFFFFF;
-  --radius: 16px;
-  --radius-sm: 10px;
-  --shadow: 0 8px 32px rgba(44, 24, 16, 0.08);
-  --shadow-hover: 0 12px 40px rgba(139, 58, 58, 0.15);
+:root{
+  --terracotta:#8B3A3A;--terracotta-dark:#6B2E2E;--gold:#D4A017;--cream:#F5F0E8;
+  --brown:#2C1810;--card:#fffdf8;--white:#ffffff;
+  --mp-navy:#0f2744;--oja-blue:#2563eb;--mp-border:#e5e7eb;--page-bg:#ffffff;
+  --text-dark:#111827;--muted:#6b7280;--ok:#16a34a;--red:#e11d48;
+  --radius:14px;--radius-sm:10px;
 }
-*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
-html{scroll-behavior:smooth;}
-body{font-family:Inter,system-ui,sans-serif;font-weight:400;font-size:16px;line-height:1.65;color:var(--brown);background:var(--cream);-webkit-font-smoothing:antialiased;}
-a{color:var(--terracotta);text-decoration-thickness:1px;}
-a:focus-visible,button:focus-visible{outline:3px solid var(--gold);outline-offset:2px;}
-.skip-link{position:absolute;left:-9999px;z-index:999;}
-.skip-link:focus{left:8px;top:8px;padding:8px 16px;background:var(--brown);color:var(--cream);}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:Inter,system-ui,-apple-system,sans-serif;font-weight:400;font-size:16px;line-height:1.55;color:var(--brown);background:var(--page-bg);-webkit-font-smoothing:antialiased}
+a{color:var(--terracotta);text-decoration:none;font-weight:600}
+a:hover{text-decoration:underline}
+img{max-width:100%;display:block}
+.skip-link{position:absolute;left:-9999px;z-index:999}
+.skip-link:focus{left:8px;top:8px;padding:8px 16px;background:var(--brown);color:var(--cream)}
+.vh{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+.wrap{max-width:1240px;margin:0 auto;padding:0 20px}
 
-.font-display{font-family:"Playfair Display",Georgia,serif;font-weight:800;}
-.wrap{max-width:1180px;margin:0 auto;padding:0 20px;}
-@media (min-width:768px){.wrap{padding:0 32px;}}
+/* =================== HEADER (Oja-style, same as store pages) =================== */
+.mp-head{position:sticky;top:0;z-index:60;background:#fff;box-shadow:0 1px 0 var(--mp-border)}
+.mp-announce{background:var(--mp-navy);color:#fff;text-align:center;padding:10px 20px;font-size:.8rem;font-weight:500;line-height:1.4}
+.mp-announce p{margin:0 auto;max-width:960px}
+.mp-announce strong{color:#fcd34d}
+.mp-util{font-size:.78rem;border-bottom:1px solid var(--mp-border);background:#fff;color:#374151}
+.mp-util-inner{max-width:1240px;margin:0 auto;padding:10px 20px;display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap}
+.mp-util-nav{display:flex;flex-wrap:wrap;gap:10px 20px;align-items:center}
+.mp-util-nav a{color:#1f2937;font-weight:500;font-size:.8rem}
+.mp-util-nav a:hover{color:var(--oja-blue);text-decoration:underline}
+.mp-util-right{display:flex;flex-wrap:wrap;align-items:center;gap:12px 20px;justify-content:flex-end;flex:1;min-width:0;font-size:.75rem;color:var(--muted)}
+.mp-shield{display:inline-flex;align-items:center;gap:8px;max-width:min(360px,100%)}
+.mp-shield svg{flex-shrink:0;opacity:.85}
+.mp-locale{display:inline-flex;align-items:center;gap:6px;font-weight:600;color:#374151;white-space:nowrap}
+.mp-locale-sep{opacity:.35}
+@media(max-width:900px){.mp-hide-sm{display:none!important}}
+@media(max-width:720px){.mp-hide-xs{display:none!important}}
+@media(max-width:560px){.mp-hide-narrow{display:none!important}}
+.mp-main{background:#fff;border-bottom:1px solid var(--mp-border)}
+.mp-main-inner{max-width:1240px;margin:0 auto;padding:18px 20px 16px;display:grid;grid-template-columns:1fr;gap:14px;align-items:center}
+@media(min-width:900px){.mp-main-inner{grid-template-columns:minmax(160px,260px) minmax(0,1fr) auto;gap:24px}}
+.mp-brand{display:flex;align-items:flex-start;gap:12px;color:inherit;min-width:0}
+.mp-brand-text{display:flex;flex-direction:column;gap:2px;min-width:0}
+.mp-brand-name{font-family:"Playfair Display",Georgia,serif;font-weight:800;font-size:clamp(1.2rem,2.6vw,1.45rem);color:var(--terracotta);line-height:1.15}
+.mp-brand-tag{font-size:.72rem;color:var(--muted);font-weight:500;line-height:1.3}
+.mp-search input{width:100%;padding:12px 16px 12px 44px;border:1px solid var(--mp-border);border-radius:10px;font:inherit;font-size:.95rem;background:#f3f4f6 url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='18' height='18' viewBox='0 0 24 24' fill='none' stroke='%239ca3af' stroke-width='2'%3E%3Ccircle cx='11' cy='11' r='7'/%3E%3Cpath d='M20 20l-4-4'/%3E%3C/svg%3E") no-repeat 14px center;background-size:18px}
+.mp-search input:focus{outline:2px solid rgba(37,99,235,.25);border-color:var(--oja-blue);background-color:#fff}
+.mp-actions{display:flex;align-items:center;gap:14px;flex-shrink:0;justify-content:flex-end}
+.mp-user{display:flex;align-items:center;justify-content:center;width:40px;height:40px;border-radius:999px;border:1px solid var(--mp-border);color:#4b5563;background:#fafafa}
+.mp-user:hover{border-color:var(--oja-blue);color:var(--oja-blue)}
+.mp-basket-total{font-weight:800;font-size:1.05rem;color:var(--text-dark);min-width:3.5ch;text-align:right}
+.nav-cart{position:relative;border:1px solid var(--mp-border);background:#fafafa;color:var(--brown);border-radius:10px;padding:8px 14px;font-weight:700;font-size:.95rem;display:inline-flex;align-items:center;gap:8px;font-family:inherit;cursor:pointer}
+.nav-cart:hover{border-color:var(--terracotta);color:var(--terracotta)}
+.nav-cart .nb{position:absolute;top:-7px;right:-7px;min-width:20px;height:20px;border-radius:999px;background:var(--red);color:#fff;font-size:.68rem;display:flex;align-items:center;justify-content:center;font-weight:800;border:2px solid #fff}
 
-/* Top bar */
-.topbar{background:var(--terracotta);color:var(--cream);text-align:center;padding:10px 16px;font-size:13px;font-weight:500;}
-.topbar strong{color:var(--gold-soft);}
+/* Category nav */
+.mp-cat-nav{background:#fff;border-bottom:1px solid var(--mp-border)}
+.mp-cat-nav-inner{max-width:1240px;margin:0 auto;padding:8px 20px 14px;display:flex;flex-direction:column;gap:12px}
+@media(min-width:960px){.mp-cat-nav-inner{flex-direction:row;align-items:center;gap:20px}}
+.mp-all-cat-block{display:flex;flex-direction:column;align-items:flex-start;gap:6px;flex-shrink:0}
+.mp-all-cat-btn{display:inline-flex;align-items:center;gap:10px;background:var(--oja-blue);color:#fff;border:none;border-radius:8px;padding:11px 16px;font-weight:800;font-size:.68rem;letter-spacing:.05em;cursor:pointer;text-transform:uppercase;font-family:inherit;box-shadow:0 2px 6px rgba(37,99,235,.35)}
+.mp-all-cat-btn:hover{filter:brightness(1.06)}
+.mp-prod-total{font-size:.62rem;font-weight:800;letter-spacing:.06em;color:#9ca3af;text-transform:uppercase;white-space:nowrap;padding-left:4px}
+.mp-cat-links{flex:1;min-width:0;display:flex;gap:0;overflow-x:auto;padding:4px 0;scrollbar-width:thin;-webkit-overflow-scrolling:touch}
+.mp-cat-links a{flex-shrink:0;padding:10px 12px;font-size:.68rem;font-weight:800;color:#111827;text-transform:uppercase;letter-spacing:.04em;white-space:nowrap;text-decoration:none}
+.mp-cat-links a:hover{color:var(--oja-blue);text-decoration:none}
 
-/* Nav */
-header.site{background:var(--white);border-bottom:1px solid var(--cream-dark);position:sticky;top:0;z-index:100;}
-.nav-inner{display:flex;align-items:center;justify-content:space-between;padding:14px 20px;max-width:1180px;margin:0 auto;flex-wrap:wrap;gap:12px;}
-.brand{display:flex;flex-direction:column;gap:2px;}
-.brand-name{font-family:"Playfair Display",Georgia,serif;font-size:1.5rem;font-weight:800;color:var(--terracotta);line-height:1.1;}
-.brand-tag{font-size:12px;color:var(--brown-muted);max-width:280px;}
-.nav-actions{display:flex;align-items:center;gap:10px;flex-wrap:wrap;}
-.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:12px 22px;border-radius:var(--radius-sm);font-family:Inter,sans-serif;font-size:15px;font-weight:600;border:none;cursor:pointer;transition:transform .15s,box-shadow .2s;min-height:48px;}
-.btn:active{transform:scale(.98);}
-.btn-primary{background:var(--terracotta);color:var(--white);}
-.btn-primary:hover{background:var(--terracotta-dark);}
-.btn-secondary{background:var(--white);color:var(--terracotta);border:2px solid var(--terracotta);}
-.btn-secondary:hover{background:var(--cream);}
-.btn-gold{background:linear-gradient(135deg,var(--gold),#B8860B);color:var(--brown);}
-.btn-gold:hover{filter:brightness(1.05);}
+/* =================== HERO BANNERS =================== */
+.hero{padding:24px 0 8px}
+.hero-grid{display:grid;grid-template-columns:1fr;gap:18px}
+@media(min-width:760px){.hero-grid{grid-template-columns:2fr 1fr}}
+.banner{position:relative;border-radius:18px;overflow:hidden;padding:36px 28px;min-height:240px;display:flex;flex-direction:column;justify-content:center;color:#fff;isolation:isolate}
+.banner.b1{background:linear-gradient(135deg,#8B3A3A 0%,#5c2626 100%)}
+.banner.b2{background:linear-gradient(135deg,#0f2744 0%,#1e3a5f 100%)}
+.banner.b3{background:linear-gradient(135deg,#D4A017 0%,#a67c14 100%);color:#fff}
+.banner::after{content:"";position:absolute;inset:auto -60px -80px auto;width:280px;height:280px;background:radial-gradient(closest-side,rgba(255,255,255,.18),transparent);z-index:-1}
+.banner .tag{font-size:.7rem;font-weight:800;text-transform:uppercase;letter-spacing:.12em;opacity:.85}
+.banner h2{font-family:"Playfair Display",Georgia,serif;font-size:clamp(1.4rem,3.2vw,2rem);margin:6px 0 10px;line-height:1.15}
+.banner p{font-size:.92rem;opacity:.85;max-width:380px;margin-bottom:18px}
+.banner .price{font-size:.78rem;opacity:.8;margin-top:-4px}
+.banner .price strong{font-size:1.05rem;display:block;color:#fcd34d;margin-top:2px}
+.banner.b3 .price strong{color:#fff}
+.banner a.cta{display:inline-flex;align-items:center;gap:8px;background:#fff;color:var(--brown);border:none;padding:11px 18px;border-radius:999px;font-weight:700;font-size:.85rem;text-decoration:none;align-self:flex-start;width:max-content}
+.banner a.cta:hover{filter:brightness(1.05);text-decoration:none}
+.banner-stack{display:grid;grid-template-rows:1fr 1fr;gap:18px}
+@media(max-width:760px){.banner-stack{grid-template-rows:auto;gap:18px}}
 
-/* Hero */
-.hero{padding:52px 0 60px;background:linear-gradient(165deg,var(--cream) 0%,#EDE8E0 50%,var(--cream-dark) 100%);position:relative;overflow:hidden;}
-.hero.marketplace .hero-inner{text-align:center;}
-.hero::before{content:"";position:absolute;inset:0;background:url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%238B3A3A' fill-opacity='0.04'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4V0H2v4H0v2h4v4H2v2h4v2h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");opacity:.6;pointer-events:none;}
-.hero-inner{position:relative;z-index:1;text-align:center;max-width:920px;margin:0 auto;}
-.hero h1{font-family:"Playfair Display",Georgia,serif;font-size:clamp(1.85rem,5vw,3rem);font-weight:800;color:var(--brown);line-height:1.12;margin-bottom:16px;}
-.hero-sub{font-size:clamp(1rem,2.4vw,1.2rem);color:var(--brown-muted);max-width:640px;margin:0 auto 28px;}
-.hero-cta{display:flex;flex-wrap:wrap;gap:12px;justify-content:center;margin-bottom:36px;}
-.trust-row{display:flex;flex-wrap:wrap;justify-content:center;gap:14px 24px;font-size:14px;color:var(--brown-muted);}
-.trust-item{display:inline-flex;align-items:center;gap:8px;background:var(--white);padding:10px 16px;border-radius:999px;box-shadow:var(--shadow);border:1px solid var(--cream-dark);}
-.trust-item strong{font-family:Inter,sans-serif;font-weight:700;color:var(--terracotta);font-variant-numeric:tabular-nums;}
+/* =================== HOW IT WORKS STRIP =================== */
+.how{background:var(--cream);padding:24px 0;margin:24px 0 0;border-top:1px solid var(--mp-border);border-bottom:1px solid var(--mp-border)}
+.how-grid{display:grid;grid-template-columns:1fr;gap:14px}
+@media(min-width:680px){.how-grid{grid-template-columns:repeat(3,1fr)}}
+.how-step{display:flex;align-items:flex-start;gap:14px;padding:12px;background:#fff;border-radius:12px;border:1px solid #ece5d8}
+.how-step .num{flex-shrink:0;width:36px;height:36px;border-radius:50%;background:var(--terracotta);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:.95rem}
+.how-step strong{display:block;color:var(--text-dark);font-size:.92rem;margin-bottom:2px}
+.how-step span{color:var(--muted);font-size:.8rem;line-height:1.4}
 
-/* Section common */
-section{padding:56px 0;}
-section.alt{background:var(--white);}
-.section-head{text-align:center;margin-bottom:40px;}
-.section-head h2{font-family:"Playfair Display",Georgia,serif;font-size:clamp(1.6rem,4vw,2.25rem);color:var(--brown);margin-bottom:10px;}
-.section-head p{color:var(--brown-muted);max-width:640px;margin:0 auto;font-size:1.05rem;}
+/* =================== SECTION HEADER =================== */
+.sec-h{display:flex;align-items:baseline;justify-content:space-between;gap:14px;margin:48px 0 16px;flex-wrap:wrap}
+.sec-h h2{font-family:"Playfair Display",Georgia,serif;font-size:clamp(1.25rem,2.6vw,1.65rem);color:var(--text-dark);margin:0}
+.sec-h .sub{font-size:.82rem;color:var(--muted)}
+.sec-h .more{font-size:.78rem;font-weight:700;color:var(--terracotta);text-transform:uppercase;letter-spacing:.06em;text-decoration:none}
+.sec-h .more:hover{text-decoration:underline}
 
-/* Community navigator */
-.comm-tabs{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;margin-bottom:28px;}
-.comm-tab{font-family:Inter,sans-serif;font-size:16px;font-weight:600;padding:16px 28px;border-radius:var(--radius);border:2px solid var(--cream-dark);background:var(--white);cursor:pointer;transition:all .2s;color:var(--brown);}
-.comm-tab:hover{border-color:var(--gold);background:var(--cream);}
-.comm-tab[aria-selected="true"]{background:var(--terracotta);color:var(--white);border-color:var(--terracotta);}
-.comm-panels{max-width:900px;margin:0 auto;}
-.comm-panel{display:none;}
-.comm-panel.active{display:block;}
-.chip-wrap{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:24px;justify-content:center;}
-.chip{font-size:13px;padding:8px 14px;background:var(--cream);border-radius:999px;color:var(--brown-muted);border:1px solid var(--cream-dark);}
-.comm-featured{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:16px;}
-.mini-card{background:var(--white);border-radius:var(--radius);padding:18px;border:1px solid var(--cream-dark);box-shadow:var(--shadow);}
-.mini-card h3{font-size:17px;margin-bottom:8px;color:var(--terracotta);}
-.mini-card p{font-size:14px;color:var(--brown-muted);}
+/* =================== PRODUCT GRID =================== */
+.pgrid{display:grid;grid-template-columns:repeat(2,1fr);gap:14px}
+@media(min-width:560px){.pgrid{grid-template-columns:repeat(3,1fr)}}
+@media(min-width:880px){.pgrid{grid-template-columns:repeat(4,1fr)}}
+@media(min-width:1100px){.pgrid{grid-template-columns:repeat(5,1fr)}}
+.pcard{background:#fff;border:1px solid var(--mp-border);border-radius:12px;overflow:hidden;display:flex;flex-direction:column;transition:box-shadow .15s,transform .15s}
+.pcard:hover{box-shadow:0 8px 24px rgba(15,39,68,.08);transform:translateY(-2px)}
+.pcard a.pa{text-decoration:none;color:inherit;display:flex;flex-direction:column;height:100%;padding:14px}
+.pimg-wrap{aspect-ratio:1;background:#f3f4f6;border-radius:10px;overflow:hidden;margin-bottom:12px;position:relative}
+.pimg-wrap img{width:100%;height:100%;object-fit:cover}
+.pimg-wrap .ph{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:2.2rem;color:#9ca3af}
+.pcard h3{font-size:.86rem;font-weight:600;color:var(--text-dark);line-height:1.3;margin-bottom:6px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;min-height:2.3em}
+.pcard .store-line{font-size:.7rem;color:var(--muted);margin-bottom:8px;font-weight:500}
+.pcard .pr{font-weight:800;color:var(--terracotta);font-size:1.05rem;margin-top:auto}
+.pcard .stock{font-size:.7rem;color:var(--ok);font-weight:700;margin-top:4px}
+.pgrid-skel .pcard{min-height:240px;animation:skl 1s ease-in-out infinite alternate;background:linear-gradient(180deg,#f9fafb,#f3f4f6)}
+@keyframes skl{from{opacity:.6}to{opacity:1}}
+.pgrid-empty{padding:32px 16px;text-align:center;color:var(--muted);border:1px dashed var(--mp-border);border-radius:12px}
 
-/* Popular products preview */
-.pp-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:14px;}
-@media (min-width:640px){.pp-grid{grid-template-columns:repeat(3,1fr);}}
-@media (min-width:900px){.pp-grid{grid-template-columns:repeat(4,1fr);}}
-@media (min-width:1100px){.pp-grid{grid-template-columns:repeat(6,1fr);}}
-.pp-card{background:var(--white);border:1px solid var(--cream-dark);border-radius:var(--radius-sm);padding:14px 12px;text-align:center;text-decoration:none;color:var(--brown);transition:box-shadow .2s,border-color .2s,transform .15s;display:flex;flex-direction:column;align-items:center;gap:6px;position:relative;}
-.pp-card:hover{box-shadow:var(--shadow-hover);border-color:var(--gold);transform:translateY(-2px);}
-.pp-card .pp-emoji{font-size:2.5rem;line-height:1;display:block;margin-top:4px;}
-.pp-card .pp-name{font-size:14px;font-weight:700;margin:4px 0 2px;color:var(--brown);}
-.pp-card .pp-tag{font-size:11px;color:var(--brown-muted);text-transform:uppercase;letter-spacing:.04em;}
-.pp-badge{position:absolute;top:8px;right:8px;background:var(--gold);color:var(--brown);font-size:10px;font-weight:700;padding:3px 7px;border-radius:999px;text-transform:uppercase;letter-spacing:.04em;}
-.pp-foot{text-align:center;color:var(--brown-muted);font-size:14px;margin-top:24px;}
-.pp-foot a{font-weight:700;color:var(--terracotta);}
+/* =================== CATEGORIES TILES =================== */
+.cgrid{display:grid;grid-template-columns:repeat(2,1fr);gap:14px}
+@media(min-width:560px){.cgrid{grid-template-columns:repeat(3,1fr)}}
+@media(min-width:880px){.cgrid{grid-template-columns:repeat(4,1fr)}}
+.ccard{background:#fff;border:1px solid var(--mp-border);border-radius:12px;padding:20px 18px;color:inherit;text-decoration:none;display:flex;align-items:center;gap:14px;transition:box-shadow .15s,transform .15s}
+.ccard:hover{box-shadow:0 8px 24px rgba(15,39,68,.08);transform:translateY(-2px);text-decoration:none;border-color:var(--oja-blue)}
+.ccard .ico{flex-shrink:0;width:54px;height:54px;border-radius:14px;background:var(--cream);display:flex;align-items:center;justify-content:center;font-size:1.6rem}
+.ccard strong{display:block;color:var(--text-dark);font-size:.96rem;line-height:1.2;margin-bottom:2px}
+.ccard span{display:block;color:var(--muted);font-size:.78rem}
 
-/* Categories */
-.cat-rows{display:flex;flex-direction:column;gap:32px;}
-.cat-row h3{font-size:14px;text-transform:uppercase;letter-spacing:.08em;color:var(--terracotta);margin-bottom:14px;font-weight:700;}
-.cat-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;}
-@media (min-width:640px){.cat-grid{grid-template-columns:repeat(3,1fr);}}
-@media (min-width:900px){.cat-grid{grid-template-columns:repeat(6,1fr);}}
-.cat-cell{background:var(--white);border:1px solid var(--cream-dark);border-radius:var(--radius-sm);padding:16px 12px;text-align:center;font-size:14px;font-weight:600;color:var(--brown);transition:box-shadow .2s,border-color .2s;}
-.cat-cell:hover{box-shadow:var(--shadow-hover);border-color:var(--gold);}
-.cat-cell .ico{font-size:1.75rem;display:block;margin-bottom:8px;}
+/* =================== STORES STRIP =================== */
+.sgrid{display:grid;grid-template-columns:1fr;gap:14px}
+@media(min-width:600px){.sgrid{grid-template-columns:repeat(2,1fr)}}
+@media(min-width:900px){.sgrid{grid-template-columns:repeat(3,1fr)}}
+.scard{background:#fff;border:1px solid var(--mp-border);border-radius:14px;overflow:hidden;display:flex;flex-direction:column;color:inherit;text-decoration:none;transition:transform .15s,box-shadow .15s}
+.scard:hover{box-shadow:0 8px 24px rgba(15,39,68,.08);transform:translateY(-2px);text-decoration:none}
+.scard .cv{aspect-ratio:16/9;background:linear-gradient(135deg,#e5e7eb,#d1d5db) center/cover}
+.scard .cv.has-cover{background-size:cover;background-position:center}
+.scard .body{padding:16px}
+.scard h3{font-family:"Playfair Display",serif;font-size:1.1rem;color:var(--terracotta);margin-bottom:4px}
+.scard .meta{font-size:.78rem;color:var(--muted);margin-bottom:6px}
+.scard .tags{display:flex;flex-wrap:wrap;gap:5px;margin-top:8px}
+.scard .tag-chip{font-size:.65rem;background:var(--cream);border:1px solid #ece5d8;color:#4b5563;padding:3px 8px;border-radius:999px;font-weight:600}
 
-/* Local market */
-.stall-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:20px;}
-.stall-card{background:linear-gradient(145deg,#FFF9F0 0%,var(--white) 40%,#FFF5E6 100%);border:2px solid #E8D4B8;border-radius:var(--radius);overflow:hidden;box-shadow:var(--shadow);display:flex;flex-direction:column;}
-.stall-photo{height:140px;background:linear-gradient(135deg,var(--terracotta) 0%,#C4A574 100%);display:flex;align-items:center;justify-content:center;font-size:3rem;color:rgba(255,255,255,.9);}
-.stall-body{padding:18px;flex:1;display:flex;flex-direction:column;}
-.stall-body h3{font-family:"Playfair Display",Georgia,serif;font-size:1.2rem;margin-bottom:4px;color:var(--brown);}
-.stall-meta{font-size:13px;color:var(--brown-muted);margin-bottom:10px;}
-.stall-desc{font-size:14px;color:var(--brown-muted);flex:1;margin-bottom:14px;}
-.stall-card .btn{width:100%;padding:10px;font-size:14px;}
+/* =================== PROMO STRIP =================== */
+.promo-strip{background:linear-gradient(135deg,#fef3c7,#fde68a);border-radius:18px;padding:28px 24px;margin:48px 0 0;display:flex;align-items:center;gap:20px;flex-wrap:wrap;justify-content:space-between}
+.promo-strip h3{font-family:"Playfair Display",serif;font-size:1.35rem;color:var(--brown);margin-bottom:6px}
+.promo-strip p{color:#5c4033;font-size:.92rem;max-width:560px}
+.promo-strip a.cta{background:var(--terracotta);color:#fff;padding:12px 22px;border-radius:999px;font-weight:700;font-size:.9rem;white-space:nowrap;text-decoration:none}
+.promo-strip a.cta:hover{filter:brightness(1.05)}
 
-/* Cities */
-.city-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;}
-@media (min-width:600px){.city-grid{grid-template-columns:repeat(3,1fr);}}
-@media (min-width:900px){.city-grid{grid-template-columns:repeat(5,1fr);}}
-.city-card{background:var(--white);border:1px solid var(--cream-dark);border-radius:var(--radius-sm);padding:18px 14px;text-align:center;transition:all .2s;text-decoration:none;color:inherit;display:block;}
-.city-card:hover{border-color:var(--terracotta);box-shadow:var(--shadow);}
-.city-card .n{font-family:Inter,sans-serif;font-weight:800;font-size:1.5rem;color:var(--terracotta);}
-.city-card .l{font-size:14px;font-weight:600;color:var(--brown);margin-top:6px;}
-.city-card .city-thumb{width:100%;height:74px;border-radius:10px;margin:0 0 12px;background:linear-gradient(120deg,var(--forest),var(--terracotta)) center/cover no-repeat;background-color:var(--cream-dark);}
-.store-card-img.has-cover{background:none!important;}
+/* =================== NEWSLETTER =================== */
+.news{background:#0f2744;color:#fff;padding:36px 0;margin:48px 0 0;border-radius:18px}
+.news-inner{max-width:720px;margin:0 auto;padding:0 20px;text-align:center}
+.news h3{font-family:"Playfair Display",serif;font-size:1.4rem;margin-bottom:6px}
+.news p{font-size:.88rem;color:#cbd5e1;margin-bottom:18px}
+.news form{display:flex;gap:8px;flex-wrap:wrap;justify-content:center}
+.news input[type=email]{flex:1;min-width:220px;padding:12px 14px;border-radius:10px;border:none;font:inherit;font-size:.95rem;background:#fff;color:#111827}
+.news button{background:#fcd34d;color:#0f2744;border:none;padding:12px 22px;border-radius:10px;font-weight:800;cursor:pointer;font-family:inherit;font-size:.92rem}
+.news button:hover{filter:brightness(1.05)}
+.news small{color:#94a3b8;font-size:.72rem;display:block;margin-top:10px}
 
-/* Hero — marketplace */
-.hero.marketplace{background:linear-gradient(145deg,#FFF9F4 0%,var(--cream) 38%,#EEDFCC 100%);}
-.hero .hero-kicker{display:inline-flex;align-items:center;gap:8px;background:rgba(212,160,23,.22);border:1px solid rgba(139,58,58,.18);padding:10px 18px;border-radius:999px;font-size:14px;font-weight:700;color:var(--terracotta);margin-bottom:18px;font-family:Inter,sans-serif;}
-.hero h1{font-family:"Playfair Display",Georgia,serif;font-size:clamp(2rem,5.5vw,3.35rem);}
-.hero-sub{max-width:720px!important;}
-.hero-strap{font-size:16px;color:var(--forest);font-weight:600;margin:-8px auto 22px;line-height:1.45;font-family:Inter,sans-serif;}
+/* =================== FOOTER =================== */
+.mp-foot{background:#fafafa;border-top:1px solid var(--mp-border);margin-top:56px;color:#4b5563;font-size:.88rem}
+.mp-foot-grid{max-width:1240px;margin:0 auto;padding:44px 20px 32px;display:grid;grid-template-columns:1fr;gap:32px}
+@media(min-width:640px){.mp-foot-grid{grid-template-columns:repeat(2,1fr)}}
+@media(min-width:900px){.mp-foot-grid{grid-template-columns:repeat(5,minmax(0,1fr))}}
+.mp-foot-col{min-width:0}
+.mp-foot-h{font-size:.69rem;font-weight:800;text-transform:uppercase;letter-spacing:.09em;color:var(--text-dark);margin:0 0 14px}
+.mp-foot a{display:block;color:#4b5563;font-weight:500;text-decoration:none;margin-bottom:10px;font-size:.84rem}
+.mp-foot a:hover{color:var(--oja-blue)}
+.mp-foot-payments{max-width:1240px;margin:0 auto;padding:0 20px 20px;display:flex;flex-wrap:wrap;align-items:center;gap:14px 24px;justify-content:center;border-bottom:1px solid var(--mp-border)}
+.mp-foot-paylab{font-size:.75rem;color:#9ca3af;font-weight:600}
+.mp-pay-badges{display:flex;flex-wrap:wrap;gap:8px;align-items:center;justify-content:center}
+.mp-pay-badge{font-size:.65rem;font-weight:700;color:#9ca3af;border:1px solid #e5e7eb;border-radius:4px;padding:6px 10px;letter-spacing:.04em;background:#fff}
+.mp-foot-bar{max-width:1240px;margin:0 auto;padding:18px 20px;display:flex;flex-wrap:wrap;gap:14px;align-items:center;justify-content:space-between;font-size:.76rem;color:#9ca3af}
+.mp-foot-legal{display:flex;flex-wrap:wrap;gap:14px 18px;align-items:center}
+.mp-foot-legal a{color:#6b7280;font-weight:600}
+.mp-back-top{position:fixed;right:18px;bottom:28px;z-index:55;width:44px;height:44px;border-radius:999px;border:1px solid var(--mp-border);background:#fff;color:#374151;cursor:pointer;box-shadow:0 4px 18px rgba(0,0,0,.12);font-size:1.1rem;line-height:1;display:flex;align-items:center;justify-content:center}
+.mp-back-top:hover{background:var(--oja-blue);color:#fff;border-color:var(--oja-blue)}
 
-/* Browse by heritage */
-.culture-browse{padding:48px 0 56px;}
-.culture-intro{max-width:720px;margin:0 auto;text-align:center;}
-.culture-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:28px;}
-@media(min-width:640px){.culture-grid{grid-template-columns:repeat(3,1fr);gap:14px}}
-@media(min-width:900px){.culture-grid{grid-template-columns:repeat(5,1fr);}}
-.culture-card{display:flex;flex-direction:column;align-items:flex-start;text-align:left;padding:18px 16px;background:var(--white);border:2px solid var(--cream-dark);border-radius:var(--radius);cursor:pointer;font:inherit;color:var(--brown);font-weight:600;font-size:15px;transition:border-color .2s,transform .15s,box-shadow .2s;min-height:56px;line-height:1.25;}
-@media(min-width:900px){.culture-card:nth-child(n+10){grid-column:span 1;}}
-.culture-grid .culture-card:last-child:nth-child(9){grid-column:span 3;}
-@media(min-width:900px){.culture-grid .culture-card:last-child:nth-child(9){grid-column:span 1;}}
-.culture-card:hover,.culture-card:focus-visible{border-color:var(--gold);box-shadow:var(--shadow-hover);transform:translateY(-2px);}
-.culture-card small{display:block;margin-top:4px;font-weight:500;font-size:13px;color:var(--brown-muted);}
-.culture-card.on{border-color:var(--terracotta);background:rgba(212,160,23,.09);}
-.hero-pill-note{font-size:14px;color:var(--brown-muted);margin-top:16px;line-height:1.5;font-style:italic;}
-.filter-hint{font-size:14px;color:var(--terracotta);text-align:center;margin:12px 0 0;font-weight:600;}
-.filter-hint:empty{display:none;}
-
-/* Featured product grid */
-.fp-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:16px;margin-top:8px;}
-@media(min-width:640px){.fp-grid{grid-template-columns:repeat(3,1fr);}}
-@media(min-width:980px){.fp-grid{grid-template-columns:repeat(4,1fr);}}
-.fp-card{background:var(--white);border:1px solid var(--cream-dark);border-radius:var(--radius);overflow:hidden;display:flex;flex-direction:column;transition:opacity .35s,border-color .2s;}
-.fp-card.culture-hide{opacity:.22;pointer-events:none;filter:grayscale(.25);}
-.fp-img{width:100%;aspect-ratio:4/3;object-fit:cover;background:linear-gradient(120deg,var(--cream-dark),var(--cream));}
-.fp-body{padding:14px;display:flex;flex-direction:column;flex:1;gap:6px;}
-.fp-title{font-size:15px;font-weight:700;line-height:1.3;color:var(--brown);}
-.fp-price{font-family:Inter,sans-serif;font-weight:800;color:var(--terracotta);font-size:1.1rem;}
-.fp-store{font-size:13px;color:var(--brown-muted);}
-.fp-card .btn-add{margin-top:auto;width:100%;min-height:48px;background:var(--terracotta);color:var(--white);border:none;border-radius:var(--radius-sm);font-weight:600;font-size:14px;cursor:pointer;}
-.fp-card .btn-add:hover{background:var(--terracotta-dark);}
-#basket-flash{position:fixed;bottom:100px;left:50%;transform:translateX(-50%);z-index:10001;background:var(--forest);color:var(--cream);padding:12px 22px;border-radius:999px;font-weight:600;box-shadow:var(--shadow);opacity:0;pointer-events:none;transition:opacity .25s;font-size:15px;}
-
-/* Pilot merchant cards */
-.featured-note{text-align:center;font-size:14px;color:var(--brown-muted);max-width:640px;margin:0 auto 20px;line-height:1.5;}
-.pilot-badge-chip{display:inline-block;background:rgba(212,160,23,.35);border:1px solid var(--gold);color:var(--brown);padding:6px 12px;font-size:12px;font-weight:800;text-transform:none;border-radius:999px;margin-bottom:10px;font-family:Inter,sans-serif;letter-spacing:.02em;}
-.herit-chip{display:inline-flex;align-items:center;padding:5px 10px;font-size:12px;background:var(--cream);border:1px solid var(--cream-dark);border-radius:999px;color:var(--brown-muted);margin:2px;font-weight:600;}
-.store-card-actions{display:flex;flex-direction:column;gap:10px;margin-top:auto;}
-.ver-wrap{display:flex;align-items:center;gap:10px;margin:8px 0 6px;font-size:13px;color:var(--forest);font-weight:700;}
-
-/* Featured scroll */
-.featured-wrap{overflow:hidden;margin:0 -20px;padding:0 20px;}
-@media (min-width:768px){.featured-wrap{margin:0 -32px;padding:0 32px;}}
-.featured-track{display:flex;gap:18px;overflow-x:auto;scroll-snap-type:x mandatory;padding-bottom:12px;-webkit-overflow-scrolling:touch;scrollbar-width:thin;}
-.featured-track::-webkit-scrollbar{height:8px;}
-.featured-track::-webkit-scrollbar-thumb{background:var(--cream-dark);border-radius:4px;}
-.store-card{
-  flex:0 0 min(300px,85vw);scroll-snap-align:start;background:var(--white);border-radius:var(--radius);border:1px solid var(--cream-dark);overflow:hidden;box-shadow:var(--shadow);
-  transition:opacity .35s,filter .35s,border-color .2s;
-}
-.store-card.culture-hide{opacity:.22;pointer-events:none;filter:grayscale(.35);}
-.store-card-img{height:150px;background:linear-gradient(120deg,var(--forest),var(--terracotta));display:flex;align-items:center;justify-content:center;font-size:2.5rem;}
-.store-card-body{padding:16px;}
-.store-card-body h3{font-size:1.1rem;margin-bottom:4px;}
-.store-card-body .city{font-size:13px;color:var(--brown-muted);}
-.store-cats{font-size:12px;color:var(--forest);margin:8px 0;}
-.stars{color:var(--gold);letter-spacing:2px;font-size:14px;}
-
-/* Cultural calendar */
-.cal-track{display:flex;gap:14px;overflow-x:auto;scroll-snap-type:x mandatory;padding-bottom:12px;-webkit-overflow-scrolling:touch;}
-.cal-card{flex:0 0 min(260px,80vw);scroll-snap-align:start;background:var(--white);border:1px solid var(--cream-dark);border-radius:var(--radius-sm);padding:18px;min-height:120px;display:flex;flex-direction:column;justify-content:space-between;}
-.cal-card h4{font-size:15px;color:var(--terracotta);margin-bottom:6px;}
-.cal-card p{font-size:13px;color:var(--brown-muted);}
-.cal-card a{font-size:14px;font-weight:600;margin-top:10px;}
-
-/* Impact */
-.impact{background:linear-gradient(180deg,var(--brown) 0%,#1a0f0a 100%);color:var(--cream);padding:64px 0;}
-.impact h2{color:var(--gold-soft);text-align:center;margin-bottom:8px;}
-.impact-sub{text-align:center;color:rgba(245,240,232,.75);margin-bottom:40px;font-size:15px;}
-.impact-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:24px;}
-@media (min-width:768px){.impact-grid{grid-template-columns:repeat(4,1fr);}}
-.impact-stat{text-align:center;padding:20px;}
-.impact-num{font-family:Inter,sans-serif;font-weight:800;font-size:clamp(2rem,5vw,3rem);color:var(--gold);line-height:1.1;font-variant-numeric:tabular-nums;}
-.impact-label{font-size:14px;color:rgba(245,240,232,.85);margin-top:8px;}
-
-/* How it works */
-.how-grid{display:grid;gap:28px;}
-@media (min-width:900px){.how-grid{grid-template-columns:repeat(3,1fr);}}
-.how-col{background:var(--white);border:1px solid var(--cream-dark);border-radius:var(--radius);padding:24px;}
-.how-col h3{font-family:"Playfair Display",Georgia,serif;font-size:1.25rem;margin-bottom:16px;color:var(--terracotta);}
-.how-col ol{padding-left:20px;}
-.how-col li{margin-bottom:10px;font-size:15px;color:var(--brown-muted);}
-
-/* Why cards */
-.why-grid{display:grid;gap:20px;}
-@media (min-width:768px){.why-grid{grid-template-columns:repeat(3,1fr);}}
-.why-card{background:var(--white);border-radius:var(--radius);padding:26px;border:1px solid var(--cream-dark);box-shadow:var(--shadow);}
-.why-card h3{font-size:1.15rem;margin-bottom:12px;color:var(--terracotta);}
-.why-card p{font-size:15px;color:var(--brown-muted);}
-
-/* Owner CTA */
-.owner-cta{background:linear-gradient(135deg,var(--terracotta) 0%,var(--terracotta-dark) 100%);color:var(--cream);padding:56px 0;text-align:center;}
-.owner-cta h2{font-family:"Playfair Display",Georgia,serif;font-size:clamp(1.5rem,4vw,2rem);margin-bottom:12px;}
-.owner-cta p{opacity:.95;max-width:560px;margin:0 auto 24px;}
-.check-list{list-style:none;text-align:left;max-width:480px;margin:0 auto 28px;}
-.check-list li{padding:8px 0 8px 32px;position:relative;font-size:15px;}
-.check-list li::before{content:"✅";position:absolute;left:0;}
-.owner-cta .hero-cta{margin-bottom:0;}
-
-/* Footer */
-footer.site-footer{background:var(--brown);color:rgba(245,240,232,.88);padding:48px 0 24px;font-size:14px;}
-.footer-grid{display:grid;gap:32px;margin-bottom:36px;}
-@media (min-width:768px){.footer-grid{grid-template-columns:repeat(2,1fr);}}
-@media (min-width:1000px){.footer-grid{grid-template-columns:repeat(4,1fr);}}
-footer h4{font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:var(--gold-soft);margin-bottom:14px;}
-footer ul{list-style:none;}
-footer li{margin-bottom:8px;}
-footer a{color:rgba(245,240,232,.9);}
-footer a:hover{color:var(--gold-soft);}
-.footer-bottom{border-top:1px solid rgba(245,240,232,.15);padding-top:24px;display:flex;flex-wrap:wrap;gap:16px;justify-content:space-between;align-items:center;font-size:13px;}
-.social{display:flex;gap:14px;}
-.social a{font-weight:600;}
-
-.pwa-hint{font-size:12px;color:var(--brown-muted);margin-top:24px;text-align:center;}
-#clip-pwa-install[hidden]{display:none!important}
-#clip-pwa-install{position:fixed;bottom:0;left:0;right:0;z-index:9998;background:var(--white);border-top:2px solid var(--gold);padding:16px 18px;box-shadow:0 -6px 32px rgba(44,24,16,.12)}
-#clip-pwa-welcome[hidden]{display:none!important}
-#clip-pwa-welcome{position:fixed;inset:0;z-index:9999;background:var(--cream);padding:32px 20px;overflow-y:auto}
-#clip-pwa-welcome .wel-in{max-width:400px;margin:0 auto}
-#clip-recent-wrap{background:var(--white);border-top:1px solid var(--cream-dark);border-bottom:1px solid var(--cream-dark);padding:24px 0;display:none}
-#clip-recent-wrap.show{display:block}
-.clip-recent-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:12px}
-.clip-recent-grid a{background:var(--card);border:1px solid var(--cream-dark);border-radius:12px;padding:12px 14px;text-decoration:none;font-weight:600}
+main{display:block}
 </style>
 </head>
 <body>
-<a class="skip-link" href="#main">Skip to content</a>
-<div id="clip-pwa-install" hidden>
-  <div class="wrap" style="max-width:720px;margin:0 auto">
-    <p style="font-size:1rem;font-weight:600;margin:0 0 8px;color:var(--brown)">Shop African, Caribbean &amp; Asian stores from your phone — install the free Clip Services app</p>
-    <p style="font-size:14px;color:var(--brown-muted);margin:0 0 10px">⚡ Faster browsing · 🛒 Easy ordering · 🔔 Order updates</p>
-    <div class="hero-cta" style="margin:0;justify-content:flex-start">
-      <button type="button" class="btn btn-primary" data-pwa-install style="min-height:48px">Install app</button>
-      <button type="button" class="btn btn-secondary" data-pwa-later style="min-height:48px">Maybe later</button>
-    </div>
-  </div>
-</div>
-<div id="clip-pwa-welcome" hidden>
-  <div class="wel-in">
-    <p style="text-align:center"><img src="/icons/clip-logo-full.svg" alt="Clip Services" style="height:40px" /></p>
-    <h2 class="font-display" style="text-align:center;margin:12px 0 6px">Welcome to Clip Services</h2>
-    <p class="hero-sub" style="text-align:center">The UK’s African, Caribbean &amp; Asian marketplace</p>
-    <p style="font-weight:600;margin:20px 0 6px">Where are you located?</p>
-    <p style="margin:0 0 10px">
-      <button type="button" class="btn btn-secondary" data-wel-geo style="min-height:48px;width:100%;margin-bottom:8px">Use my location</button>
-    </p>
-    <p id="wel-geo-status" role="status" aria-live="polite" style="font-size:14px;color:var(--brown-muted);min-height:1.35em;margin:0 0 10px;text-align:center"></p>
-    <label for="wel-city" style="font-size:14px">Or pick a city</label>
-    <select id="wel-city" class="input" style="width:100%;min-height:48px;padding:12px;border-radius:10px;border:1px solid var(--cream-dark);font-size:16px;margin:8px 0 16px">
-      <option value="">All cities / skip</option>
-      <option>Manchester</option><option>London</option><option>Birmingham</option><option>Leeds</option><option>Leicester</option>
-      <option>Bradford</option><option>Bristol</option><option>Liverpool</option><option>Sheffield</option><option>Nottingham</option>
-    </select>
-    <button type="button" class="btn btn-primary" data-wel-go style="min-height:48px;width:100%">Find stores near me</button>
-    <p style="text-align:center;margin-top:16px"><button type="button" data-wel-close style="background:none;border:none;color:var(--terracotta);font-weight:600;cursor:pointer">Skip for now</button></p>
-  </div>
-</div>
-<div id="global-search-mount">
-  <form class="gs-bar" role="search" action="/search" method="get">
-    <div class="gs-bar-inner">
-      <a class="gs-home" href="/">Clip Services</a>
-      <div class="gs-field-wrap">
-        <div class="gs-input-wrap">
-          <input type="search" class="gs-input" id="gs-q" name="q" placeholder="Search products, stores, or stalls…" autocomplete="off" aria-label="Search products, stores, or stalls" />
-        </div>
-        <div class="gs-dd" id="gs-dd"></div>
-      </div>
-      <button type="submit" class="gs-submit" aria-label="Search">Search</button>
-      <a class="gs-all" href="/search">All results</a>
-    </div>
-  </form>
-</div>
-<div class="topbar" role="status">
-  <strong>Clip Services Ltd</strong> · UK registered · <span id="topbar-tagline">African, Caribbean & Asian Marketplace — Your Community, Online</span>
-</div>
 
-<header class="site">
-  <div class="nav-inner">
-    <div class="brand">
-      <span class="brand-name">Clip Services</span>
-      <span class="brand-tag">African, Caribbean & Asian Marketplace — Your Community, Online</span>
-    </div>
-    <nav class="nav-actions" aria-label="Primary">
-      <a class="btn btn-secondary" href="/stores">Browse Stores</a>
-      <a class="btn btn-primary" href="/store-owner">List Your Store</a>
-    </nav>
+<a class="skip-link" href="#main">Skip to main content</a>
+
+<!-- =================== HEADER =================== -->
+<div class="mp-head">
+  <div class="mp-announce" role="region" aria-label="Notice">
+    <p>Shop UK independents — secure card &amp; wallet payments via Stripe. <strong class="mp-hide-xs">Collect or get local delivery.</strong></p>
   </div>
-</header>
+  <div class="mp-util">
+    <div class="mp-util-inner">
+      <nav class="mp-util-nav" aria-label="Quick links">
+        <a href="/terms">Return policy</a>
+        <a href="/customer/orders/">Order tracking</a>
+        <a href="/user">My account</a>
+        <a href="mailto:clipservices26@gmail.com">Contact</a>
+      </nav>
+      <div class="mp-util-right">
+        <span class="mp-shield mp-hide-xs">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 3l8 4v5c0 5-3.5 9.5-8 11-4.5-1.5-8-6-8-11V7l8-4z" stroke="#6b7280" stroke-width="1.5"/></svg>
+          <span>100% secure checkout — you pay on Stripe; the store packs your order.</span>
+        </span>
+        <span class="mp-locale"><span>English</span><span class="mp-locale-sep">|</span><span>GBP</span></span>
+      </div>
+    </div>
+  </div>
+  <header class="mp-main" role="banner">
+    <div class="mp-main-inner">
+      <a class="mp-brand" href="/">
+        <span aria-hidden="true">
+          <svg width="44" height="44" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <rect x="4" y="10" width="32" height="22" rx="3" fill="#F5F0E8" stroke="#8B3A3A" stroke-width="1.5"/>
+            <path d="M8 18h24M12 26h8" stroke="#8B3A3A" stroke-width="1.5" stroke-linecap="round"/>
+            <path d="M20 4v7" stroke="#D4A017" stroke-width="2" stroke-linecap="round"/>
+            <circle cx="20" cy="4" r="2" fill="#D4A017"/>
+          </svg>
+        </span>
+        <span class="mp-brand-text">
+          <span class="mp-brand-name">Clip Services</span>
+          <span class="mp-brand-tag">UK marketplace · African · Caribbean · Asian</span>
+        </span>
+      </a>
+      <div class="mp-search" role="search">
+        <label class="vh" for="hd-search">Search products and stores</label>
+        <input type="search" id="hd-search" name="q" autocomplete="off" enterkeyhint="search" placeholder="Search for products, stores, recipes..." />
+      </div>
+      <div class="mp-actions">
+        <a class="mp-user mp-hide-narrow" href="/user" aria-label="My account">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M6 20v-1a6 6 0 0112 0v1"/></svg>
+        </a>
+        <span class="mp-basket-total" id="nav-total" aria-live="polite">£0.00</span>
+        <a class="nav-cart" href="/customer/orders/" aria-label="Your orders"><span aria-hidden="true">🛒</span><span class="nb" id="nav-badge">0</span></a>
+      </div>
+    </div>
+  </header>
+  <nav class="mp-cat-nav" aria-label="Browse categories">
+    <div class="mp-cat-nav-inner">
+      <div class="mp-all-cat-block">
+        <a class="mp-all-cat-btn" href="/stores"><span aria-hidden="true">☰</span><span>All categories</span></a>
+        <span class="mp-prod-total" id="header-cat-count">Browse all UK stores</span>
+      </div>
+      <div class="mp-cat-links" aria-label="Top categories">
+        <a href="/categories/fresh-produce">Fresh Produce</a>
+        <a href="/categories/meat-fish">Meat &amp; Fish</a>
+        <a href="/categories/groceries">Groceries</a>
+        <a href="/categories/snacks">Snacks</a>
+        <a href="/categories/drinks">Drinks</a>
+        <a href="/categories/frozen">Frozen</a>
+        <a href="/categories/halal">Halal</a>
+        <a href="/categories/spices">Spices</a>
+        <a href="/categories/hair-beauty">Hair &amp; Beauty</a>
+      </div>
+    </div>
+  </nav>
+</div>
 
 <main id="main">
-  <!-- 1 HERO -->
-  <section class="hero marketplace" aria-labelledby="hero-title">
-    <div class="wrap hero-inner">
-      <p class="hero-kicker" role="presentation">🏪 Marketplace · multicultural groceries · independent stores across the UK</p>
-      <h1 id="hero-title" class="font-display">Shop the tastes you grew up with — from real local stores</h1>
-      <p class="hero-strap font-display" style="font-size:clamp(1.05rem,2.5vw,1.35rem);color:var(--terracotta)">Find multicultural groceries from independent shops and stalls you can trust.</p>
-      <p class="hero-sub">Independent African, Caribbean, and Asian grocers list here with their full shelves — not one central warehouse pretending to speak for everyone. Search, browse by heritage, add to basket, then collect or arrange delivery straight with the trader.</p>
-      <div class="hero-cta">
-        <a class="btn btn-primary" href="/stores">Browse all stores</a>
-        <a class="btn btn-gold" href="#browse-culture">Shop by heritage</a>
-        <a class="btn btn-secondary" href="/store-owner">List your shop</a>
-      </div>
-      <p class="hero-pill-note">Real shops · Real ingredients · Receipts handled safely with Stripe</p>
-      <div class="trust-row" aria-label="Trust indicators">
-        <span class="trust-item" id="trust-stores-item" hidden>🏪 <strong id="trust-stores">—</strong> Stores &amp; Stalls Listed</span>
-        <span class="trust-item" id="trust-orders-item" hidden>🛒 <strong id="trust-orders">—</strong> Orders Processed</span>
-        <span class="trust-item">🇬🇧 UK Registered Company</span>
-        <span class="trust-item">🔒 Stripe Secure Payments</span>
-        <span class="trust-item" id="trust-traffic-item" hidden></span>
+
+<!-- =================== HERO BANNERS =================== -->
+<section class="hero">
+  <div class="wrap">
+    <div class="hero-grid">
+      <article class="banner b1">
+        <span class="tag">Authentic groceries</span>
+        <h2>Home flavours from across Africa, Caribbean &amp; Asia</h2>
+        <p>From plantain and yam to suya spice and seasoning — order from UK independents that stock the real thing.</p>
+        <span class="price">Stores from <strong>£3.99 minimum</strong></span>
+        <a class="cta" href="/stores">Shop all stores →</a>
+      </article>
+      <div class="banner-stack">
+        <article class="banner b2">
+          <span class="tag">Halal &amp; fresh</span>
+          <h2>Halal meat, fish &amp; cuts</h2>
+          <a class="cta" href="/categories/halal">Shop halal →</a>
+        </article>
+        <article class="banner b3">
+          <span class="tag">Hair &amp; beauty</span>
+          <h2>Cocoa butter to braiding hair</h2>
+          <a class="cta" href="/categories/hair-beauty">Shop beauty →</a>
+        </article>
       </div>
     </div>
-  </section>
-
-  <!-- 2 FEATURED PILOT STORES -->
-  <section class="alt" id="featured-section" aria-labelledby="feat-title">
-    <div class="wrap">
-      <div class="section-head">
-        <h2 id="feat-title" class="font-display">Featured pilot storefronts</h2>
-      </div>
-      <p class="featured-note">Five friendly independents onboarding with Clip right now — each keeps their WhatsApp hustle, storefront story, and checkout on their page.</p>
-      <div class="featured-wrap">
-        <div class="featured-track" id="featured-scroll" aria-label="Featured pilot grocery stores"></div>
-      </div>
-    </div>
-  </section>
-
-  <!-- 3 FEATURED GROCERIES (live pilot lines) -->
-  <section aria-labelledby="featured-products-title">
-    <div class="wrap">
-      <div class="section-head">
-        <h2 id="featured-products-title" class="font-display">Featured groceries tonight</h2>
-        <p>Live lines from onboarding pilot shelves — tap <strong>Add to basket</strong> then open the trader’s storefront to tweak quantities and checkout with Stripe.</p>
-      </div>
-      <div class="fp-grid" id="featured-products-grid" aria-live="polite"><p style="grid-column:1/-1;color:var(--brown-muted);text-align:center">Loading storefront picks…</p></div>
-      <p class="pp-foot" style="margin-top:28px"><a href="/stores">Meet every pilot storefront</a> · Questions? <a href="https://wa.me/447487588706">WhatsApp us</a></p>
-    </div>
-  </section>
-
-  <section class="alt culture-browse" id="browse-culture" aria-labelledby="browse-culture-title">
-    <div class="wrap">
-      <div class="culture-intro section-head">
-        <h2 id="browse-culture-title" class="font-display">Browse by heritage</h2>
-        <p>Tap a culture to spotlight matching pilot stores and the basket-ready picks above — your local aisle, distilled for phone screens.</p>
-      </div>
-      <div class="culture-grid" role="group" aria-label="Filter marketplace by heritage">
-        <button type="button" class="culture-card" data-culture="nigerian">Nigerian<small>Jollof nights &amp; pepper soup cupboards</small></button>
-        <button type="button" class="culture-card" data-culture="ghanaian">Ghanaian<small>Banku, shito, fabric yards</small></button>
-        <button type="button" class="culture-card" data-culture="jamaican">Jamaican<small>Jerk marinades · hard dough rituals</small></button>
-        <button type="button" class="culture-card" data-culture="trinidadian">Trinidadian<small>Doubles-friendly spice counters</small></button>
-        <button type="button" class="culture-card" data-culture="indian">Indian<small>Ghee, chai spices, lentils</small></button>
-        <button type="button" class="culture-card" data-culture="pakistani">Pakistani<small>Atta sacks, grills, pickles</small></button>
-        <button type="button" class="culture-card" data-culture="caribbean">All Caribbean<small>Jamaican + Trinidadian shelves</small></button>
-        <button type="button" class="culture-card" data-culture="african">Pan-African<small>Manchester + London corridors</small></button>
-        <button type="button" class="culture-card" data-culture="asian">Pan-Asian &amp; Middle Eastern<small>From basmati to za'atar aisles</small></button>
-      </div>
-      <p class="filter-hint" id="culture-filter-hint" role="status" aria-live="polite"></p>
-      <p style="text-align:center;margin-top:16px;font-size:15px;color:var(--brown-muted);max-width:560px;margin-left:auto;margin-right:auto">Prefer to clear the filter? <button type="button" class="btn btn-secondary" id="culture-clear" style="min-height:44px;margin-top:8px">Show every pilot store again</button></p>
-    </div>
-  </section>
-
-  <div class="wrap" id="clip-recent-wrap" style="max-width:1180px" aria-label="Recently viewed" hidden>
-    <h2 class="font-display" style="font-size:1.35rem;margin:0 0 12px">Recently viewed</h2>
-    <div class="clip-recent-grid" id="clip-recent-stores"></div>
   </div>
+</section>
 
-  <!-- 2 COMMUNITY NAVIGATOR -->
-  <section class="alt" aria-labelledby="comm-title">
-    <div class="wrap">
-      <div class="section-head">
-        <h2 id="comm-title" class="font-display">Find your community</h2>
-        <p>Browse stores and specialties by African, Caribbean, or Asian heritage — then explore featured sellers and categories.</p>
-      </div>
-      <div class="comm-tabs" role="tablist" aria-label="Community">
-        <button type="button" class="comm-tab" role="tab" id="tab-a" aria-selected="true" aria-controls="panel-a" data-community="african">🌍 African</button>
-        <button type="button" class="comm-tab" role="tab" id="tab-c" aria-selected="false" aria-controls="panel-c" data-community="caribbean">🌴 Caribbean</button>
-        <button type="button" class="comm-tab" role="tab" id="tab-as" aria-selected="false" aria-controls="panel-as" data-community="asian">🍜 Asian</button>
-      </div>
-      <div class="comm-panels">
-        <div class="comm-panel active" id="panel-a" role="tabpanel" aria-labelledby="tab-a">
-          <div class="chip-wrap">
-            <span class="chip">Nigerian</span><span class="chip">Ghanaian</span><span class="chip">Kenyan</span><span class="chip">Somali</span>
-            <span class="chip">South African</span><span class="chip">Ugandan</span><span class="chip">Zimbabwean</span>
-          </div>
-          <div class="comm-featured" id="featured-african"></div>
-        </div>
-        <div class="comm-panel" id="panel-c" role="tabpanel" aria-labelledby="tab-c" hidden>
-          <div class="chip-wrap">
-            <span class="chip">Jamaican</span><span class="chip">Trinidadian</span><span class="chip">Barbadian</span><span class="chip">Guyanese</span>
-            <span class="chip">Haitian</span><span class="chip">Grenadian</span><span class="chip">St Lucian</span><span class="chip">Bajan</span>
-          </div>
-          <div class="comm-featured" id="featured-caribbean"></div>
-        </div>
-        <div class="comm-panel" id="panel-as" role="tabpanel" aria-labelledby="tab-as" hidden>
-          <div class="chip-wrap">
-            <span class="chip">South Asian</span><span class="chip">Indian</span><span class="chip">Pakistani</span><span class="chip">Bangladeshi</span><span class="chip">Sri Lankan</span>
-            <span class="chip">East Asian</span><span class="chip">Chinese</span><span class="chip">Korean</span><span class="chip">Japanese</span>
-            <span class="chip">South East Asian</span><span class="chip">Filipino</span><span class="chip">Thai</span><span class="chip">Malaysian</span><span class="chip">Vietnamese</span>
-            <span class="chip">Middle Eastern</span><span class="chip">Lebanese</span><span class="chip">Turkish</span><span class="chip">Moroccan</span><span class="chip">Egyptian</span>
-          </div>
-          <div class="comm-featured" id="featured-asian"></div>
-        </div>
-      </div>
-      <p class="pwa-hint">Tip: Install our app for faster reordering and stock alerts — Add to Home Screen on your phone.</p>
+<!-- =================== HOW IT WORKS =================== -->
+<section class="how" aria-label="How shopping works">
+  <div class="wrap">
+    <div class="how-grid">
+      <div class="how-step"><span class="num">1</span><div><strong>Search what you want</strong><span>Find products and stores on Clip Services across the UK.</span></div></div>
+      <div class="how-step"><span class="num">2</span><div><strong>Order &amp; pay securely</strong><span>Card, Apple Pay or Google Pay — handled by Stripe.</span></div></div>
+      <div class="how-step"><span class="num">3</span><div><strong>Collect or get delivery</strong><span>Your store confirms the time on WhatsApp.</span></div></div>
     </div>
-  </section>
+  </div>
+</section>
 
-  <!-- 3 SHOP BY CATEGORY -->
-  <section aria-labelledby="cat-title">
-    <div class="wrap">
-      <div class="section-head">
-        <h2 id="cat-title" class="font-display">Shop by category</h2>
-        <p>Food, groceries, and cultural essentials from communities across the UK.</p>
+<!-- =================== TRENDING PRODUCTS =================== -->
+<section aria-labelledby="trending-h">
+  <div class="wrap">
+    <div class="sec-h">
+      <div>
+        <h2 id="trending-h">Trending products</h2>
+        <p class="sub">Top picks from stores across the UK.</p>
       </div>
-      <div class="cat-rows">
-        <div class="cat-row">
-          <h3>Food &amp; grocery</h3>
-          <div class="cat-grid">
-            <a class="cat-cell" href="/categories/fresh-produce"><span class="ico">🌿</span>Fresh Produce</a>
-            <a class="cat-cell" href="/categories/meat-fish"><span class="ico">🥩</span>Meat &amp; Protein</a>
-            <a class="cat-cell" href="/categories/staples-grains"><span class="ico">🌾</span>Staples &amp; Grains</a>
-            <a class="cat-cell" href="/categories/oils-condiments"><span class="ico">🫙</span>Oils &amp; Condiments</a>
-            <a class="cat-cell" href="/categories/spices-ingredients"><span class="ico">🌶️</span>Spices &amp; Ingredients</a>
-            <a class="cat-cell" href="/categories/ready-meals"><span class="ico">🍲</span>Ready Meals</a>
-            <a class="cat-cell" href="/categories/snacks-sweets"><span class="ico">🍫</span>Snacks &amp; Sweets</a>
-            <a class="cat-cell" href="/categories/drinks-beverages"><span class="ico">🥤</span>Drinks &amp; Beverages</a>
-          </div>
-        </div>
-        <div class="cat-row">
-          <h3>Non-food</h3>
-          <div class="cat-grid">
-            <a class="cat-cell" href="/categories/hair-beauty"><span class="ico">💇</span>Hair &amp; Beauty</a>
-            <a class="cat-cell" href="/categories/fashion-fabrics"><span class="ico">👗</span>Fashion &amp; Fabric</a>
-            <a class="cat-cell" href="/categories/halal-products"><span class="ico">🕌</span>Halal Products</a>
-          </div>
-        </div>
-      </div>
+      <a class="more" href="/stores">View all stores →</a>
     </div>
-  </section>
+    <div class="pgrid" id="trending-grid"><div class="pgrid-empty">Loading top items…</div></div>
+  </div>
+</section>
 
-
-
-  <section class="alt" aria-labelledby="market-title">
-    <div class="wrap">
-      <div class="section-head">
-        <h2 id="market-title" class="font-display">The Local Market — Online</h2>
-        <p>Browse digital stalls from African, Caribbean, and Asian market traders across the UK. The community market, wherever you are.</p>
+<!-- =================== CATEGORIES =================== -->
+<section aria-labelledby="cats-h">
+  <div class="wrap">
+    <div class="sec-h">
+      <div>
+        <h2 id="cats-h">Shop by category</h2>
+        <p class="sub">Jump straight to the shelf you need.</p>
       </div>
-      <p style="text-align:center;max-width:720px;margin:0 auto 32px;color:var(--brown-muted);">From Nigerian fabric sellers in Birmingham to Caribbean fishmongers in Brixton — the local market stall has gone digital. Browse, buy, and support independent traders from your phone.</p>
-      <div class="stall-grid" id="stall-grid"></div>
+      <a class="more" href="/stores">All stores →</a>
     </div>
-  </section>
+    <div class="cgrid">
+      <a class="ccard" href="/categories/fresh-produce"><span class="ico">🥬</span><span><strong>Fresh Produce</strong><span>Fruit, veg, greens</span></span></a>
+      <a class="ccard" href="/categories/meat-fish"><span class="ico">🥩</span><span><strong>Meat &amp; Fish</strong><span>Halal, fresh, frozen</span></span></a>
+      <a class="ccard" href="/categories/groceries"><span class="ico">🛒</span><span><strong>Groceries</strong><span>Rice, flour, oils</span></span></a>
+      <a class="ccard" href="/categories/spices"><span class="ico">🌶️</span><span><strong>Spices</strong><span>Suya, jerk, curry</span></span></a>
+      <a class="ccard" href="/categories/snacks"><span class="ico">🍪</span><span><strong>Snacks</strong><span>Chin chin, plantain chips</span></span></a>
+      <a class="ccard" href="/categories/drinks"><span class="ico">🥤</span><span><strong>Drinks</strong><span>Malt, sorrel, soft drinks</span></span></a>
+      <a class="ccard" href="/categories/frozen"><span class="ico">🧊</span><span><strong>Frozen</strong><span>Fish, soup leaves, meats</span></span></a>
+      <a class="ccard" href="/categories/halal"><span class="ico">✅</span><span><strong>Halal</strong><span>Certified options</span></span></a>
+      <a class="ccard" href="/categories/hair-beauty"><span class="ico">💆</span><span><strong>Hair &amp; Beauty</strong><span>Hair, skin, fragrances</span></span></a>
+      <a class="ccard" href="/categories/fashion"><span class="ico">🧵</span><span><strong>Fashion</strong><span>Ankara, abayas, tailoring</span></span></a>
+    </div>
+  </div>
+</section>
 
-  <!-- 5 BROWSE BY CITY -->
-  <section id="cities" aria-labelledby="city-title">
-    <div class="wrap">
-      <div class="section-head">
-        <h2 id="city-title" class="font-display">Browse by city</h2>
-        <p>We're growing store coverage across the UK — start in your city.</p>
+<!-- =================== PROMO STRIP =================== -->
+<section aria-label="Independent UK promo">
+  <div class="wrap">
+    <div class="promo-strip">
+      <div>
+        <h3>Support independents · keep flavours alive</h3>
+        <p>Every order goes straight to a small UK store. No giant warehouses — just the shop owner, the kitchen, and you.</p>
       </div>
-      <div class="city-grid" id="city-grid"></div>
+      <a class="cta" href="/stores">Find a store near you</a>
     </div>
-  </section>
+  </div>
+</section>
 
-
-
-  <section aria-labelledby="cal-title">
-    <div class="wrap">
-      <div class="section-head">
-        <h2 id="cal-title" class="font-display">Coming up in your community</h2>
-        <p>Seasonal highlights — tap through to shops stocking relevant products.</p>
+<!-- =================== NEW PRODUCTS =================== -->
+<section aria-labelledby="new-h">
+  <div class="wrap">
+    <div class="sec-h">
+      <div>
+        <h2 id="new-h">New on the shelf</h2>
+        <p class="sub">Recently added by independent UK shops.</p>
       </div>
-      <div class="cal-track" id="cal-track"></div>
+      <a class="more" href="/stores">Browse stores →</a>
     </div>
-  </section>
+    <div class="pgrid" id="new-grid"><div class="pgrid-empty">Loading fresh stock…</div></div>
+  </div>
+</section>
 
-  <!-- 8 LIVE IMPACT -->
-  <section class="impact" id="impact-stats" aria-labelledby="impact-title" hidden>
-    <div class="wrap">
-      <h2 id="impact-title" class="font-display">Live impact</h2>
-      <p class="impact-sub">These numbers refresh from our live register whenever new stores join Clip Services and customers complete bookings.</p>
-      <div class="impact-grid">
-        <div class="impact-stat"><div class="impact-num" data-target="0" id="impact-stores">0</div><div class="impact-label">Stores &amp; Stalls Listed</div></div>
-        <div class="impact-stat"><div class="impact-num" data-target="0" id="impact-orders">0</div><div class="impact-label">Orders Processed</div></div>
-        <div class="impact-stat"><div class="impact-num" data-target="0" id="impact-cities">0</div><div class="impact-label">Cities Served</div></div>
-        <div class="impact-stat"><div class="impact-num" data-target="0" id="impact-comm">0</div><div class="impact-label">Communities Represented</div></div>
+<!-- =================== STORES STRIP =================== -->
+<section aria-labelledby="stores-h">
+  <div class="wrap">
+    <div class="sec-h">
+      <div>
+        <h2 id="stores-h">Visit a store</h2>
+        <p class="sub">Independent shops on Clip Services.</p>
+      </div>
+      <a class="more" href="/stores">All stores →</a>
+    </div>
+    <div class="sgrid" id="stores-grid"><div class="pgrid-empty">Loading stores…</div></div>
+  </div>
+</section>
+
+<!-- =================== NEWSLETTER =================== -->
+<section aria-label="Newsletter">
+  <div class="wrap">
+    <div class="news">
+      <div class="news-inner">
+        <h3>Get new store alerts &amp; deals</h3>
+        <p>Be the first to hear when a new shop joins or when offers drop. Unsubscribe any time.</p>
+        <form method="POST" action="/api/newsletter-signup" id="news-form">
+          <input type="email" name="email" placeholder="you@example.com" required autocomplete="email" />
+          <button type="submit">Subscribe</button>
+        </form>
+        <small id="news-msg">No spam — just store updates.</small>
       </div>
     </div>
-  </section>
+  </div>
+</section>
 
-  <!-- 9 HOW IT WORKS -->
-  <section aria-labelledby="how-title">
-    <div class="wrap">
-      <div class="section-head">
-        <h2 id="how-title" class="font-display">How it works</h2>
-      </div>
-      <div class="how-grid">
-        <div class="how-col">
-          <h3>For customers</h3>
-          <ol>
-            <li>Browse stores</li>
-            <li>Add products</li>
-            <li>Pay securely</li>
-            <li>Collect or receive delivery</li>
-          </ol>
-        </div>
-        <div class="how-col">
-          <h3>For store owners</h3>
-          <ol>
-            <li>Apply in minutes</li>
-            <li>Upload your products</li>
-            <li>Receive orders on WhatsApp</li>
-            <li>Get paid within 24 hours</li>
-          </ol>
-        </div>
-        <div class="how-col">
-          <h3>For market traders</h3>
-          <ol>
-            <li>List your stall for £15/month</li>
-            <li>Show what you are selling today</li>
-            <li>Customers order and collect</li>
-            <li>Grow beyond your market day</li>
-          </ol>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- 10 WHY CLIP SERVICES -->
-  <section class="alt" aria-labelledby="why-title">
-    <div class="wrap">
-      <div class="section-head">
-        <h2 id="why-title" class="font-display">Why Clip Services</h2>
-      </div>
-      <div class="why-grid">
-        <div class="why-card">
-          <h3>For your community</h3>
-          <p>Find authentic African, Caribbean and Asian products from independent stores that mainstream supermarkets do not stock. Delivered to your door or ready for collection.</p>
-        </div>
-        <div class="why-card">
-          <h3>For store owners</h3>
-          <p>Get your store online in 48 hours. No website needed. No technical skills needed. We handle secure payments and online ordering — you focus on stocking your shelves beautifully.</p>
-        </div>
-        <div class="why-card">
-          <h3>Low commission model</h3>
-          <p>We charge a small subscription and a fair transaction fee — not 25–30% like other delivery platforms. Designed for stores with thin margins. Designed to be profitable for you.</p>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- 11 STORE OWNER CTA -->
-  <section class="owner-cta" aria-labelledby="owner-title">
-    <div class="wrap">
-      <h2 id="owner-title" class="font-display">Own an African, Caribbean or Asian store or stall?</h2>
-      <p>Get your business online in 48 hours. Free to apply. No technical knowledge needed.</p>
-      <ul class="check-list">
-        <li>Your own store page on clipservice.app</li>
-        <li>Digital product catalogue — unlimited products</li>
-        <li>Stripe payment processing built in</li>
-        <li>Order notifications to your WhatsApp</li>
-        <li>Customer reviews building your reputation online</li>
-        <li>Reach customers across your entire city — not just your street</li>
-      </ul>
-      <div class="hero-cta">
-        <a class="btn btn-gold" href="/store-owner">List My Store</a>
-        <a class="btn btn-secondary" href="/store-owner#stall" style="background:rgba(255,255,255,.15);color:var(--cream);border-color:rgba(255,255,255,.4);">List My Market Stall</a>
-      </div>
-    </div>
-  </section>
 </main>
 
-<footer class="site-footer">
-  <div class="wrap footer-grid">
-    <div>
-      <h4>For customers</h4>
-      <ul>
-        <li><a href="/stores">Browse Stores</a></li>
-        <li><a href="/stores#cities">Browse by City</a></li>
-        <li><a href="/stores#categories">Browse by Category</a></li>
-        <li><a href="/customer/orders/">Track My Order</a></li>
-        <li><a href="/blog">Blog</a></li>
-        <li><a href="/stores#faq">FAQ</a></li>
-      </ul>
+<!-- =================== FOOTER =================== -->
+<footer class="mp-foot" role="contentinfo">
+  <div class="mp-foot-grid">
+    <div class="mp-foot-col">
+      <h3 class="mp-foot-h">Fruit &amp; vegetables</h3>
+      <a href="/categories/fresh-produce">Fresh produce</a>
+      <a href="/categories/meat-fish">Meat &amp; seafood</a>
+      <a href="/categories/halal">Halal</a>
     </div>
-    <div>
-      <h4>For businesses</h4>
-      <ul>
-        <li><a href="/store-owner">List Your Store</a></li>
-        <li><a href="/store-owner#stall">List Your Market Stall</a></li>
-        <li><a href="/provider/">Store Dashboard</a></li>
-        <li><a href="/store-owner#faq">Business FAQ</a></li>
-        <li><a href="https://wa.me/447487588706">WhatsApp Us</a></li>
-      </ul>
+    <div class="mp-foot-col">
+      <h3 class="mp-foot-h">Bakery &amp; pantry</h3>
+      <a href="/categories/groceries">Groceries</a>
+      <a href="/categories/spices">Spices &amp; seasonings</a>
+      <a href="/categories/snacks">Snacks</a>
     </div>
-    <div>
-      <h4>About Clip Services</h4>
-      <ul>
-        <li><a href="/about">Our Mission</a></li>
-        <li><a href="/about#numbers-section">Impact Data</a></li>
-        <li><a href="mailto:clipservices26@gmail.com?subject=Press">Press</a></li>
-        <li><a href="mailto:clipservices26@gmail.com">Contact</a></li>
-      </ul>
+    <div class="mp-foot-col">
+      <h3 class="mp-foot-h">Drinks &amp; frozen</h3>
+      <a href="/categories/drinks">Drinks</a>
+      <a href="/categories/frozen">Frozen foods</a>
     </div>
-    <div>
-      <h4>Legal</h4>
-      <ul>
-        <li><a href="/privacy-policy">Privacy Policy</a></li>
-        <li><a href="/terms">Terms of Service</a></li>
-        <li><a href="/disclaimer">Disclaimer</a></li>
-      </ul>
+    <div class="mp-foot-col">
+      <h3 class="mp-foot-h">Household &amp; care</h3>
+      <a href="/categories/hair-beauty">Hair &amp; beauty</a>
+      <a href="/categories/fashion">Fashion</a>
+      <a href="/stores">All stores</a>
+    </div>
+    <div class="mp-foot-col">
+      <h3 class="mp-foot-h">Your account</h3>
+      <a href="/customer/orders/">Order tracking</a>
+      <a href="/user">My account</a>
+      <a href="/terms">Return policy</a>
+      <a href="mailto:clipservices26@gmail.com">Contact us</a>
     </div>
   </div>
-  <div class="wrap footer-newsletter">
-    <p style="margin:0 0 8px;font-weight:700;font-size:14px;color:var(--gold-soft)">Weekly newsletter</p>
-    <p style="margin:0 0 14px;font-size:14px;line-height:1.5;opacity:.92">Get our weekly newsletter — new stores, recipes, and cultural guides delivered every Friday.</p>
-    <form method="POST" action="/api/newsletter-signup" style="display:flex;flex-wrap:wrap;gap:10px;align-items:center">
-      <input type="hidden" name="next" value="/blog#newsletter" />
-      <input type="email" name="email" required placeholder="Email" autocomplete="email" style="flex:1;min-width:200px;padding:10px 14px;border-radius:8px;border:1px solid rgba(245,240,232,.35);background:rgba(0,0,0,.15);color:#f5f0e8" />
-      <button type="submit" class="btn btn-gold">Subscribe</button>
-    </form>
-  </div>
-  <div class="wrap footer-bottom">
-    <div class="social" aria-label="Contact">
-      <a href="https://wa.me/447487588706" rel="noopener noreferrer" target="_blank">WhatsApp</a>
-      <a href="mailto:clipservices26@gmail.com">Email</a>
-    </div>
-    <div>
-      <a href="mailto:clipservices26@gmail.com">clipservices26@gmail.com</a>
-      · WhatsApp: <a href="tel:+447487588706">+44 7487 588 706</a>
+  <div class="mp-foot-payments" aria-label="Payment methods">
+    <span class="mp-foot-paylab">We accept</span>
+    <div class="mp-pay-badges">
+      <span class="mp-pay-badge">Visa</span>
+      <span class="mp-pay-badge">Mastercard</span>
+      <span class="mp-pay-badge">Amex</span>
+      <span class="mp-pay-badge">Stripe</span>
+      <span class="mp-pay-badge">Apple Pay</span>
+      <span class="mp-pay-badge">Google Pay</span>
     </div>
   </div>
-  <p class="wrap" style="text-align:center;margin-top:12px;font-size:13px;opacity:.9;">
-    <a href="/stores">Browse Stores</a> · <a href="/store-owner">List Your Store</a> · <a href="/blog">Blog</a> · <a href="/stores#faq">FAQ</a> · <a href="mailto:clipservices26@gmail.com">Contact</a> · <a href="/privacy-policy">Privacy</a> · <a href="/terms">Terms</a>
-  </p>
-  <p class="wrap" style="text-align:center;margin-top:20px;font-size:13px;opacity:.9;line-height:1.5">
-    © 2026 Clip Services Ltd — Company Registered in England &amp; Wales No. 17168420 · Manchester · UK Registered Company
-  </p>
+  <div class="mp-foot-bar">
+    <span>Copyright © 2026 Clip Services Ltd · Company No. 17168420 · Manchester, UK</span>
+    <div class="mp-foot-legal">
+      <a href="/privacy-policy">Privacy policy</a>
+      <a href="/terms">Terms &amp; conditions</a>
+      <a href="/disclaimer">Disclaimer</a>
+    </div>
+  </div>
 </footer>
 
-<div id="basket-flash" role="status" aria-live="polite" aria-atomic="true"></div>
-
-<script src="/js/clip-cookie.js" defer></script>
+<button type="button" class="mp-back-top" id="back-top" aria-label="Back to top">↑</button>
 
 <script>
 (function () {
-  const EVENTS = [
-    { id: "eid-fitr", title: "Eid al-Fitr", date: "20 Mar 2027", desc: "Halal meat, sweets, gifts & celebration staples from independents nationwide.", href: "/stores?q=halal+eid" },
-    { id: "bhm", title: "Black History Month", date: "October 2026", desc: "Champion African & Caribbean groceries, beauty & fashion traders all month.", href: "/stores?q=black+history+groceries" },
-    { id: "diwali", title: "Diwali", date: "8 Nov 2026", desc: "Sweets, diyas, ghee, pulses & festive treats from South Asian-led stores.", href: "/stores?q=diwali+sweets" },
-    { id: "christmas", title: "Christmas", date: "December 2026", desc: "Plantain, goat, seasoned rice mixes & celebration pantry hauls.", href: "/stores?q=christmas+groceries" },
-    { id: "nigeria-national", title: "Nigerian Independence Day", date: "1 Oct 2026", desc: "Jollof supplies, puff-puff mixes, fabrics & owambe-party essentials.", href: "/stores?q=jollof+ingredients" },
-    { id: "carnival", title: "Caribbean carnival season", date: "Jun–Aug 2026", desc: "Sorrel, jerk, flags & coolers — traders stocking carnival weekends.", href: "/stores?q=jerk+sorrel" },
-  const FEATURED_PRODUCT_PICKS = [
-    ["seed-mama-dimma-african-grocery-mcr", 0],
-    ["seed-mama-dimma-african-grocery-mcr", 1],
-    ["seed-mama-dimma-african-grocery-mcr", 2],
-    ["seed-rose-caribbean-market-bhx", 1],
-    ["seed-patel-asian-supermarket-leicester", 2],
-    ["seed-patel-asian-supermarket-leicester", 0],
-    ["seed-rose-caribbean-market-bhx", 0],
-    ["seed-mama-dimma-african-grocery-mcr", 3],
-    ["seed-mama-dimma-african-grocery-mcr", 7],
-    ["seed-mama-dimma-african-grocery-mcr", 6],
-    ["seed-zanzibar-spice-house-leeds", 1],
-    ["seed-akwaaba-ghanaian-store-london", 3],
-  ];
+  "use strict";
 
-  const PILOT_RANK = {
-    "seed-mama-dimma-african-grocery-mcr": 0,
-    "seed-rose-caribbean-market-bhx": 1,
-    "seed-patel-asian-supermarket-leicester": 2,
-    "seed-akwaaba-ghanaian-store-london": 3,
-    "seed-zanzibar-spice-house-leeds": 4,
+  function esc(s) {
+    return String(s == null ? "" : s)
+      .replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;")
+      .replace(/"/g, "&quot;").replace(/'/g, "&#39;");
+  }
+  function priceNum(s) {
+    var n = parseFloat(String(s || "").replace(/[^0-9.]/g, ""));
+    return isFinite(n) ? n : 0;
+  }
+  function slugify(s) {
+    return String(s || "").toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "").slice(0, 60) || "item";
+  }
+
+  function emoji(text) {
+    var t = String(text || "").toLowerCase();
+    if (/(plantain|yam|cassava|veg|fruit|tomato|pepper|onion|okra|spinach|kale)/.test(t)) return "🥬";
+    if (/(rice|flour|bean|grain|cous|semolina|fufu)/.test(t)) return "🌾";
+    if (/(meat|beef|chicken|lamb|goat|fish|seafood|shrimp|prawn|salmon|tilapia)/.test(t)) return "🥩";
+    if (/(oil|sauce|paste|stock|seasoning|spice|curry|jerk|suya)/.test(t)) return "🌶️";
+    if (/(drink|juice|malt|sorrel|soda|water|tea|coffee)/.test(t)) return "🥤";
+    if (/(snack|chip|biscuit|cake|cookie|sweet|chin)/.test(t)) return "🍪";
+    if (/(milk|cheese|yog|butter|dairy)/.test(t)) return "🥛";
+    if (/(hair|braid|wig|extension|beauty|skin|cream|lotion|soap)/.test(t)) return "💆";
+    if (/(cloth|ankara|abaya|fabric|fashion|wear)/.test(t)) return "🧵";
+    if (/(frozen|ice)/.test(t)) return "🧊";
+    return "🛍️";
+  }
+
+  function productCard(p) {
+    var img = p.thumbUrl
+      ? '<img src="' + esc(p.thumbUrl) + '" alt="' + esc(p.item) + '" loading="lazy" referrerpolicy="no-referrer" width="220" height="220">'
+      : '<div class="ph" aria-hidden="true">' + emoji(p.item) + '</div>';
+    var href = "/store/" + encodeURIComponent(p.listingId) + "/p/" + p.idx + "/" + slugify(p.item);
+    var n = priceNum(p.price);
+    return ''
+      + '<article class="pcard">'
+      +   '<a class="pa" href="' + esc(href) + '">'
+      +     '<div class="pimg-wrap">' + img + '</div>'
+      +     '<h3>' + esc(p.item) + '</h3>'
+      +     '<p class="store-line">' + esc(p.storeName) + '</p>'
+      +     '<p class="pr">£' + n.toFixed(2) + '</p>'
+      +     '<p class="stock">In stock</p>'
+      +   '</a>'
+      + '</article>';
+  }
+
+  function flattenProducts(listings) {
+    var out = [];
+    (listings || []).forEach(function (l) {
+      var pp = Array.isArray(l.productPreview) ? l.productPreview : [];
+      var slug = l.storeSlug || "";
+      pp.forEach(function (p) {
+        if (!p || !p.item) return;
+        out.push({
+          item: p.item,
+          price: p.price,
+          thumbUrl: p.thumbUrl || "",
+          idx: p.idx,
+          listingId: l.id || "",
+          storeSlug: slug,
+          storeName: l.role || "Store",
+          city: l.city || ""
+        });
+      });
+    });
+    return out;
+  }
+
+  function shuffle(arr) {
+    var a = arr.slice();
+    for (var i = a.length - 1; i > 0; i--) {
+      var j = Math.floor(Math.random() * (i + 1));
+      var t = a[i]; a[i] = a[j]; a[j] = t;
+    }
+    return a;
+  }
+
+  function renderProductGrid(elId, products) {
+    var el = document.getElementById(elId);
+    if (!el) return;
+    if (!products || !products.length) {
+      el.innerHTML = '<div class="pgrid-empty">New products will appear here as stores join. <a href="/stores">Browse stores →</a></div>';
+      return;
+    }
+    el.innerHTML = products.map(productCard).join("");
+  }
+
+  function storeCard(l) {
+    var name = l.role || "Independent store";
+    var city = l.city || "UK";
+    var slug = l.storeSlug || "";
+    var href = slug ? "/stores/" + encodeURIComponent(slug) : (l.id ? "/store/" + encodeURIComponent(l.id) : "/stores");
+    var cover = l.coverImageUrl ? ' style="background-image:url(\'' + esc(l.coverImageUrl).replace(/'/g, "%27") + "');background-size:cover;background-position:center\"" : "";
+    var tags = (Array.isArray(l.heritageTags) ? l.heritageTags.slice(0, 3) : [])
+      .map(function (t) { return '<span class="tag-chip">' + esc(t) + '</span>'; })
+      .join("");
+    return ''
+      + '<a class="scard" href="' + esc(href) + '">'
+      +   '<div class="cv' + (l.coverImageUrl ? ' has-cover' : '') + '"' + cover + ' aria-hidden="true"></div>'
+      +   '<div class="body">'
+      +     '<h3>' + esc(name) + '</h3>'
+      +     '<p class="meta">' + esc(city) + (l.verified ? ' · ✅ Verified' : '') + '</p>'
+      +     (tags ? '<div class="tags">' + tags + '</div>' : '')
+      +   '</div>'
+      + '</a>';
+  }
+
+  function renderStores(listings) {
+    var el = document.getElementById("stores-grid");
+    if (!el) return;
+    var picks = (listings || []).slice(0, 6);
+    if (!picks.length) {
+      el.innerHTML = '<div class="pgrid-empty">Stores are joining now — <a href="/store-owner">list yours</a> or check back soon.</div>';
+      return;
+    }
+    el.innerHTML = picks.map(storeCard).join("");
+  }
+
+  function updateHeaderCount(listings) {
+    var el = document.getElementById("header-cat-count");
+    if (!el) return;
+    var products = flattenProducts(listings).length;
+    var stores = listings.length;
+    el.textContent = stores
+      ? (products + " products · " + stores + " stores").toUpperCase()
+      : "Browse all UK stores";
+  }
+
+  // ----- Cart total (read from all clipCart:* keys across stores) -----
+  function refreshCartTotal() {
+    try {
+      var n = 0;
+      var t = 0;
+      for (var i = 0; i < localStorage.length; i++) {
+        var k = localStorage.key(i);
+        if (!k || k.indexOf("clipCart:") !== 0) continue;
+        var c = {};
+        try { c = JSON.parse(localStorage.getItem(k) || "{}"); } catch (e) { continue; }
+        for (var kk in c) {
+          var q = parseInt(c[kk] || 0, 10) || 0;
+          if (q > 0) n += q;
+        }
+      }
+      var b = document.getElementById("nav-badge");
+      var nt = document.getElementById("nav-total");
+      if (b) b.textContent = String(n);
+      if (nt) nt.textContent = "£" + t.toFixed(2);
+    } catch (e) {}
+  }
+
+  // ----- Loaders -----
+  function loadListings() {
+    return fetch("/api/listings")
+      .then(function (r) { return r.json(); })
+      .then(function (j) { return (j && j.ok && Array.isArray(j.items)) ? j.items : []; })
+      .catch(function () { return []; });
+  }
+
+  loadListings().then(function (rows) {
+    updateHeaderCount(rows);
+
+    var all = flattenProducts(rows);
+    // Trending: shuffle across all stores and de-duplicate by item text
+    var seen = {};
+    var trending = [];
+    shuffle(all).forEach(function (p) {
+      var key = String(p.item || "").toLowerCase().slice(0, 60);
+      if (!seen[key]) { seen[key] = 1; trending.push(p); }
+    });
+    renderProductGrid("trending-grid", trending.slice(0, 10));
+
+    // New: take a different shuffle (visually distinct from trending)
+    var newest = shuffle(all);
+    renderProductGrid("new-grid", newest.slice(0, 10));
+
+    renderStores(rows);
+  });
+
+  refreshCartTotal();
+
+  // ----- Search submit / Enter -----
+  var hd = document.getElementById("hd-search");
+  if (hd) {
+    hd.addEventListener("keydown", function (e) {
+      if (e.key === "Enter") {
+        var v = (hd.value || "").trim();
+        location.href = v ? ("/search?q=" + encodeURIComponent(v)) : "/stores";
+      }
+    });
+  }
+
+  // ----- Back to top -----
+  var bt = document.getElementById("back-top");
+  if (bt) bt.onclick = function () {
+    try { window.scrollTo({ top: 0, behavior: "smooth" }); }
+    catch (e) { window.scrollTo(0, 0); }
   };
 
-  var ACTIVE_CULTURE = "";
-  var LISTINGS_GLOBAL = [];
-
-  function initials(name) {
-    return String(name || "S")
-      .split(/\s+/)
-      .slice(0, 2)
-      .map((w) => w[0])
-      .join("")
-      .toUpperCase() || "S";
-  }
-
-  function renderMiniCard(item) {
-    const name = item.role || "Store";
-    const cat = item.category || "groceries";
-    const storeUrl = item.storeSlug ? "/stores/" + encodeURIComponent(item.storeSlug) : (item.id ? "/store/" + encodeURIComponent(item.id) : "/stores");
-    return (
-      '<div class="mini-card"><h3>' +
-      escapeHtml(name) +
-      '</h3><p>' +
-      escapeHtml((item.services && item.services[0]) || cat.replace(/-/g, " ")) +
-      " · " +
-      escapeHtml(cat) +
-      '</p><a class="btn btn-secondary" style="margin-top:10px;padding:8px 14px;font-size:13px" href="' +
-      storeUrl +
-      '">View store</a></div>'
-    );
-  }
-
-  function escapeHtml(s) {
-    const d = document.createElement("div");
-    d.textContent = s;
-    return d.innerHTML;
-  }
-
-  function bucketCommunityTab(item, blob) {
-    var p = String(item.communityPillar || "").toLowerCase();
-    if (p === "caribbean") return 1;
-    if (p === "south-asian" || p === "south-east-asian") return 2;
-    if (p === "african" || p === "east-african" || p === "west-african") return 0;
-    if (
-      /\b(caribbean|jamaica|jamaican|jerk)\b/i.test(blob) ||
-      /\b(caribbean|jamaican)\b/i.test(item.category || "")
-    )
-      return 1;
-    if (/\b(halal|basmati|punjabi|bengali|indian grocer|south asian|za'atar)\b/i.test(blob)) return 2;
-    return 0;
-  }
-
-  function storeMatchesCulture(store, cultureKey) {
-    if (!cultureKey) return true;
-    var k = String(cultureKey || "")
-      .toLowerCase()
-      .trim();
-    var pillar = String(store.communityPillar || "").toLowerCase();
-    var ht = (store.heritageTags || [])
-      .map(function (x) {
-        return String(x || "").toLowerCase();
-      })
-      .join(" ");
-    var blob =
-      ht +
-      " " +
-      (store.role || "") +
-      " " +
-      String(store.city || "").toLowerCase() +
-      " " +
-      pillar;
-    blob = blob.toLowerCase();
-
-    function has(re) {
-      return re.test(ht) || re.test(blob);
-    }
-
-    switch (k) {
-      case "nigerian":
-        return /\bnigeria|nigerian\b/.test(ht) || /\bnigeria\b/.test(blob);
-      case "ghanaian":
-        return /\bghana|ghanaian\b/.test(ht) || /\bghana\b/.test(blob);
-      case "jamaican":
-        return pillar === "caribbean" && /\bjamaican\b/.test(ht);
-      case "trinidadian":
-        return pillar === "caribbean" && /trinid|trini/i.test(ht);
-      case "indian":
-        return /\bindian\b/.test(ht);
-      case "pakistani":
-        return /\bpakistan|pakistani\b/.test(ht);
-      case "caribbean":
-        return pillar === "caribbean" || /\bjamaican|trinidad|caribbean\b/.test(ht);
-      case "african":
-        return pillar === "west-african" || /\bnigeria|ghanaian|ghanai|west african\b/.test(ht);
-      case "asian":
-        return (
-          pillar === "south-asian" ||
-          pillar === "south-east-asian" ||
-          /\bindian|pakistan|south east|middle east|south asian\b/.test(ht) ||
-          /\bza'atar|tahini|lemongrass|thai|coconut milk\b/i.test(blob)
-        );
-      default:
-        return true;
-    }
-  }
-
-  function bumpCartQty(listingId, idx, delta) {
-    var id = String(listingId || "");
-    if (!id) return false;
-    var key = "clipCart:" + id;
-    var c = {};
-    try {
-      c = JSON.parse(localStorage.getItem(key) || "{}") || {};
-    } catch (_) {
-      c = {};
-    }
-    if (typeof c !== "object" || c === null) c = {};
-    var k = String(idx);
-    var next = Math.max(0, (parseInt(String(c[k] || "0"), 10) || 0) + (delta || 0));
-    if (next > 999) next = 999;
-    if (next < 1) delete c[k];
-    else c[k] = next;
-    try {
-      localStorage.setItem(key, JSON.stringify(c));
-    } catch (_) {}
-    return true;
-  }
-
-  function toastBasket(note) {
-    var el = document.getElementById("basket-flash");
-    if (!el || !note) return;
-    el.textContent = note;
-    el.style.opacity = "1";
-    clearTimeout(window.__clipBasketFlashT);
-    window.__clipBasketFlashT = setTimeout(function () {
-      el.style.opacity = "0";
-    }, 2600);
-  }
-
-  function buildStoreMap(rows) {
-    var m = {};
-    (rows || []).forEach(function (s) {
-      if (s && s.id) m[String(s.id)] = s;
-    });
-    return m;
-  }
-
-  function renderFeaturedProducts(rows) {
-    var grid = document.getElementById("featured-products-grid");
-    if (!grid) return;
-    var stores = buildStoreMap(rows);
-    function rowForPid(id, ix) {
-      var st = stores[id];
-      if (!st || !Array.isArray(st.productPreview)) return null;
-      return (
-        st.productPreview.find(function (r) {
-          return Number(r.idx) === ix;
-        }) || null
-      );
-    }
-
-    function cultureHideCls(st) {
-      if (!ACTIVE_CULTURE) return "";
-      return storeMatchesCulture(st, ACTIVE_CULTURE) ? "" : " culture-hide";
-    }
-
-    var pieces = FEATURED_PRODUCT_PICKS.map(function (pair, order) {
-      var sid = pair[0];
-      var ix = pair[1];
-      var st = stores[sid];
-      var pr = rowForPid(sid, ix);
-      if (!st || !pr) return "";
-
-      var storeUrl =
-        st.storeSlug ? "/stores/" + encodeURIComponent(st.storeSlug) : st.id ? "/store/" + encodeURIComponent(st.id) : "/stores";
-      var img = pr.thumbUrl
-        ? '<img class="fp-img" src="' +
-          escapeHtml(pr.thumbUrl) +
-          '" alt="" loading="lazy" decoding="async" referrerpolicy="no-referrer"/>'
-        : '<div class="fp-img"></div>';
-
-      return (
-        '<article class="fp-card' +
-        cultureHideCls(st) +
-        '" data-listing="' +
-        escapeHtml(sid) +
-        '" data-order="' +
-        order +
-        '">' +
-        img +
-        '<div class="fp-body">' +
-        '<div class="fp-title">' +
-        escapeHtml(pr.item || "Groceries") +
-        '</div>' +
-        '<div class="fp-price">' +
-        escapeHtml(pr.price || "£0") +
-        '</div>' +
-        '<div class="fp-store">' +
-        escapeHtml(st.role || "Independent store") +
-        " · " +
-        escapeHtml(String(st.city || "").trim() || "UK") +
-        "</div>" +
-        '<button type="button" class="btn-add" data-listing="' +
-        escapeHtml(st.id) +
-        '" data-idx="' +
-        ix +
-        '">Add to basket</button>' +
-        '<a class="btn btn-secondary" style="margin-top:8px;text-align:center;min-height:44px;display:inline-flex;align-items:center;justify-content:center;text-decoration:none" href="' +
-        storeUrl +
-        '">Checkout on storefront</a></div></article>'
-      );
-    }).filter(Boolean);
-
-    grid.innerHTML =
-      pieces.join("") ||
-      '<p style="grid-column:1/-1;text-align:center;">Catalogue rows will appear here once storefronts sync · <a href="/stores">Browse stores</a></p>';
-
-    if (!window.__fpGridBound && grid) {
-      window.__fpGridBound = true;
-      grid.addEventListener("click", function (e) {
-        var btn = e.target && e.target.closest ? e.target.closest(".btn-add") : null;
-        if (!btn) return;
-        var lid = btn.getAttribute("data-listing");
-        var ix = btn.getAttribute("data-idx");
-        if (!lid || ix === undefined || ix === null) return;
-        bumpCartQty(lid, ix, +1);
-        var stRow = rows.find(function (r) {
-          return String(r.id) === String(lid);
-        });
-        toastBasket("Saved to basket · " + (stRow ? stRow.role : "Checkout on their store page."));
-      });
-    }
-
-  }
-
-  function setCultureCardsUi() {
-    document.querySelectorAll(".culture-card").forEach(function (card) {
-      var k = card.getAttribute("data-culture") || "";
-      card.classList.toggle("on", k === ACTIVE_CULTURE);
-      card.setAttribute("aria-pressed", k === ACTIVE_CULTURE ? "true" : "false");
-    });
-    var hi = document.getElementById("culture-filter-hint");
-    if (hi) {
-      hi.textContent = ACTIVE_CULTURE
-        ? "Showing pilot shelves that cook with " +
-          ACTIVE_CULTURE.charAt(0).toUpperCase() +
-          ACTIVE_CULTURE.slice(1).replace(/-/g, " ") +
-          " flair. Other cards stay softly dimmed."
-        : "";
-    }
-  }
-
-  function pushCultureHistory() {
-    try {
-      var url = new URL(location.href.split("#")[0]);
-      if (ACTIVE_CULTURE) url.searchParams.set("culture", ACTIVE_CULTURE);
-      else url.searchParams.delete("culture");
-      history.replaceState({}, "", url);
-    } catch (_) {}
-  }
-
-  function applyCultureFilter(key) {
-    ACTIVE_CULTURE = String(key || "")
-      .toLowerCase()
-      .trim();
-    pushCultureHistory();
-    setCultureCardsUi();
-    if (Array.isArray(LISTINGS_GLOBAL) && LISTINGS_GLOBAL.length) {
-      renderFeaturedProducts(LISTINGS_GLOBAL);
-      renderFeaturedScroll(LISTINGS_GLOBAL);
-    }
-  }
-
-  function sortPopular(a, b) {
-    return (
-      (b.popular === true ? 1 : 0) - (a.popular === true ? 1 : 0) ||
-      String(a.role || "").localeCompare(String(b.role || ""), "en", { sensitivity: "base" })
-    );
-  }
-
-  function fillFeatured(items) {
-    const fa = document.getElementById("featured-african");
-    const fb = document.getElementById("featured-caribbean");
-    const fc = document.getElementById("featured-asian");
-    if (!fa && !fb && !fc) return;
-    const buckets = [[], [], []];
-    items.forEach(function (item) {
-      var blob = (item.role + " " + item.bio + " " + (item.services || []).join(" ")).toLowerCase();
-      var idx = bucketCommunityTab(item, blob);
-      buckets[idx].push(item);
-    });
-    function topRender(arr, el) {
-      if (!el) return;
-      var list = arr.length ? arr : items;
-      list = list.slice().sort(sortPopular).slice(0, 3);
-      el.innerHTML =
-        list.map(renderMiniCard).join("") || '<p class="mini-card">Stores coming soon — <a href="/store-owner">list yours first</a>.</p>';
-    }
-    topRender(buckets[0], fa);
-    topRender(buckets[1], fb);
-    topRender(buckets[2], fc);
-  }
-
-  async function loadListings() {
-    try {
-      const r = await fetch("/api/listings");
-      const j = await r.json();
-      return j.ok && Array.isArray(j.items) ? j.items : [];
-    } catch {
-      return [];
-    }
-  }
-
-  async function loadStats() {
-    try {
-      const r = await fetch("/api/public-stats");
-      const j = await r.json();
-      return j.ok ? j : null;
-    } catch {
-      return null;
-    }
-  }
-
-  function renderStalls(items) {
-    const el = document.getElementById("stall-grid");
-    if (!el) return;
-    const use = items.slice().sort(sortPopular).slice(0, 8);
-    if (!use.length) {
-      el.innerHTML =
-        '<p style="grid-column:1/-1;text-align:center;padding:24px;background:var(--white);border-radius:var(--radius);">Market stalls go live as traders join — <a href="/store-owner">list your stall</a>.</p>';
-      return;
-    }
-    el.innerHTML = use
-      .map(function (item) {
-        const name = item.role || "Trader";
-        const desc = (item.bio || "").slice(0, 120) || "Independent trader on Clip Services.";
-        var city = String(item.city || "").trim() || "UK";
-        const stallUrl = item.storeSlug ? "/stores/" + encodeURIComponent(item.storeSlug) : (item.id ? "/store/" + encodeURIComponent(item.id) : "/stores");
-        var stallBg = item.coverImageUrl
-          ? ' style="background:url(\'' + escapeHtml(item.coverImageUrl).replace(/'/g, "%27") + "') center/cover no-repeat\""
-          : "";
-        return (
-          '<article class="stall-card"><div class="stall-photo"' +
-          stallBg +
-          ' aria-hidden="true">' +
-          (item.coverImageUrl ? "" : initials(name)) +
-          '</div><div class="stall-body"><h3>' +
-          escapeHtml(name) +
-          '</h3><div class="stall-meta">' +
-          escapeHtml(city) +
-          '</div><p class="stall-desc">' +
-          escapeHtml(desc) +
-          '</p><a class="btn btn-primary" href="' +
-          stallUrl +
-          '">Visit Stall</a></div></article>'
-        );
-      })
-      .join("");
-  }
-
-  function whatsAppHref(phoneRaw) {
-    var d = String(phoneRaw || "").replace(/\D/g, "");
-    if (d.startsWith("0")) d = "44" + d.slice(1);
-    else if (d.length >= 10 && !d.startsWith("44")) d = "44" + d;
-    return d.length >= 10
-      ? "https://wa.me/" +
-          d +
-          "?text=" +
-          encodeURIComponent("Hi — I'm browsing Clip Services — quick question about an order.")
-      : "https://wa.me/447487588706";
-  }
-
-  function isPilotListing(it) {
-    return (
-      String(it.pilotBadge || "")
-        .toLowerCase()
-        .indexOf("pilot") !== -1
-    );
-  }
-
-  function renderFeaturedScroll(rows) {
-    const track = document.getElementById("featured-scroll");
-    if (!track) return;
-    LISTINGS_GLOBAL = (rows || []).slice();
-    var pilots = (rows || []).filter(isPilotListing);
-    pilots.sort(function (a, b) {
-      var ra =
-        PILOT_RANK[String(a.id)] !== undefined && PILOT_RANK[String(a.id)] !== null ? PILOT_RANK[String(a.id)] : 999;
-      var rb =
-        PILOT_RANK[String(b.id)] !== undefined && PILOT_RANK[String(b.id)] !== null ? PILOT_RANK[String(b.id)] : 999;
-      if (ra !== rb) return ra - rb;
-      return sortPopular(a, b);
-    });
-    if (!pilots.length) pilots = (rows || []).slice();
-
-    track.innerHTML = pilots
-      .map(function (item) {
-        var name = item.role || "Store";
-        var tags = Array.isArray(item.heritageTags) ? item.heritageTags.slice(0, 6) : [];
-        var badges = tags
-          .map(function (t) {
-            return '<span class="herit-chip">' + escapeHtml(t) + "</span>";
-          })
-          .join("") || "";
-        var cityFull = String(item.city || "").trim() || "";
-        var shopHref =
-          item.storeSlug ? "/stores/" + encodeURIComponent(item.storeSlug) : item.id ? "/store/" + encodeURIComponent(item.id) : "/stores";
-        var cover = item.coverImageUrl
-          ? '<div class="store-card-img has-cover" style="background-image:url(\'' +
-            escapeHtml(item.coverImageUrl).replace(/'/g, "%27") +
-            "');background-size:cover;background-position:center\"></div>"
-          : '<div class="store-card-img" aria-hidden="true">🏪</div>';
-        var pilotLab = escapeHtml(item.pilotBadge || "Pilot — Onboarding");
-        var ver = item.verified
-          ? '<div class="ver-wrap" aria-label="Approved seller"><span aria-hidden="true">✅</span> <span>Verified seller</span></div>'
-          : "";
-        var wa = whatsAppHref(item.whatsappPhone);
-        var hide = ACTIVE_CULTURE && !storeMatchesCulture(item, ACTIVE_CULTURE) ? " culture-hide" : "";
-        return (
-          '<article class="store-card' +
-          hide +
-          '" data-listing="' +
-          escapeHtml(item.id || "") +
-          '">' +
-          cover +
-          '<div class="store-card-body">' +
-          '<span class="pilot-badge-chip">' +
-          pilotLab +
-          "</span>" +
-          "<h3>" +
-          escapeHtml(name) +
-          "</h3>" +
-          '<div class="city">' +
-          escapeHtml(cityFull) +
-          '</div>' +
-          (badges ? '<div class="store-tags" style="margin:10px -2px;line-height:1.4">' + badges + "</div>" : "") +
-          ver +
-          '<div class="store-card-actions"><a class="btn btn-primary" style="width:100%;min-height:48px" href="' +
-          shopHref +
-          '">Shop Store</a>' +
-          '<a class="btn btn-secondary" style="width:100%;min-height:48px;display:inline-flex;align-items:center;justify-content:center;text-decoration:none" href="' +
-          wa +
-          '" rel="noopener noreferrer" target="_blank">WhatsApp the counter</a></div>' +
-          "</div>" +
-          "</article>"
-        );
-      })
-      .join("");
-  }
-
-  const CANONICAL_CITIES = [
-    { slug: "manchester", name: "Manchester" },
-    { slug: "london", name: "London" },
-    { slug: "birmingham", name: "Birmingham" },
-    { slug: "leeds", name: "Leeds" },
-    { slug: "leicester", name: "Leicester" },
-    { slug: "bradford", name: "Bradford" },
-    { slug: "bristol", name: "Bristol" },
-    { slug: "liverpool", name: "Liverpool" },
-    { slug: "sheffield", name: "Sheffield" },
-    { slug: "nottingham", name: "Nottingham" },
-  ];
-
-  const PRIMARY_CITY_SLUGS = ["manchester", "london", "birmingham", "leeds", "leicester"];
-
-  function renderCities(stats, items) {
-    const el = document.getElementById("city-grid");
-    const section = document.getElementById("cities");
-    if (!el || !section) return;
-
-    var buckets = {};
-    PRIMARY_CITY_SLUGS.forEach(function (slug) {
-      buckets[slug] = { count: 0, thumb: "", name: "" };
-    });
-    CANONICAL_CITIES.forEach(function (c) {
-      if (PRIMARY_CITY_SLUGS.indexOf(c.slug) >= 0 && buckets[c.slug]) buckets[c.slug].name = c.name;
-    });
-
-    (items || []).forEach(function (it) {
-      var ct = String(it.city || "").trim().toLowerCase();
-      if (!ct) return;
-      CANONICAL_CITIES.forEach(function (c) {
-        if (PRIMARY_CITY_SLUGS.indexOf(c.slug) < 0) return;
-        if (c.name.toLowerCase() === ct) {
-          buckets[c.slug].count += 1;
-          if (!buckets[c.slug].thumb && it.coverImageUrl) buckets[c.slug].thumb = it.coverImageUrl;
-        }
-      });
-    });
-
-    var rows = PRIMARY_CITY_SLUGS.map(function (slug) {
-      return { slug: slug, name: buckets[slug].name || slug, count: buckets[slug].count || 0, thumb: buckets[slug].thumb };
-    }).filter(function (r) {
-      return r.count > 0;
-    });
-
-    if (!rows.length) {
-      section.hidden = false;
-      el.innerHTML =
-        '<p style="grid-column:1/-1;text-align:center;color:var(--brown-muted)">Store coverage is expanding — <a href="/store-owner">list your shop</a> to represent your city.</p>';
-      return;
-    }
-    section.hidden = false;
-    el.innerHTML = rows
-      .map(function (r) {
-        var img = r.thumb
-          ? '<div class="city-thumb" style="background-image:url(\'' +
-            escapeHtml(r.thumb).replace(/'/g, "%27") +
-            "')\"></div>"
-          : '<div class="city-thumb" aria-hidden="true"></div>';
-        return (
-          '<a class="city-card" href="/cities/' +
-          encodeURIComponent(r.slug) +
-          '">' +
-          img +
-          '<div class="n">' +
-          String(r.count) +
-          '</div><div class="l">' +
-          escapeHtml(r.name) +
-          '</div><div style="font-size:12px;color:var(--brown-muted);margin-top:6px">' +
-          (r.count === 1 ? "1 live store" : r.count + " live stores") +
-          "</div></a>"
-        );
-      })
-      .join("");
-  }
-
-  function renderCalendar() {
-    const track = document.getElementById("cal-track");
-    if (!track) return;
-    track.innerHTML = EVENTS.map(function (ev) {
-      return (
-        '<article class="cal-card"><div><h4>' +
-        escapeHtml(ev.title) +
-        '</h4><p style="font-weight:700;color:var(--brown);margin-bottom:6px">' +
-        escapeHtml(ev.date) +
-        '</p><p>' +
-        escapeHtml(ev.desc) +
-        '</p></div><a class="btn btn-secondary" style="margin-top:10px;padding:10px 16px;font-size:13px;background:var(--terracotta);color:var(--white);border-color:var(--terracotta)" href="' +
-        escapeHtml(ev.href || ("/stores?event=" + ev.id)) +
-        '">Shop now →</a></article>'
-      );
-    }).join("");
-  }
-
-  function animateCount(el, target, duration) {
-    if (!el) return;
-    const start = performance.now();
-    const from = 0;
-    const tgt = Math.max(0, Number(target) || 0);
-    function frame(t) {
-      const p = Math.min(1, (t - start) / duration);
-      const eased = 1 - Math.pow(1 - p, 3);
-      const val = Math.round(from + (tgt - from) * eased);
-      el.textContent = val.toLocaleString("en-GB");
-      if (p < 1) requestAnimationFrame(frame);
-      else el.textContent = tgt.toLocaleString("en-GB");
-    }
-    requestAnimationFrame(frame);
-  }
-
-  function runImpactAnimation(stats) {
-    const sec = document.getElementById("impact-stats");
-    if (!sec) return;
-    const s = (stats && stats.storesListed) || 0;
-    const o = (stats && stats.ordersProcessed) || 0;
-    const ci = (stats && stats.citiesServed) || 0;
-    const co = (stats && stats.communitiesRepresented) || 0;
-    if (s < 1) {
-      sec.hidden = true;
-      return;
-    }
-    sec.hidden = false;
-    const obs = new IntersectionObserver(
-      function (entries) {
-        entries.forEach(function (entry) {
-          if (!entry.isIntersecting) return;
-          obs.disconnect();
-          animateCount(document.getElementById("impact-stores"), s, 1400);
-          animateCount(document.getElementById("impact-orders"), o, 1400);
-          animateCount(document.getElementById("impact-cities"), ci, 1400);
-          animateCount(document.getElementById("impact-comm"), co, 1400);
-        });
-      },
-      { threshold: 0.2 }
-    );
-    obs.observe(sec);
-  }
-
-  /* Tabs */
-  document.querySelectorAll(".comm-tab").forEach(function (tab) {
-    tab.addEventListener("click", function () {
-      document.querySelectorAll(".comm-tab").forEach(function (t) {
-        t.setAttribute("aria-selected", "false");
-      });
-      tab.setAttribute("aria-selected", "true");
-      const id = tab.getAttribute("aria-controls");
-      document.querySelectorAll(".comm-panel").forEach(function (p) {
-        p.classList.remove("active");
-        p.hidden = true;
-      });
-      const panel = document.getElementById(id);
-      if (panel) {
-        panel.classList.add("active");
-        panel.hidden = false;
+  // ----- Newsletter form submit (AJAX so the user stays here) -----
+  var nf = document.getElementById("news-form");
+  if (nf) {
+    nf.addEventListener("submit", function (e) {
+      e.preventDefault();
+      var em = nf.querySelector('input[name="email"]');
+      var msg = document.getElementById("news-msg");
+      if (!em || !em.value || em.value.indexOf("@") < 0) {
+        if (msg) msg.textContent = "Please enter a valid email.";
+        return;
       }
-    });
-  });
-
-  document.addEventListener("DOMContentLoaded", async function () {
-    const [items, stats] = await Promise.all([loadListings(), loadStats()]);
-    LISTINGS_GLOBAL = items.slice();
-    try {
-      var cu = new URLSearchParams(location.search).get("culture");
-      if (cu) ACTIVE_CULTURE = String(cu || "").toLowerCase().trim();
-    } catch (_e2) {}
-
-    fillFeatured(items);
-    renderStalls(items);
-    renderFeaturedProducts(items);
-    renderFeaturedScroll(items);
-
-    renderCities(stats, items);
-    renderCalendar();
-    setCultureCardsUi();
-
-    document.querySelectorAll(".culture-card").forEach(function (btn) {
-      btn.addEventListener("click", function () {
-        var k = btn.getAttribute("data-culture") || "";
-        applyCultureFilter(ACTIVE_CULTURE === k ? "" : k);
-      });
-    });
-    var clr = document.getElementById("culture-clear");
-    if (clr) {
-      clr.addEventListener("click", function () {
-        applyCultureFilter("");
-      });
-    }
-
-    if (stats) {
-      const storesN = Number(stats.storesListed) || 0;
-      const ordersN = Number(stats.ordersProcessed) || 0;
-      const trustStoresItem = document.getElementById("trust-stores-item");
-      const trustOrdersItem = document.getElementById("trust-orders-item");
-      var trafficEl = document.getElementById("trust-traffic-item");
-      function fmtCt(n) {
-        return Math.max(0, Math.floor(Number(n) || 0)).toLocaleString("en-GB");
-      }
-      if (trafficEl && stats.traffic && Number(stats.traffic.totalPageViews) > 0) {
-        var tr = stats.traffic;
-        var tv = fmtCt(tr.totalPageViews);
-        var uv = fmtCt(tr.uniqueVisitors7d);
-        var chunks = [];
-        if (Number(tr.uniqueVisitors7d) > 0) {
-          chunks.push(
-            "Roughly <strong>" +
-              uv +
-              '</strong> people visited in the last 7&nbsp;days <span title="Fingerprint is hashed IP + browser data; we cannot identify individuals.">(estimate)</span>'
-          );
-        }
-        chunks.push(
-          '<strong>' + tv + '</strong> visits <span title="First-party tally of page loads recorded by Clip Services.">all time</span>'
-        );
-        trafficEl.innerHTML = "👥 " + chunks.join(" · ");
-        trafficEl.hidden = false;
-      }
-      if (storesN > 0 && trustStoresItem) {
-        document.getElementById("trust-stores").textContent = String(storesN);
-        trustStoresItem.hidden = false;
-      }
-      if (ordersN > 0 && trustOrdersItem) {
-        document.getElementById("trust-orders").textContent = String(ordersN);
-        trustOrdersItem.hidden = false;
-      }
-      var iSt = document.getElementById("impact-stores");
-      var iOr = document.getElementById("impact-orders");
-      var iCi = document.getElementById("impact-cities");
-      var iCo = document.getElementById("impact-comm");
-      if (iSt) iSt.dataset.target = String(storesN);
-      if (iOr) iOr.dataset.target = String(ordersN);
-      if (iCi) iCi.dataset.target = String(stats.citiesServed || 0);
-      if (iCo) iCo.dataset.target = String(stats.communitiesRepresented || 0);
-    }
-    runImpactAnimation(stats);
-
-  });
-
-  (function recent() {
-    try {
-      var st = JSON.parse(localStorage.getItem("clip_recent_stores_v1") || "[]");
-      if (!Array.isArray(st)) return;
-      var rows = st.filter(function (r) { return r && r.id; });
-      if (!rows.length) return;
-      var grid = document.getElementById("clip-recent-stores");
-      var sec = document.getElementById("clip-recent-wrap");
-      if (!grid || !sec) return;
-      grid.innerHTML = rows
-        .map(function (r) {
-          var h = r.slug ? "/stores/" + encodeURIComponent(r.slug) : "/store/" + encodeURIComponent(r.id);
-          return '<a href="' + h + '">' + (r.name || "Store") + " →</a>";
+      if (msg) msg.textContent = "Subscribing…";
+      fetch("/api/newsletter-signup", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email: em.value.trim() })
+      }).then(function (r) { return r.json().catch(function () { return {}; }); })
+        .then(function (j) {
+          if (j && j.ok) {
+            if (msg) msg.textContent = "Thanks — you're on the list!";
+            em.value = "";
+          } else {
+            if (msg) msg.textContent = (j && j.error) || "Couldn't subscribe — try again.";
+          }
         })
-        .join("");
-      sec.hidden = false;
-      sec.classList.add("show");
-    } catch (e) {}
-  })();
+        .catch(function () {
+          if (msg) msg.textContent = "Network error — try again.";
+        });
+    });
+  }
+})();
 </script>
-<script>window.__CLIP_CHAT_CTX={page:"home"};try{if(/[?&]src=wa(?:&|$)/.test(location.search))sessionStorage.setItem("clipOrderSource","wa")}catch(_e){}</script>
-<script src="/js/pwa-core.js" defer></script>
-<script src="/js/clip-whatsapp-float.js" defer></script>
+
 <script src="/js/global-search.js" defer></script>
 <script src="/site-track.js" defer></script>
+<script src="/js/clip-cookie.js" defer></script>
+<script src="/js/clip-whatsapp-float.js" defer></script>
+
 </body>
 </html>
