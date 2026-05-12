@@ -1,7 +1,7 @@
 {
-  "name": "Clip Services",
+  "name": "Clip Services — Manchester",
   "short_name": "Clip Services",
-  "description": "African, Caribbean & Asian marketplace UK — shop local independents, Stripe checkout, WhatsApp updates.",
+  "description": "Manchester's African, Caribbean & Asian marketplace — shop local independents, Stripe checkout, WhatsApp updates.",
   "id": "https://clipservice.app/",
   "start_url": "/?utm_source=pwa",
   "scope": "/",
@@ -17,9 +17,9 @@
   ],
   "categories": ["food", "shopping", "lifestyle"],
   "shortcuts": [
-    { "name": "Browse stores", "short_name": "Stores", "url": "/stores", "description": "Find local African, Caribbean and Asian independents" },
-    { "name": "Track my order", "short_name": "Orders", "url": "/customer/orders", "description": "Guest order history" },
-    { "name": "Find stores near me", "short_name": "Near me", "url": "/stores?sort=nearest", "description": "Use location to pick a city" },
-    { "name": "Popular products", "short_name": "Products", "url": "/categories", "description": "Shop by category" }
+    { "name": "Browse stores", "short_name": "Stores", "url": "/stores", "description": "Find Manchester African, Caribbean and Asian independents" },
+    { "name": "My account", "short_name": "Account", "url": "/account", "description": "Orders, saved stores, addresses and notifications" },
+    { "name": "Track an order", "short_name": "Track", "url": "/customer/orders", "description": "Look up a single order by ID" },
+    { "name": "For stores", "short_name": "Store", "url": "/store-owner/dashboard", "description": "Store-owner dashboard sign-in" }
   ]
 }

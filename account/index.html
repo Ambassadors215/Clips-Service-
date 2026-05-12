@@ -1,0 +1,1006 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Your account — Clip Services</title>
+<meta name="description" content="Track orders, save favourite Manchester stores, manage addresses and notification preferences on Clip Services.">
+<meta name="robots" content="noindex,nofollow">
+<meta name="theme-color" content="#0f2744">
+<link rel="canonical" href="https://clipservice.app/account">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect rx='18' width='100' height='100' fill='%238B3A3A'/><text x='50' y='68' text-anchor='middle' font-size='48' font-family='Georgia' font-weight='700' fill='%23D4A017'>C</text></svg>">
+<link rel="manifest" href="/manifest.webmanifest">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;800&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --terracotta:#8B3A3A;--terracotta-d:#6B2E2E;--gold:#D4A017;--cream:#F5F0E8;
+  --brown:#2C1810;--card:#fffdf8;--white:#fff;
+  --mp-navy:#0f2744;--oja-blue:#2563eb;--mp-border:#e5e7eb;--page-bg:#f9fafb;
+  --text-dark:#111827;--muted:#6b7280;--ok:#16a34a;--red:#e11d48;--amber:#d97706;
+  --radius:14px;--radius-sm:10px;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:Inter,system-ui,-apple-system,sans-serif;font-size:15px;line-height:1.55;color:var(--brown);background:var(--page-bg);-webkit-font-smoothing:antialiased;min-height:100vh}
+a{color:var(--terracotta);text-decoration:none;font-weight:600}
+a:hover{text-decoration:underline}
+img{max-width:100%;display:block}
+.wrap{max-width:1180px;margin:0 auto;padding:0 18px}
+.vh{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+
+/* ===== Header (matches marketplace Oja-style) ===== */
+.mp-head{position:sticky;top:0;z-index:60;background:#fff;box-shadow:0 1px 0 var(--mp-border)}
+.mp-announce{background:var(--mp-navy);color:#fff;text-align:center;padding:9px 20px;font-size:.78rem;font-weight:500}
+.mp-announce strong{color:#fcd34d}
+.mp-main{background:#fff;border-bottom:1px solid var(--mp-border)}
+.mp-main-inner{max-width:1180px;margin:0 auto;padding:14px 18px;display:flex;align-items:center;gap:14px;justify-content:space-between}
+.mp-brand{display:flex;align-items:center;gap:10px;color:inherit;min-width:0}
+.mp-brand .mark{flex-shrink:0;width:38px;height:38px;border-radius:8px;background:var(--cream);display:flex;align-items:center;justify-content:center}
+.mp-brand-text{display:flex;flex-direction:column;min-width:0}
+.mp-brand-name{font-family:"Playfair Display",Georgia,serif;font-weight:800;font-size:1.18rem;color:var(--terracotta);line-height:1.15}
+.mp-brand-tag{font-size:.7rem;color:var(--muted);font-weight:500}
+.mp-head-actions{display:flex;align-items:center;gap:10px;flex-shrink:0}
+.mp-head-actions a{color:#374151;font-weight:600;font-size:.85rem;padding:8px 12px;border-radius:8px}
+.mp-head-actions a:hover{background:#f3f4f6;text-decoration:none}
+.mp-head-actions a.primary{background:var(--terracotta);color:#fff}
+.mp-head-actions a.primary:hover{background:var(--terracotta-d)}
+
+/* ===== Page shell ===== */
+.page{padding:28px 0 80px}
+.page-h{margin-bottom:22px;display:flex;justify-content:space-between;align-items:flex-end;gap:14px;flex-wrap:wrap}
+.page-h h1{font-family:"Playfair Display",Georgia,serif;font-size:clamp(1.5rem,3vw,2rem);color:var(--text-dark);line-height:1.15}
+.page-h p{color:var(--muted);font-size:.9rem;margin-top:4px}
+
+/* ===== Login card ===== */
+.login{max-width:460px;margin:36px auto;padding:0 18px}
+.login-card{background:#fff;border:1px solid var(--mp-border);border-radius:18px;padding:30px 26px;box-shadow:0 10px 30px rgba(15,39,68,.06)}
+.login-card .badge{display:inline-flex;align-items:center;gap:6px;background:#fef3c7;border:1px solid #fde68a;color:#92400e;padding:5px 10px;border-radius:999px;font-weight:700;font-size:.7rem;letter-spacing:.04em;text-transform:uppercase;margin-bottom:14px}
+.login-card h1{font-family:"Playfair Display",Georgia,serif;font-size:1.7rem;color:var(--text-dark);margin-bottom:8px;line-height:1.15}
+.login-card p.lead{color:var(--muted);font-size:.92rem;margin-bottom:20px}
+.field{display:flex;flex-direction:column;gap:6px;margin-bottom:14px}
+.field label{font-size:.78rem;color:#374151;font-weight:700;letter-spacing:.02em}
+.field input,.field select{padding:12px 14px;border:1px solid var(--mp-border);border-radius:10px;font:inherit;font-size:.95rem;background:#fff;color:var(--text-dark);width:100%}
+.field input:focus,.field select:focus{outline:2px solid rgba(37,99,235,.22);border-color:var(--oja-blue)}
+.field .hint{font-size:.72rem;color:var(--muted)}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:12px 18px;border-radius:10px;font:inherit;font-weight:700;border:none;cursor:pointer;text-decoration:none;font-size:.92rem}
+.btn-primary{background:var(--terracotta);color:#fff}
+.btn-primary:hover{background:var(--terracotta-d)}
+.btn-primary:disabled{opacity:.55;cursor:not-allowed}
+.btn-ghost{background:#fff;color:var(--text-dark);border:1px solid var(--mp-border)}
+.btn-ghost:hover{background:#f3f4f6}
+.btn-blue{background:var(--oja-blue);color:#fff}
+.btn-blue:hover{filter:brightness(1.05)}
+.btn-block{width:100%}
+.status{font-size:.85rem;color:var(--muted);min-height:1.2em;margin-top:8px;line-height:1.4}
+.status.ok{color:var(--ok)}
+.status.err{color:var(--red)}
+.muted-link{font-size:.82rem;color:var(--muted);font-weight:500}
+.muted-link a{color:var(--oja-blue);font-weight:600}
+
+/* ===== Dashboard layout ===== */
+.dash{display:grid;grid-template-columns:1fr;gap:18px}
+@media(min-width:960px){.dash{grid-template-columns:240px 1fr;align-items:flex-start}}
+.side-nav{background:#fff;border:1px solid var(--mp-border);border-radius:14px;padding:14px 10px;display:flex;flex-direction:row;gap:6px;overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:thin}
+@media(min-width:960px){.side-nav{flex-direction:column;padding:16px 12px;position:sticky;top:80px;overflow-x:visible}}
+.side-nav button{display:flex;align-items:center;gap:10px;width:100%;text-align:left;padding:11px 13px;border:none;border-radius:10px;background:transparent;font:inherit;font-weight:600;cursor:pointer;color:#374151;font-size:.88rem;white-space:nowrap}
+.side-nav button:hover{background:#f3f4f6;color:var(--text-dark)}
+.side-nav button.active{background:rgba(37,99,235,.08);color:var(--oja-blue)}
+.side-nav .nav-emo{font-size:1rem;line-height:1}
+.side-nav .nav-foot{display:none}
+@media(min-width:960px){.side-nav .nav-foot{display:block;margin-top:auto;padding:14px 6px 4px;border-top:1px solid var(--mp-border);font-size:.74rem;color:var(--muted)}}
+
+.main-col{min-width:0}
+.sec{display:none}
+.sec.active{display:block}
+.sec h2{font-family:"Playfair Display",Georgia,serif;font-size:1.4rem;color:var(--text-dark);margin-bottom:14px}
+.sec h3{font-family:"Playfair Display",Georgia,serif;font-size:1.05rem;color:var(--text-dark);margin-bottom:10px}
+
+.card{background:#fff;border:1px solid var(--mp-border);border-radius:14px;padding:20px;margin-bottom:14px}
+.card h3{margin-bottom:8px}
+.card .ck{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:12px;flex-wrap:wrap}
+.card .ck h3{margin-bottom:0}
+.row-actions{display:flex;gap:8px;flex-wrap:wrap}
+
+/* ===== Stats grid ===== */
+.stat-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-bottom:16px}
+@media(min-width:680px){.stat-grid{grid-template-columns:repeat(4,1fr)}}
+.stat{background:#fff;border:1px solid var(--mp-border);border-radius:14px;padding:16px 14px;text-align:left}
+.stat .l{font-size:.7rem;color:var(--muted);font-weight:700;text-transform:uppercase;letter-spacing:.06em;margin-bottom:6px}
+.stat .n{font-family:"Playfair Display",Georgia,serif;font-size:1.7rem;color:var(--terracotta);font-weight:800;line-height:1.1}
+.stat .s{font-size:.75rem;color:var(--muted);margin-top:4px}
+
+/* ===== Welcome hero ===== */
+.welcome{background:linear-gradient(135deg,#0f2744 0%,#1e3a5f 60%,#8B3A3A 100%);color:#fff;border-radius:18px;padding:26px 24px;margin-bottom:18px;display:flex;justify-content:space-between;align-items:center;gap:18px;flex-wrap:wrap}
+.welcome h2{font-family:"Playfair Display",Georgia,serif;font-size:1.5rem;color:#fff;margin-bottom:6px}
+.welcome p{color:#cbd5e1;font-size:.88rem;max-width:520px}
+.welcome .badge{background:rgba(252,211,77,.95);color:#0f2744;padding:6px 12px;border-radius:999px;font-weight:800;font-size:.7rem;text-transform:uppercase;letter-spacing:.04em;display:inline-block;margin-bottom:10px}
+.welcome a.cta{background:#fcd34d;color:#0f2744;padding:11px 20px;border-radius:999px;font-weight:800;font-size:.85rem;text-decoration:none;white-space:nowrap}
+.welcome a.cta:hover{filter:brightness(1.05);text-decoration:none}
+
+/* ===== Order cards ===== */
+.ocard{background:#fff;border:1px solid var(--mp-border);border-radius:14px;padding:18px;margin-bottom:12px}
+.ocard .oh{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;flex-wrap:wrap;margin-bottom:8px}
+.ocard .oh h4{font-family:"Playfair Display",Georgia,serif;font-size:1.05rem;color:var(--text-dark);line-height:1.2}
+.ocard .meta{font-size:.78rem;color:var(--muted)}
+.ocard .lines{font-size:.85rem;color:#374151;margin:8px 0;line-height:1.5}
+.ocard .total{font-weight:800;color:var(--text-dark);font-size:.95rem}
+.ocard .actions{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
+.ocard .actions a,.ocard .actions button{font-size:.78rem;padding:7px 12px;border-radius:8px;font-weight:700;border:1px solid var(--mp-border);background:#fff;color:#374151;text-decoration:none;cursor:pointer;font-family:inherit}
+.ocard .actions a:hover,.ocard .actions button:hover{background:#f3f4f6;text-decoration:none}
+.ocard .actions .btn-blue{background:var(--oja-blue);color:#fff;border:none}
+.ocard .actions .btn-blue:hover{filter:brightness(1.05);background:var(--oja-blue)}
+
+.pill{display:inline-block;padding:4px 10px;border-radius:999px;font-size:.68rem;font-weight:800;text-transform:uppercase;letter-spacing:.04em}
+.p-new{background:#fee2e2;color:#991b1b}
+.p-conf{background:#fef3c7;color:#92400e}
+.p-prep{background:#fef9c3;color:#854d0e}
+.p-en{background:#dbeafe;color:#1e40af}
+.p-ready{background:#dbeafe;color:#1e40af}
+.p-done{background:#dcfce7;color:#166534}
+
+/* ===== Saved stores ===== */
+.fgrid{display:grid;grid-template-columns:1fr;gap:14px}
+@media(min-width:560px){.fgrid{grid-template-columns:repeat(2,1fr)}}
+@media(min-width:980px){.fgrid{grid-template-columns:repeat(3,1fr)}}
+.fcard{background:#fff;border:1px solid var(--mp-border);border-radius:14px;overflow:hidden;display:flex;flex-direction:column}
+.fcard .cv{aspect-ratio:16/9;background:linear-gradient(135deg,#e5e7eb,#d1d5db) center/cover;position:relative}
+.fcard .pilot{position:absolute;top:8px;left:8px;background:#fcd34d;color:#0f2744;font-size:.62rem;font-weight:800;padding:4px 8px;border-radius:6px;text-transform:uppercase;letter-spacing:.04em}
+.fcard .body{padding:14px;display:flex;flex-direction:column;gap:8px;flex:1}
+.fcard .body h4{font-family:"Playfair Display",Georgia,serif;font-size:1rem;color:var(--text-dark);line-height:1.2}
+.fcard .body .city{font-size:.74rem;color:var(--muted)}
+.fcard .body .tags{display:flex;flex-wrap:wrap;gap:5px}
+.fcard .body .tags span{font-size:.65rem;background:#f3f4f6;color:#374151;padding:3px 8px;border-radius:6px;font-weight:600}
+.fcard .body .heart-row{display:flex;justify-content:space-between;align-items:center;gap:8px;margin-top:auto;padding-top:6px}
+.fcard .body .heart-row a{background:var(--oja-blue);color:#fff;padding:7px 14px;border-radius:8px;font-size:.78rem;font-weight:700;text-decoration:none}
+.fcard .body .heart-row button{background:#fff;border:1px solid var(--mp-border);font-size:.74rem;padding:6px 10px;border-radius:8px;color:var(--red);font-weight:700;cursor:pointer;font-family:inherit}
+.fcard .body .heart-row button:hover{background:#fef2f2}
+
+/* ===== Address cards ===== */
+.acards{display:grid;grid-template-columns:1fr;gap:12px;margin-bottom:14px}
+@media(min-width:680px){.acards{grid-template-columns:repeat(2,1fr)}}
+.acard{background:#fff;border:1px solid var(--mp-border);border-radius:12px;padding:14px}
+.acard .lbl{font-size:.72rem;color:var(--muted);text-transform:uppercase;letter-spacing:.05em;margin-bottom:4px;font-weight:700}
+.acard h4{font-family:"Playfair Display",Georgia,serif;font-size:1.02rem;color:var(--text-dark);margin-bottom:6px}
+.acard p{font-size:.84rem;color:#374151;line-height:1.4}
+.acard .actions{display:flex;gap:8px;margin-top:10px}
+.acard .actions button{font-size:.74rem;padding:5px 10px;border-radius:7px;background:#fff;border:1px solid var(--mp-border);font-weight:700;cursor:pointer;color:#374151;font-family:inherit}
+.acard .actions button.danger{color:var(--red)}
+.acard .actions button:hover{background:#f3f4f6}
+
+/* ===== Profile form ===== */
+.form-grid{display:grid;grid-template-columns:1fr;gap:14px}
+@media(min-width:560px){.form-grid{grid-template-columns:1fr 1fr}}
+.toggle{display:flex;align-items:center;justify-content:space-between;gap:14px;background:#fff;border:1px solid var(--mp-border);border-radius:12px;padding:14px;margin-bottom:10px}
+.toggle .info strong{display:block;color:var(--text-dark);font-size:.92rem;line-height:1.2}
+.toggle .info span{font-size:.78rem;color:var(--muted);display:block;margin-top:2px}
+.switch{position:relative;width:50px;height:28px;background:#d1d5db;border-radius:999px;cursor:pointer;flex-shrink:0;border:none;padding:0}
+.switch.on{background:var(--ok)}
+.switch i{position:absolute;top:3px;left:3px;width:22px;height:22px;background:#fff;border-radius:50%;transition:transform .2s;display:block}
+.switch.on i{transform:translateX(22px)}
+
+/* ===== Empty / loading states ===== */
+.empty{padding:28px;text-align:center;color:var(--muted);background:#fff;border:1px dashed var(--mp-border);border-radius:14px}
+.empty strong{display:block;color:var(--text-dark);font-size:1rem;margin-bottom:6px}
+.empty p{font-size:.85rem;margin-bottom:12px}
+.empty a{display:inline-block;background:var(--oja-blue);color:#fff;padding:10px 18px;border-radius:8px;font-weight:700;font-size:.85rem;text-decoration:none}
+.empty a:hover{filter:brightness(1.05);text-decoration:none}
+.loading{padding:24px;text-align:center;color:var(--muted);font-size:.85rem}
+
+.note{background:#fffbeb;border:1px solid #fde68a;color:#854d0e;padding:12px 14px;border-radius:10px;font-size:.82rem;line-height:1.45;margin-bottom:14px}
+
+.footer-small{margin-top:24px;text-align:center;color:var(--muted);font-size:.78rem}
+.footer-small a{color:var(--muted);margin:0 8px}
+</style>
+</head>
+<body>
+
+<!-- ===== Header ===== -->
+<div class="mp-head">
+  <div class="mp-announce">
+    🚀 <strong>Now live in Manchester</strong> · Sign in to track orders, save stores and reorder fast.
+  </div>
+  <div class="mp-main">
+    <div class="mp-main-inner">
+      <a class="mp-brand" href="/">
+        <span class="mark" aria-hidden="true">
+          <svg width="22" height="22" viewBox="0 0 40 40" fill="none"><rect x="4" y="10" width="32" height="22" rx="3" fill="#F5F0E8" stroke="#8B3A3A" stroke-width="1.5"/><path d="M8 18h24M12 26h8" stroke="#8B3A3A" stroke-width="1.5" stroke-linecap="round"/><path d="M20 4v7" stroke="#D4A017" stroke-width="2" stroke-linecap="round"/><circle cx="20" cy="4" r="2" fill="#D4A017"/></svg>
+        </span>
+        <span class="mp-brand-text">
+          <span class="mp-brand-name">Clip Services</span>
+          <span class="mp-brand-tag">Your account · Manchester</span>
+        </span>
+      </a>
+      <div class="mp-head-actions">
+        <a href="/stores">Browse stores</a>
+        <a href="/customer/orders/" id="topTrack">Track order</a>
+        <button type="button" class="btn btn-ghost" id="topLogout" style="display:none;font-size:.85rem;padding:7px 12px">Sign out</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== LOGIN SCREEN ===== -->
+<section id="loginScreen" class="login" aria-labelledby="loginH">
+  <div class="login-card">
+    <span class="badge">Customer sign-in</span>
+    <h1 id="loginH">Sign in to your account</h1>
+    <p class="lead">We&rsquo;ll email you a 6-digit code &mdash; no password to remember. New here? Same form &mdash; we&rsquo;ll create your account on the spot.</p>
+    <div id="stepEmail">
+      <div class="field">
+        <label for="emailIn">Email address</label>
+        <input type="email" id="emailIn" autocomplete="email" inputmode="email" placeholder="you@example.com" required>
+        <span class="hint">We use this to find your orders and send your code.</span>
+      </div>
+      <button type="button" class="btn btn-primary btn-block" id="sendOtp">Email me a code</button>
+    </div>
+    <div id="stepCode" style="display:none">
+      <p style="font-size:.85rem;margin-bottom:14px">Code sent to <strong id="emailShown"></strong>. Check your inbox (and spam).</p>
+      <div class="field">
+        <label for="otpIn">6-digit code</label>
+        <input type="text" id="otpIn" inputmode="numeric" maxlength="6" pattern="[0-9]{6}" placeholder="123456" autocomplete="one-time-code" required>
+      </div>
+      <button type="button" class="btn btn-primary btn-block" id="verifyOtp">Verify &amp; continue</button>
+      <button type="button" class="btn btn-ghost btn-block" id="backEmail" style="margin-top:8px">Use a different email</button>
+    </div>
+    <p class="status" id="loginStatus" aria-live="polite"></p>
+    <p class="muted-link" style="margin-top:14px">No order yet? <a href="/stores">Browse Manchester stores →</a></p>
+  </div>
+  <p class="footer-small">
+    <a href="/about">About</a> ·
+    <a href="/terms">Terms</a> ·
+    <a href="/privacy-policy">Privacy</a> ·
+    <a href="/disclaimer">Disclaimer</a>
+  </p>
+</section>
+
+<!-- ===== DASHBOARD ===== -->
+<main id="dashboard" class="page wrap" style="display:none">
+  <div class="page-h">
+    <div>
+      <h1>Your account</h1>
+      <p>Welcome back &mdash; <span id="emailHeader"></span></p>
+    </div>
+    <div class="row-actions">
+      <a href="/stores" class="btn btn-ghost">Browse stores</a>
+      <button type="button" class="btn btn-primary" id="signOutBtn">Sign out</button>
+    </div>
+  </div>
+
+  <div class="dash">
+    <nav class="side-nav" aria-label="Account sections">
+      <button type="button" class="active" data-tab="overview"><span class="nav-emo">🏠</span> Overview</button>
+      <button type="button" data-tab="orders"><span class="nav-emo">📦</span> Orders</button>
+      <button type="button" data-tab="saved"><span class="nav-emo">❤️</span> Saved stores</button>
+      <button type="button" data-tab="addresses"><span class="nav-emo">📍</span> Addresses</button>
+      <button type="button" data-tab="profile"><span class="nav-emo">👤</span> Profile</button>
+      <button type="button" data-tab="notifications"><span class="nav-emo">🔔</span> Notifications</button>
+      <div class="nav-foot">Signed in via one-time code.<br>Data lives on our private servers.</div>
+    </nav>
+
+    <div class="main-col">
+
+      <!-- ===== Overview ===== -->
+      <section id="sec-overview" class="sec active">
+        <div class="welcome">
+          <div>
+            <span class="badge">Manchester pilot</span>
+            <h2 id="welcomeName">Hi 👋</h2>
+            <p>Track orders, reorder in one tap, and save your favourite Manchester independents so they're never more than two taps away.</p>
+          </div>
+          <a class="cta" href="/stores">Find a new store →</a>
+        </div>
+
+        <div class="stat-grid" id="statGrid">
+          <div class="stat"><div class="l">Orders</div><div class="n" id="stOrders">—</div><div class="s">Lifetime</div></div>
+          <div class="stat"><div class="l">Active</div><div class="n" id="stActive">—</div><div class="s">In progress</div></div>
+          <div class="stat"><div class="l">Saved stores</div><div class="n" id="stSaved">—</div><div class="s">Quick reorder</div></div>
+          <div class="stat"><div class="l">Spent</div><div class="n" id="stSpend">—</div><div class="s">Supporting Manchester</div></div>
+        </div>
+
+        <div class="card">
+          <div class="ck">
+            <h3>Active orders</h3>
+            <button type="button" class="btn btn-ghost" data-go-tab="orders" style="font-size:.78rem;padding:7px 12px">View all</button>
+          </div>
+          <div id="activeOrders" class="loading">Loading…</div>
+        </div>
+
+        <div class="card">
+          <div class="ck">
+            <h3>Your saved stores</h3>
+            <button type="button" class="btn btn-ghost" data-go-tab="saved" style="font-size:.78rem;padding:7px 12px">See all</button>
+          </div>
+          <div id="overviewSaved" class="loading">Loading…</div>
+        </div>
+      </section>
+
+      <!-- ===== Orders ===== -->
+      <section id="sec-orders" class="sec">
+        <h2>Your orders</h2>
+        <p style="color:var(--muted);font-size:.85rem;margin-bottom:14px">Click through to the live tracker, reorder a favourite, or message the store on WhatsApp.</p>
+        <div id="ordersList" class="loading">Loading orders…</div>
+      </section>
+
+      <!-- ===== Saved stores ===== -->
+      <section id="sec-saved" class="sec">
+        <h2>Saved Manchester stores</h2>
+        <p style="color:var(--muted);font-size:.85rem;margin-bottom:14px">Tap the heart on any store page to save it here. Saved stores show up first when you reopen the app.</p>
+        <div id="savedList" class="loading">Loading…</div>
+      </section>
+
+      <!-- ===== Addresses ===== -->
+      <section id="sec-addresses" class="sec">
+        <h2>Delivery &amp; collection addresses</h2>
+        <p style="color:var(--muted);font-size:.85rem;margin-bottom:14px">Save the addresses you use most so checkout is one tap. Stripe still confirms payments, and the store packs the order locally in Manchester.</p>
+
+        <div id="addressList" class="acards"></div>
+
+        <div class="card">
+          <h3 id="addrFormH">Add a new address</h3>
+          <form id="addrForm" novalidate>
+            <input type="hidden" id="addrId">
+            <div class="form-grid">
+              <div class="field">
+                <label for="addrLabel">Label</label>
+                <select id="addrLabel">
+                  <option value="Home">Home</option>
+                  <option value="Work">Work</option>
+                  <option value="Other">Other</option>
+                </select>
+              </div>
+              <div class="field">
+                <label for="addrPostcode">Postcode</label>
+                <input type="text" id="addrPostcode" placeholder="M13 0LN" autocomplete="postal-code" required>
+              </div>
+              <div class="field" style="grid-column:1 / -1">
+                <label for="addrLine1">Address line 1</label>
+                <input type="text" id="addrLine1" autocomplete="address-line1" required>
+              </div>
+              <div class="field" style="grid-column:1 / -1">
+                <label for="addrLine2">Address line 2 (optional)</label>
+                <input type="text" id="addrLine2" autocomplete="address-line2">
+              </div>
+              <div class="field">
+                <label for="addrCity">City</label>
+                <input type="text" id="addrCity" value="Manchester" autocomplete="address-level2" required>
+              </div>
+            </div>
+            <div class="row-actions" style="margin-top:14px">
+              <button type="submit" class="btn btn-primary" id="addrSaveBtn">Save address</button>
+              <button type="button" class="btn btn-ghost" id="addrResetBtn">Reset</button>
+            </div>
+            <p class="status" id="addrStatus" aria-live="polite"></p>
+          </form>
+        </div>
+      </section>
+
+      <!-- ===== Profile ===== -->
+      <section id="sec-profile" class="sec">
+        <h2>Your profile</h2>
+        <p style="color:var(--muted);font-size:.85rem;margin-bottom:14px">This is what stores see on your orders. Keep it sharp so deliveries land smoothly.</p>
+
+        <div class="card">
+          <form id="profileForm" novalidate>
+            <div class="form-grid">
+              <div class="field"><label for="pfFirst">First name</label><input type="text" id="pfFirst" autocomplete="given-name"></div>
+              <div class="field"><label for="pfLast">Last name</label><input type="text" id="pfLast" autocomplete="family-name"></div>
+              <div class="field"><label for="pfPhone">Phone (UK)</label><input type="tel" id="pfPhone" autocomplete="tel" inputmode="tel" placeholder="07…"></div>
+              <div class="field">
+                <label for="pfArea">Preferred Manchester area</label>
+                <select id="pfArea">
+                  <option value="">No preference</option>
+                  <option>Longsight</option>
+                  <option>Rusholme</option>
+                  <option>Cheetham Hill</option>
+                  <option>Moss Side</option>
+                  <option>Whalley Range</option>
+                  <option>Levenshulme</option>
+                  <option>Salford</option>
+                  <option>Stretford</option>
+                </select>
+              </div>
+            </div>
+            <p class="status" id="profileStatus" aria-live="polite"></p>
+            <div class="row-actions" style="margin-top:14px">
+              <button type="submit" class="btn btn-primary">Save profile</button>
+            </div>
+          </form>
+        </div>
+      </section>
+
+      <!-- ===== Notifications ===== -->
+      <section id="sec-notifications" class="sec">
+        <h2>Notifications</h2>
+        <p style="color:var(--muted);font-size:.85rem;margin-bottom:14px">Choose how you want store updates &mdash; we&rsquo;ll never spam you. Toggle any of these off any time.</p>
+
+        <div class="toggle" id="togWa">
+          <div class="info">
+            <strong>WhatsApp order updates</strong>
+            <span>Stores message your phone when an order is confirmed, packed, ready or out for delivery.</span>
+          </div>
+          <button type="button" class="switch" id="swWa" aria-pressed="false" aria-label="Toggle WhatsApp updates"><i></i></button>
+        </div>
+
+        <div class="toggle" id="togMk">
+          <div class="info">
+            <strong>Marketplace updates email</strong>
+            <span>A short monthly summary of new Manchester stores, seasonal offers and events.</span>
+          </div>
+          <button type="button" class="switch" id="swMk" aria-pressed="false" aria-label="Toggle marketing email"><i></i></button>
+        </div>
+
+        <div class="toggle" id="togPu">
+          <div class="info">
+            <strong>Push notifications</strong>
+            <span>Get instant order updates on this device when you add the Clip Services app to your home screen.</span>
+          </div>
+          <button type="button" class="btn btn-ghost" id="swPu" style="font-size:.78rem;padding:7px 14px">Enable push</button>
+        </div>
+
+        <p class="status" id="notifStatus" aria-live="polite" style="margin-top:10px"></p>
+      </section>
+
+    </div>
+  </div>
+
+  <p class="footer-small">
+    Clip Services Ltd · Company No. 17168420 · Manchester ·
+    <a href="/about">About</a> ·
+    <a href="/terms">Terms</a> ·
+    <a href="/privacy-policy">Privacy</a>
+  </p>
+</main>
+
+<script>
+(function () {
+  "use strict";
+  /* ============================================================ */
+  /*  Helpers                                                     */
+  /* ============================================================ */
+  function $(id) { return document.getElementById(id); }
+  function esc(s) {
+    return String(s == null ? "" : s)
+      .replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;")
+      .replace(/"/g, "&quot;").replace(/'/g, "&#39;");
+  }
+  function money(n) {
+    var v = Number(n);
+    return Number.isFinite(v) ? "£" + v.toFixed(2) : "£0.00";
+  }
+  function fmtDate(s) {
+    if (!s) return "";
+    var d = new Date(s);
+    if (isNaN(d.getTime())) return String(s);
+    return d.toLocaleDateString("en-GB", { day: "numeric", month: "short", year: "numeric" });
+  }
+  function stagePill(stage, status) {
+    if (status === "awaiting_payment") return '<span class="pill p-new">Payment pending</span>';
+    if (stage === "completed") return '<span class="pill p-done">Completed</span>';
+    if (stage === "ready") return '<span class="pill p-ready">Ready to collect</span>';
+    if (stage === "en_route") return '<span class="pill p-en">Out for delivery</span>';
+    if (stage === "preparing") return '<span class="pill p-prep">Preparing</span>';
+    if (stage === "confirmed") return '<span class="pill p-conf">Confirmed</span>';
+    return '<span class="pill p-new">New</span>';
+  }
+  function setStatus(el, msg, kind) {
+    if (!el) return;
+    el.textContent = msg || "";
+    el.className = "status" + (kind ? " " + kind : "");
+  }
+
+  /* ============================================================ */
+  /*  Auth flow                                                   */
+  /* ============================================================ */
+  var emailIn = $("emailIn");
+  var otpIn = $("otpIn");
+  var sendOtpBtn = $("sendOtp");
+  var verifyOtpBtn = $("verifyOtp");
+  var backEmailBtn = $("backEmail");
+  var stepEmail = $("stepEmail");
+  var stepCode = $("stepCode");
+  var emailShown = $("emailShown");
+  var loginStatus = $("loginStatus");
+  var loginScreen = $("loginScreen");
+  var dashboard = $("dashboard");
+  var topLogout = $("topLogout");
+
+  function showDashboard(email) {
+    loginScreen.style.display = "none";
+    dashboard.style.display = "block";
+    topLogout.style.display = "inline-flex";
+    $("emailHeader").textContent = email || "";
+    bootDashboard();
+  }
+
+  function showLogin() {
+    dashboard.style.display = "none";
+    loginScreen.style.display = "block";
+    topLogout.style.display = "none";
+    stepCode.style.display = "none";
+    stepEmail.style.display = "block";
+    if (emailIn) emailIn.value = "";
+    if (otpIn) otpIn.value = "";
+    setStatus(loginStatus, "");
+  }
+
+  function postJson(url, body) {
+    return fetch(url, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(body || {}),
+      credentials: "same-origin"
+    }).then(function (r) {
+      return r.json().then(function (j) {
+        return { ok: r.ok, status: r.status, body: j };
+      }).catch(function () {
+        return { ok: r.ok, status: r.status, body: {} };
+      });
+    });
+  }
+  function getJson(url) {
+    return fetch(url, { credentials: "same-origin" }).then(function (r) {
+      return r.json().then(function (j) {
+        return { ok: r.ok, status: r.status, body: j };
+      }).catch(function () {
+        return { ok: r.ok, status: r.status, body: {} };
+      });
+    });
+  }
+
+  if (sendOtpBtn) sendOtpBtn.addEventListener("click", function () {
+    var em = (emailIn.value || "").trim().toLowerCase();
+    if (!em || em.indexOf("@") < 0) { setStatus(loginStatus, "Enter a valid email.", "err"); return; }
+    sendOtpBtn.disabled = true;
+    setStatus(loginStatus, "Sending code…");
+    postJson("/api/customer-auth", { action: "request-otp", email: em }).then(function (r) {
+      sendOtpBtn.disabled = false;
+      if (r.body && r.body.ok) {
+        stepEmail.style.display = "none";
+        stepCode.style.display = "block";
+        emailShown.textContent = em;
+        setStatus(loginStatus, "Code sent. Check your inbox.", "ok");
+        setTimeout(function () { if (otpIn) otpIn.focus(); }, 60);
+      } else {
+        setStatus(loginStatus, (r.body && r.body.error) || "Couldn't send the code. Try again.", "err");
+      }
+    }).catch(function () {
+      sendOtpBtn.disabled = false;
+      setStatus(loginStatus, "Network error. Try again.", "err");
+    });
+  });
+
+  if (verifyOtpBtn) verifyOtpBtn.addEventListener("click", function () {
+    var em = (emailShown.textContent || "").trim().toLowerCase();
+    var code = (otpIn.value || "").replace(/\D/g, "");
+    if (code.length !== 6) { setStatus(loginStatus, "Enter the 6-digit code.", "err"); return; }
+    verifyOtpBtn.disabled = true;
+    setStatus(loginStatus, "Verifying…");
+    postJson("/api/customer-auth", { action: "verify-otp", email: em, code: code }).then(function (r) {
+      verifyOtpBtn.disabled = false;
+      if (r.body && r.body.ok) {
+        setStatus(loginStatus, "Welcome back!", "ok");
+        showDashboard(r.body.email || em);
+      } else {
+        setStatus(loginStatus, (r.body && r.body.error) || "Couldn't verify code.", "err");
+      }
+    }).catch(function () {
+      verifyOtpBtn.disabled = false;
+      setStatus(loginStatus, "Network error. Try again.", "err");
+    });
+  });
+
+  if (backEmailBtn) backEmailBtn.addEventListener("click", function () {
+    stepCode.style.display = "none";
+    stepEmail.style.display = "block";
+    setStatus(loginStatus, "");
+  });
+
+  function doLogout() {
+    postJson("/api/customer-auth", { action: "logout" }).then(showLogin).catch(showLogin);
+  }
+  if (topLogout) topLogout.addEventListener("click", doLogout);
+  document.addEventListener("click", function (e) {
+    var t = e.target;
+    if (!t) return;
+    if (t.id === "signOutBtn") doLogout();
+  });
+
+  /* ============================================================ */
+  /*  Dashboard renderers                                          */
+  /* ============================================================ */
+  function tabActivate(name) {
+    var btns = document.querySelectorAll(".side-nav button[data-tab]");
+    btns.forEach(function (b) {
+      b.classList.toggle("active", b.getAttribute("data-tab") === name);
+    });
+    var secs = document.querySelectorAll(".sec");
+    secs.forEach(function (s) {
+      s.classList.toggle("active", s.id === "sec-" + name);
+    });
+    if (name === "orders") loadOrdersFull();
+    if (name === "saved") loadSavedFull();
+    if (name === "addresses" || name === "profile" || name === "notifications") loadProfile();
+  }
+
+  document.addEventListener("click", function (e) {
+    var t = e.target;
+    if (!t) return;
+    var tabBtn = t.closest && t.closest("[data-tab]");
+    if (tabBtn) { tabActivate(tabBtn.getAttribute("data-tab")); return; }
+    var goBtn = t.closest && t.closest("[data-go-tab]");
+    if (goBtn) { tabActivate(goBtn.getAttribute("data-go-tab")); }
+  });
+
+  /* ----- Overview ----- */
+  function renderOverview(data) {
+    var s = data.stats || {};
+    $("stOrders").textContent = String(s.totalOrders || 0);
+    $("stActive").textContent = String(s.activeOrders || 0);
+    $("stSaved").textContent = String((data.savedStores || []).length);
+    $("stSpend").textContent = money(s.lifetimeSpendGBP || 0);
+
+    var name = (data.profile && data.profile.firstName) ? data.profile.firstName : "";
+    $("welcomeName").textContent = name ? "Hi " + name + " 👋" : "Hi 👋";
+
+    var active = (data.orders || []).filter(function (o) {
+      return o.status === "paid" && o.storeStage !== "completed";
+    }).slice(0, 3);
+    if (!active.length) {
+      $("activeOrders").outerHTML =
+        '<div id="activeOrders" class="empty"><strong>No active orders</strong>' +
+        '<p>Browse Manchester pilot stores and place your first order — it lands here as soon as you pay.</p>' +
+        '<a href="/stores">Browse stores →</a></div>';
+    } else {
+      $("activeOrders").outerHTML = '<div id="activeOrders">' + active.map(orderCardHtml).join("") + '</div>';
+    }
+
+    var saved = (data.savedStores || []).slice(0, 3);
+    if (!saved.length) {
+      $("overviewSaved").outerHTML =
+        '<div id="overviewSaved" class="empty"><strong>No saved stores yet</strong>' +
+        '<p>Tap the heart icon on any store page to save it for one-tap reorders.</p>' +
+        '<a href="/stores">Find a store →</a></div>';
+    } else {
+      $("overviewSaved").outerHTML = '<div id="overviewSaved" class="fgrid">' + saved.map(storeCardHtml).join("") + '</div>';
+    }
+  }
+
+  /* ----- Orders renderers ----- */
+  function orderLines(o) {
+    var cs = Array.isArray(o.cartSnapshot) ? o.cartSnapshot : [];
+    if (!cs.length) return esc(String(o.service || "").replace(/^Store order:\s*/i, ""));
+    return cs.slice(0, 4).map(function (it) {
+      var qty = parseInt(it.qty || it.quantity || 1, 10) || 1;
+      var nm = String(it.name || it.title || "Item");
+      return esc(qty + " × " + nm);
+    }).join(" · ") + (cs.length > 4 ? " · +" + (cs.length - 4) + " more" : "");
+  }
+  function orderCardHtml(o) {
+    var ref = o.ref || "";
+    var stage = o.storeStage || "new";
+    var trackHref = "/customer/orders/?ref=" + encodeURIComponent(ref) + "&email=" + encodeURIComponent($("emailHeader").textContent || "");
+    var storeHref = o.storeSlug ? "/stores/" + encodeURIComponent(o.storeSlug) : (o.listingId ? "/store/" + encodeURIComponent(o.listingId) : null);
+    var reorderBtn = storeHref
+      ? '<a class="btn-blue" href="' + esc(storeHref) + '#basket">Reorder →</a>'
+      : "";
+    var reviewBtn = (stage === "completed" && !o.customerReviewSubmitted)
+      ? '<a href="/customer/review/?ref=' + encodeURIComponent(ref) + '">Leave a review</a>'
+      : "";
+    var waBtn = "";
+    if (o.storeWhatsApp) {
+      var phone = String(o.storeWhatsApp).replace(/[^0-9]/g, "");
+      if (phone) {
+        var msg = encodeURIComponent("Hi! Quick question about order " + ref + " on Clip Services.");
+        waBtn = '<a target="_blank" rel="noopener" href="https://wa.me/' + phone + '?text=' + msg + '">WhatsApp store</a>';
+      }
+    }
+    return ''
+      + '<article class="ocard">'
+      +   '<div class="oh">'
+      +     '<div><h4>' + esc(o.storeName) + '</h4>'
+      +       '<div class="meta">Order <code>' + esc(ref) + '</code> · ' + esc(fmtDate(o.createdAt))
+      +         (o.storeCity ? ' · ' + esc(o.storeCity) : '') + '</div></div>'
+      +     stagePill(stage, o.status)
+      +   '</div>'
+      +   '<div class="lines">' + orderLines(o) + '</div>'
+      +   '<div class="total">Total ' + money(o.totalGBP) + ' · ' + esc(o.fulfillment === "delivery" ? "Local delivery" : "Collection") + '</div>'
+      +   '<div class="actions">'
+      +     '<a href="' + esc(trackHref) + '">Track order →</a>'
+      +     reorderBtn + waBtn + reviewBtn
+      +   '</div>'
+      + '</article>';
+  }
+  function renderOrdersList(orders) {
+    var el = $("ordersList");
+    if (!el) return;
+    if (!orders || !orders.length) {
+      el.outerHTML = '<div id="ordersList" class="empty"><strong>No orders yet</strong>' +
+        '<p>Your paid orders from Manchester stores will appear here. Once they do, you can reorder in one tap.</p>' +
+        '<a href="/stores">Find a store →</a></div>';
+      return;
+    }
+    el.outerHTML = '<div id="ordersList">' + orders.map(orderCardHtml).join("") + '</div>';
+  }
+
+  /* ----- Saved stores ----- */
+  function storeCardHtml(s) {
+    var href = s.storeSlug ? "/stores/" + encodeURIComponent(s.storeSlug) : "/store/" + encodeURIComponent(s.id || "");
+    var cover = s.coverImageUrl
+      ? ' style="background-image:url(\'' + esc(s.coverImageUrl).replace(/'/g, "%27") + "');background-size:cover;background-position:center\""
+      : "";
+    var pilot = s.pilotBadge ? '<span class="pilot">' + esc(s.pilotBadge) + '</span>' : '';
+    var tags = (s.services || []).slice(0, 3).map(function (t) { return '<span>' + esc(t) + '</span>'; }).join("");
+    return ''
+      + '<article class="fcard" data-id="' + esc(s.id) + '">'
+      +   '<div class="cv"' + cover + '>' + pilot + '</div>'
+      +   '<div class="body">'
+      +     '<h4>' + esc(s.role || "Store") + '</h4>'
+      +     '<span class="city">' + esc((s.city || "Manchester")) + '</span>'
+      +     (tags ? '<div class="tags">' + tags + '</div>' : '')
+      +     '<div class="heart-row">'
+      +       '<a href="' + esc(href) + '">Visit store →</a>'
+      +       '<button type="button" data-unsave="' + esc(s.id) + '" aria-label="Remove saved store">Remove</button>'
+      +     '</div>'
+      +   '</div>'
+      + '</article>';
+  }
+  function renderSavedList(saved) {
+    var el = $("savedList");
+    if (!el) return;
+    if (!saved || !saved.length) {
+      el.outerHTML = '<div id="savedList" class="empty"><strong>You haven\'t saved any stores yet</strong>' +
+        '<p>Click the heart on any store page to save it. They\'ll show up here in one tap.</p>' +
+        '<a href="/stores">Find a store →</a></div>';
+      return;
+    }
+    el.outerHTML = '<div id="savedList" class="fgrid">' + saved.map(storeCardHtml).join("") + '</div>';
+  }
+
+  /* ----- Address renderers ----- */
+  var profileCache = null;
+  function renderAddresses(addresses) {
+    var list = $("addressList");
+    if (!list) return;
+    if (!addresses || !addresses.length) {
+      list.innerHTML = '<div class="empty" style="grid-column:1/-1"><strong>No saved addresses yet</strong>' +
+        '<p>Add the address you order to most. Stripe still confirms each payment.</p></div>';
+      return;
+    }
+    list.innerHTML = addresses.map(function (a) {
+      return '<article class="acard" data-id="' + esc(a.id) + '">'
+        + '<div class="lbl">' + esc(a.label || "Address") + '</div>'
+        + '<h4>' + esc(a.line1 || "") + '</h4>'
+        + '<p>' + (a.line2 ? esc(a.line2) + '<br>' : '') + esc(a.city || "Manchester") + ', <strong>' + esc(a.postcode || "") + '</strong></p>'
+        + '<div class="actions">'
+        +   '<button type="button" data-edit-addr="' + esc(a.id) + '">Edit</button>'
+        +   '<button type="button" class="danger" data-del-addr="' + esc(a.id) + '">Delete</button>'
+        + '</div>'
+        + '</article>';
+    }).join("");
+  }
+  function loadAddressForm(addr) {
+    $("addrId").value = (addr && addr.id) || "";
+    $("addrLabel").value = (addr && addr.label) || "Home";
+    $("addrLine1").value = (addr && addr.line1) || "";
+    $("addrLine2").value = (addr && addr.line2) || "";
+    $("addrCity").value = (addr && addr.city) || "Manchester";
+    $("addrPostcode").value = (addr && addr.postcode) || "";
+    $("addrFormH").textContent = addr ? "Edit address" : "Add a new address";
+    setStatus($("addrStatus"), "");
+  }
+
+  /* ----- Profile renderers ----- */
+  function renderProfileForm(p) {
+    profileCache = p || profileCache;
+    var prof = profileCache || {};
+    $("pfFirst").value = prof.firstName || "";
+    $("pfLast").value = prof.lastName || "";
+    $("pfPhone").value = prof.phone || "";
+    $("pfArea").value = prof.preferredArea || "";
+    setSwitch($("swWa"), !!prof.whatsappOptIn);
+    setSwitch($("swMk"), !!prof.marketingOptIn);
+  }
+  function setSwitch(btn, on) {
+    if (!btn) return;
+    btn.classList.toggle("on", !!on);
+    btn.setAttribute("aria-pressed", on ? "true" : "false");
+  }
+
+  /* ============================================================ */
+  /*  Network loaders                                              */
+  /* ============================================================ */
+  function bootDashboard() {
+    tabActivate("overview");
+    getJson("/api/customer-api?action=overview").then(function (r) {
+      if (!r.body || !r.body.ok) {
+        if (r.status === 401) { showLogin(); return; }
+        return;
+      }
+      renderOverview(r.body);
+      profileCache = r.body.profile || null;
+    });
+  }
+  function loadOrdersFull() {
+    var el = $("ordersList");
+    if (el) el.innerHTML = "Loading orders…";
+    getJson("/api/customer-api?action=orders").then(function (r) {
+      if (!r.body || !r.body.ok) { if (r.status === 401) showLogin(); return; }
+      renderOrdersList(r.body.orders || []);
+    });
+  }
+  function loadSavedFull() {
+    var el = $("savedList");
+    if (el) el.innerHTML = "Loading…";
+    getJson("/api/customer-api?action=saved-stores").then(function (r) {
+      if (!r.body || !r.body.ok) { if (r.status === 401) showLogin(); return; }
+      renderSavedList(r.body.savedStores || []);
+    });
+  }
+  function loadProfile() {
+    getJson("/api/customer-api?action=profile").then(function (r) {
+      if (!r.body || !r.body.ok) { if (r.status === 401) showLogin(); return; }
+      profileCache = r.body.profile || null;
+      renderProfileForm(profileCache);
+      renderAddresses((profileCache && profileCache.addresses) || []);
+    });
+  }
+
+  /* ============================================================ */
+  /*  Wire saved-store unsave + addresses + profile + toggles      */
+  /* ============================================================ */
+  document.addEventListener("click", function (e) {
+    var t = e.target;
+    if (!t) return;
+    var u = t.closest && t.closest("[data-unsave]");
+    if (u) {
+      var id = u.getAttribute("data-unsave");
+      u.disabled = true;
+      postJson("/api/customer-api", { action: "unsave-store", listingId: id }).then(function () {
+        loadSavedFull();
+        bootDashboard();
+      });
+      return;
+    }
+    var ed = t.closest && t.closest("[data-edit-addr]");
+    if (ed && profileCache) {
+      var aId = ed.getAttribute("data-edit-addr");
+      var addr = (profileCache.addresses || []).find(function (x) { return x.id === aId; });
+      loadAddressForm(addr);
+      window.scrollTo({ top: $("addrFormH").offsetTop - 80, behavior: "smooth" });
+      return;
+    }
+    var del = t.closest && t.closest("[data-del-addr]");
+    if (del) {
+      var dId = del.getAttribute("data-del-addr");
+      del.disabled = true;
+      postJson("/api/customer-api", { action: "delete-address", id: dId }).then(function (r) {
+        if (r.body && r.body.ok) {
+          profileCache.addresses = r.body.addresses || [];
+          renderAddresses(profileCache.addresses);
+        }
+      });
+      return;
+    }
+    if (t.id === "addrResetBtn") {
+      loadAddressForm(null);
+      return;
+    }
+  });
+
+  var addrForm = $("addrForm");
+  if (addrForm) addrForm.addEventListener("submit", function (e) {
+    e.preventDefault();
+    var addr = {
+      id: $("addrId").value || "",
+      label: $("addrLabel").value,
+      line1: $("addrLine1").value,
+      line2: $("addrLine2").value,
+      city: $("addrCity").value || "Manchester",
+      postcode: $("addrPostcode").value,
+    };
+    if (!addr.line1 || !addr.postcode) {
+      setStatus($("addrStatus"), "Address line 1 and postcode are required.", "err");
+      return;
+    }
+    setStatus($("addrStatus"), "Saving…");
+    postJson("/api/customer-api", { action: "save-address", address: addr }).then(function (r) {
+      if (r.body && r.body.ok) {
+        setStatus($("addrStatus"), "Saved.", "ok");
+        profileCache = profileCache || {};
+        profileCache.addresses = r.body.addresses || [];
+        renderAddresses(profileCache.addresses);
+        loadAddressForm(null);
+      } else {
+        setStatus($("addrStatus"), (r.body && r.body.error) || "Couldn't save the address.", "err");
+      }
+    });
+  });
+
+  var profileForm = $("profileForm");
+  if (profileForm) profileForm.addEventListener("submit", function (e) {
+    e.preventDefault();
+    var patch = {
+      firstName: $("pfFirst").value,
+      lastName: $("pfLast").value,
+      phone: $("pfPhone").value,
+      preferredArea: $("pfArea").value,
+      whatsappOptIn: $("swWa").classList.contains("on"),
+      marketingOptIn: $("swMk").classList.contains("on"),
+    };
+    setStatus($("profileStatus"), "Saving…");
+    postJson("/api/customer-api", { action: "update-profile", profile: patch }).then(function (r) {
+      if (r.body && r.body.ok) {
+        profileCache = r.body.profile;
+        renderProfileForm(profileCache);
+        setStatus($("profileStatus"), "Saved.", "ok");
+      } else {
+        setStatus($("profileStatus"), (r.body && r.body.error) || "Couldn't save profile.", "err");
+      }
+    });
+  });
+
+  function toggleAndSave(btn, field) {
+    if (!btn) return;
+    btn.addEventListener("click", function () {
+      btn.classList.toggle("on");
+      var on = btn.classList.contains("on");
+      btn.setAttribute("aria-pressed", on ? "true" : "false");
+      var patch = {};
+      patch[field] = on;
+      setStatus($("notifStatus"), "Saving…");
+      postJson("/api/customer-api", {
+        action: "update-profile",
+        profile: Object.assign({}, profileCache || {}, patch)
+      }).then(function (r) {
+        if (r.body && r.body.ok) {
+          profileCache = r.body.profile;
+          setStatus($("notifStatus"), "Saved.", "ok");
+        } else {
+          setStatus($("notifStatus"), "Couldn't save preference.", "err");
+        }
+      });
+    });
+  }
+  toggleAndSave($("swWa"), "whatsappOptIn");
+  toggleAndSave($("swMk"), "marketingOptIn");
+
+  /* ----- Push (optional, best-effort) ----- */
+  var pushBtn = $("swPu");
+  if (pushBtn) {
+    if (!("serviceWorker" in navigator) || !("PushManager" in window) || !("Notification" in window)) {
+      pushBtn.textContent = "Not supported on this device";
+      pushBtn.disabled = true;
+    } else {
+      pushBtn.addEventListener("click", function () {
+        setStatus($("notifStatus"), "Requesting permission…");
+        Notification.requestPermission().then(function (permission) {
+          if (permission !== "granted") {
+            setStatus($("notifStatus"), "Push permission was declined.", "err");
+            return;
+          }
+          setStatus($("notifStatus"), "Push enabled on this device.", "ok");
+          pushBtn.textContent = "Push enabled";
+          pushBtn.disabled = true;
+        }).catch(function () {
+          setStatus($("notifStatus"), "Couldn't enable push.", "err");
+        });
+      });
+    }
+  }
+
+  /* ============================================================ */
+  /*  Boot — check existing session                                */
+  /* ============================================================ */
+  getJson("/api/customer-auth?action=whoami").then(function (r) {
+    if (r.body && r.body.ok && r.body.email) {
+      showDashboard(r.body.email);
+    } else {
+      showLogin();
+    }
+  }).catch(showLogin);
+})();
+</script>
+</body>
+</html>

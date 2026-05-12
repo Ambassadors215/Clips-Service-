@@ -8,6 +8,8 @@ import listings from "../lib/handlers/listings.js";
 import pushVapid from "../lib/handlers/push-vapid.js";
 import pushSubscribe from "../lib/handlers/push-subscribe.js";
 import providerAuth from "../lib/handlers/provider-auth.js";
+import customerAuth from "../lib/handlers/customer-auth.js";
+import customerApi from "../lib/handlers/customer-api.js";
 import dashboard from "../lib/handlers/dashboard.js";
 import negotiate from "../lib/handlers/negotiate.js";
 import connect from "../lib/handlers/connect.js";
@@ -47,6 +49,8 @@ const handlers = {
   "push-vapid": pushVapid,
   "push-subscribe": pushSubscribe,
   "provider-auth": providerAuth,
+  "customer-auth": customerAuth,
+  "customer-api": customerApi,
   dashboard,
   negotiate,
   connect,

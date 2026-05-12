@@ -82,6 +82,8 @@
     { "source": "/provider/", "destination": "/provider/index.html" },
     { "source": "/user", "destination": "/user/index.html" },
     { "source": "/user/", "destination": "/user/index.html" },
+    { "source": "/account", "destination": "/account/index.html" },
+    { "source": "/account/", "destination": "/account/index.html" },
     { "source": "/stores", "destination": "/stores/index.html" },
     { "source": "/stores/", "destination": "/stores/index.html" },
     { "source": "/store-owner/dashboard", "destination": "/store-owner/dashboard/index.html" },
@@ -173,6 +175,18 @@
     },
     {
       "source": "/provider/(.*)",
+      "headers": [
+        { "key": "Cache-Control", "value": "private, no-cache, no-store, must-revalidate, max-age=0" }
+      ]
+    },
+    {
+      "source": "/account",
+      "headers": [
+        { "key": "Cache-Control", "value": "private, no-cache, no-store, must-revalidate, max-age=0" }
+      ]
+    },
+    {
+      "source": "/account/(.*)",
       "headers": [
         { "key": "Cache-Control", "value": "private, no-cache, no-store, must-revalidate, max-age=0" }
       ]

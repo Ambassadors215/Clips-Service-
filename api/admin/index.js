@@ -17,6 +17,7 @@ import {
   getWhatsAppMetrics,
   getMarketplaceListingById,
   getPlatformFunnel,
+  getCustomerCount,
 } from "../../lib/kv-store.js";
 import { notifyBookingStatusCustomer } from "../../lib/notify.js";
 import { waNotifyStoreApproved } from "../../lib/whatsapp-notify.js";
@@ -85,10 +86,55 @@ async function handleContacts(req, res) {
   if (req.method !== "GET") return endJson(res, 405, { ok: false, error: "Method Not Allowed" });
   try {
     const items = await getContacts();
-    return endJson(res, 200, { ok: true, items });
+    // Compute lightweight buckets so the admin UI can filter without re-parsing.
+    let waitlist = 0;
+    let newsletter = 0;
+    let messages = 0;
+    for (const it of items || []) {
+      const t = String(it?.applicationType || "").toLowerCase();
+      if (t === "city-waitlist") waitlist += 1;
+      else if (t === "newsletter") newsletter += 1;
+      else messages += 1;
+    }
+    return endJson(res, 200, {
+      ok: true,
+      items,
+      buckets: { waitlist, newsletter, messages, total: (items || []).length },
+    });
   } catch (e) {
     console.error("ADMIN_CONTACTS_ERROR", e);
     return endJson(res, 500, { ok: false, error: "Failed to load contacts" });
+  }
+}
+
+async function handleCustomerSummary(req, res) {
+  if (req.method !== "GET") return endJson(res, 405, { ok: false, error: "Method Not Allowed" });
+  try {
+    const [count, bookings] = await Promise.all([
+      getCustomerCount().catch(() => 0),
+      getBookings().catch(() => []),
+    ]);
+    const marketplace = (bookings || []).filter((b) => b?.marketplaceOrder);
+    const paid = marketplace.filter((b) => b?.status === "paid");
+    const totalPaidSpendGBP = paid.reduce((acc, b) => acc + (Number(b.totalGBP) || 0), 0);
+    const uniquePayingEmails = new Set();
+    for (const b of paid) {
+      const e = String(b.email || "").toLowerCase();
+      if (e) uniquePayingEmails.add(e);
+    }
+    return endJson(res, 200, {
+      ok: true,
+      summary: {
+        customersRegistered: count,
+        marketplaceOrders: marketplace.length,
+        marketplaceOrdersPaid: paid.length,
+        uniquePayingCustomers: uniquePayingEmails.size,
+        marketplaceRevenueGBP: Math.round(totalPaidSpendGBP * 100) / 100,
+      },
+    });
+  } catch (e) {
+    console.error("ADMIN_CUSTOMER_SUMMARY", e);
+    return endJson(res, 500, { ok: false, error: "Failed to load customer summary" });
   }
 }
 
@@ -410,6 +456,7 @@ const ROUTES = {
   "marketplace-unpublish": handleMarketplaceUnpublish,
   "listing-application-review": handleListingApplicationReview,
   contacts: handleContacts,
+  "customer-summary": handleCustomerSummary,
   providers: handleProviders,
   "update-booking": handleUpdateBooking,
   "site-visits": handleSiteVisits,

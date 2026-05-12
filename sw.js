@@ -1,5 +1,5 @@
-/* Clip Services PWA v9 — offline, precache, network-first for listings */
-const CACHE = "clip-services-v11";
+/* Clip Services PWA v12 — Manchester pilot + customer dashboard */
+const CACHE = "clip-services-v12";
 const OFFLINE_PAGE = "/offline.html";
 const PRECACHE = [
   "/",
@@ -13,6 +13,9 @@ const PRECACHE = [
   "/css/global-search.css",
   OFFLINE_PAGE,
 ];
+
+/* Account + order pages are personal — don't precache them (always fresh). */
+const NEVER_CACHE = [/^\/api\//, /^\/account/, /^\/admin/, /^\/store-owner\/dashboard/];
 
 self.addEventListener("install", (event) => {
   event.waitUntil(
@@ -94,6 +97,10 @@ self.addEventListener("fetch", (event) => {
   if (req.method !== "GET") return;
   const url = new URL(req.url);
   if (url.pathname.startsWith("/api/") && url.pathname !== "/api/listings" && url.pathname !== "/api/public-stats") {
+    return;
+  }
+  // Personal pages — never serve a stale cached HTML shell. Always go to network.
+  if (NEVER_CACHE.some((re) => re.test(url.pathname))) {
     return;
   }
 
