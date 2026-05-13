@@ -80,6 +80,11 @@
       '<form class="gs-bar" role="search" action="/search" method="get">' +
       '<div class="gs-bar-inner">' +
       '<a class="gs-home" href="/">Clip Services</a>' +
+      '<nav class="gs-dash" aria-label="Account and dashboards">' +
+      '<a class="gs-dash-link" href="/account">My account</a>' +
+      '<a class="gs-dash-link gs-dash-store" href="/store-owner/dashboard/">Store dashboard</a>' +
+      '<a class="gs-dash-link gs-dash-track" href="/customer/orders/">Track order</a>' +
+      "</nav>" +
       '<div class="gs-field-wrap">' +
       '<div class="gs-input-wrap">' +
       '<input type="search" class="gs-input" id="gs-q" name="q" placeholder="Search products, stores, or stalls…" autocomplete="off" aria-label="Search products, stores, or stalls" />' +

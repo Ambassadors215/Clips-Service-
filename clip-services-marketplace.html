@@ -79,9 +79,17 @@ img{max-width:100%;display:block}
 .mp-brand-tag{font-size:.72rem;color:var(--muted);font-weight:500;line-height:1.3}
 .mp-search input{width:100%;padding:12px 16px 12px 44px;border:1px solid var(--mp-border);border-radius:10px;font:inherit;font-size:.95rem;background:#f3f4f6 url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='18' height='18' viewBox='0 0 24 24' fill='none' stroke='%239ca3af' stroke-width='2'%3E%3Ccircle cx='11' cy='11' r='7'/%3E%3Cpath d='M20 20l-4-4'/%3E%3C/svg%3E") no-repeat 14px center;background-size:18px}
 .mp-search input:focus{outline:2px solid rgba(37,99,235,.25);border-color:var(--oja-blue);background-color:#fff}
-.mp-actions{display:flex;align-items:center;gap:14px;flex-shrink:0;justify-content:flex-end}
+.mp-actions{display:flex;align-items:center;gap:10px;flex-shrink:0;justify-content:flex-end;flex-wrap:wrap}
 .mp-user{display:flex;align-items:center;justify-content:center;width:40px;height:40px;border-radius:999px;border:1px solid var(--mp-border);color:#4b5563;background:#fafafa}
 .mp-user:hover{border-color:var(--oja-blue);color:var(--oja-blue)}
+.mp-acc-btn{display:inline-flex;align-items:center;gap:8px;padding:9px 14px;border-radius:999px;border:1.5px solid var(--mp-navy);color:var(--mp-navy);background:#fff;font-weight:700;font-size:.85rem;text-decoration:none;line-height:1;white-space:nowrap}
+.mp-acc-btn:hover{background:var(--mp-navy);color:#fff;text-decoration:none}
+.mp-acc-btn svg{width:18px;height:18px;flex-shrink:0}
+.mp-store-btn{display:inline-flex;align-items:center;gap:6px;padding:9px 14px;border-radius:999px;background:var(--terracotta);color:#fff;font-weight:700;font-size:.85rem;text-decoration:none;line-height:1;white-space:nowrap}
+.mp-store-btn:hover{background:#6B2E2E;color:#fff;text-decoration:none}
+@media(max-width:560px){.mp-acc-label{display:none}.mp-acc-btn{padding:9px 11px;border-radius:999px}.mp-acc-btn svg{width:20px;height:20px}}
+@media(max-width:480px){.mp-store-btn-label-full{display:none}.mp-store-btn-label-short{display:inline}}
+.mp-store-btn-label-short{display:none}
 .mp-basket-total{font-weight:800;font-size:1.05rem;color:var(--text-dark);min-width:3.5ch;text-align:right}
 .nav-cart{position:relative;border:1px solid var(--mp-border);background:#fafafa;color:var(--brown);border-radius:10px;padding:8px 14px;font-weight:700;font-size:.95rem;display:inline-flex;align-items:center;gap:8px;font-family:inherit;cursor:pointer}
 .nav-cart:hover{border-color:var(--terracotta);color:var(--terracotta)}
@@ -235,6 +243,9 @@ main{display:block}
 .mcr-cta a.primary:hover{filter:brightness(1.05);text-decoration:none}
 .mcr-cta a.secondary{background:transparent;color:#fff;border:1.5px solid rgba(255,255,255,.5)}
 .mcr-cta a.secondary:hover{background:rgba(255,255,255,.12);text-decoration:none;border-color:#fff}
+.mcr-dash-line{margin-top:18px;font-size:.84rem;color:#cbd5e1;line-height:1.55}
+.mcr-dash-line a{color:#fcd34d;font-weight:700;text-decoration:underline}
+.mcr-dash-line a:hover{color:#fff;text-decoration:underline}
 
 /* =================== AREA GRID =================== */
 .agrid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
@@ -360,8 +371,14 @@ main{display:block}
         <input type="search" id="hd-search" name="q" autocomplete="off" enterkeyhint="search" placeholder="Search for products, stores, recipes..." />
       </div>
       <div class="mp-actions">
-        <a class="mp-user mp-hide-narrow" href="/account" aria-label="My account">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M6 20v-1a6 6 0 0112 0v1"/></svg>
+        <a class="mp-acc-btn" href="/account" id="mp-acc-btn" aria-label="My account">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M6 20v-1a6 6 0 0112 0v1"/></svg>
+          <span class="mp-acc-label" id="mp-acc-label">Sign in</span>
+        </a>
+        <a class="mp-store-btn" href="/store-owner/dashboard/" aria-label="Store-owner dashboard">
+          <span aria-hidden="true">🏪</span>
+          <span class="mp-store-btn-label-full">For stores</span>
+          <span class="mp-store-btn-label-short">Store</span>
         </a>
         <span class="mp-basket-total" id="nav-total" aria-live="polite">£0.00</span>
         <a class="nav-cart" href="/customer/orders/" aria-label="Your orders"><span aria-hidden="true">🛒</span><span class="nb" id="nav-badge">0</span></a>
@@ -402,6 +419,7 @@ main{display:block}
         <a class="primary" href="#featured-stores">Shop Manchester stores →</a>
         <a class="secondary" href="#mcr-areas">Browse by area</a>
       </div>
+      <p class="mcr-dash-line"><strong>Dashboards:</strong> <a href="/account">Shoppers — my account</a> · <a href="/store-owner/dashboard/">Stores — owner dashboard</a> · <a href="/customer/orders/">Track an order</a></p>
     </div>
   </div>
 </section>
@@ -671,6 +689,7 @@ main{display:block}
       <h3 class="mp-foot-h">Your account</h3>
       <a href="/customer/orders/">Order tracking</a>
       <a href="/account">My account</a>
+      <a href="/store-owner/dashboard/">Store owner dashboard</a>
       <a href="/terms">Return policy</a>
       <a href="mailto:clipservices26@gmail.com">Contact us</a>
     </div>
@@ -1120,6 +1139,23 @@ main{display:block}
 })();
 </script>
 
+<script>
+/* Personalise the "Sign in" button if a customer session cookie is valid. */
+(function () {
+  var lbl = document.getElementById("mp-acc-label");
+  var btn = document.getElementById("mp-acc-btn");
+  if (!lbl || !btn) return;
+  fetch("/api/customer-auth?action=whoami", { credentials: "same-origin" })
+    .then(function (r) { return r.ok ? r.json() : null; })
+    .then(function (j) {
+      if (j && j.ok && j.email) {
+        lbl.textContent = "My account";
+        btn.setAttribute("aria-label", "My account (" + j.email + ")");
+      }
+    })
+    .catch(function () { /* offline: keep "Sign in" */ });
+})();
+</script>
 <script src="/js/global-search.js" defer></script>
 <script src="/site-track.js" defer></script>
 <script src="/js/clip-cookie.js" defer></script>
