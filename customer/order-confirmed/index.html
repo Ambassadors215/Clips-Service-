@@ -131,7 +131,13 @@
           return;
         }
         document.getElementById("lock").style.display = "block";
-        fetch("/api/order-public?ref=" + encodeURIComponent(ref))
+        var qp = "";
+        var trackTok = q.get("track") || q.get("t") || "";
+        var emParam = (q.get("email") || "").trim();
+        if (trackTok.length >= 16) qp += "&track=" + encodeURIComponent(trackTok);
+        else if (emParam.indexOf("@") > 0) qp += "&email=" + encodeURIComponent(emParam);
+
+        fetch("/api/order-public?ref=" + encodeURIComponent(ref) + qp)
           .then(function (r) {
             return r.json();
           })
@@ -203,9 +209,14 @@
             var oo = document.getElementById("to-orders");
             oo.style.display = "block";
             var qe = (q.get("email") || "").trim();
-            var trackUrl = "/customer/orders/?ref=" + encodeURIComponent(o.ref);
-            if (qe.indexOf("@") > 0) trackUrl += "&email=" + encodeURIComponent(qe);
-            oo.href = trackUrl;
+            var trackHref = "";
+            if (trackTok.length >= 16) trackHref = "/track-order?ref=" + encodeURIComponent(o.ref) + "&t=" + encodeURIComponent(trackTok);
+            else {
+              trackHref = "/customer/orders/?ref=" + encodeURIComponent(o.ref);
+              if (qe.indexOf("@") > 0) trackHref += "&email=" + encodeURIComponent(qe);
+            }
+            oo.href = trackHref;
+            oo.textContent = trackTok.length >= 16 ? "Live order tracking" : "Track my order";
             try {
               if (!localStorage.getItem("clip_notify_asked") && "Notification" in window && Notification.permission === "default") {
                 var pp = document.getElementById("push-pitch");

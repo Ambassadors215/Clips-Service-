@@ -160,7 +160,8 @@ label{display:block;font-size:.75rem;font-weight:700;color:#374151;margin:0 0 6p
     <div class="mp-util-inner">
       <nav class="mp-util-nav" aria-label="Quick links">
         <a href="/terms">Return policy</a>
-        <a href="/customer/orders/">Order tracking</a>
+        <a href="/track-order">Quick track (Order ID)</a>
+        <a href="/customer/orders/">All my orders</a>
         <a href="/account#signin">Sign in</a>
         <a href="/account#register">Create account</a>
         <a href="/account">My account</a>
@@ -216,7 +217,7 @@ label{display:block;font-size:.75rem;font-weight:700;color:#374151;margin:0 0 6p
   <div class="page-hero-inner">
     <p class="crumb"><a href="/">Home</a> &nbsp;›&nbsp; <a href="/stores">Stores</a> &nbsp;›&nbsp; <span>Track my order</span></p>
     <h1>Track my order</h1>
-    <p class="lead">Enter your <strong>Order ID</strong> for a quick view, or use the email you placed the order with to see every order in one place.</p>
+    <p class="lead">Enter your <strong>Order ID</strong> (<strong>CLS-2026-12345</strong> or <strong>CS-…</strong>) and the <strong>email or UK mobile</strong> from checkout — no login required.</p>
   </div>
 </section>
 
@@ -226,10 +227,14 @@ label{display:block;font-size:.75rem;font-weight:700;color:#374151;margin:0 0 6p
     <!-- Quick track by order ID -->
     <form class="panel" id="ref-form" novalidate>
       <h2>Track by Order ID</h2>
-      <p class="help">Format <strong>CS-XXXXXXXX</strong>. Find it on your confirmation email or the receipt page.</p>
+      <p class="help">Format <strong>CLS-2026-12345</strong> or legacy <strong>CS-XXXXXXXX</strong>. From your confirmation email or receipt.</p>
       <div class="field">
         <label for="ref-input">Order ID</label>
-        <input type="text" id="ref-input" name="ref" placeholder="CS-ABCD1234" autocomplete="off" inputmode="text" maxlength="32" />
+        <input type="text" id="ref-input" name="ref" placeholder="CLS-2026-48291" autocomplete="off" inputmode="text" maxlength="36" />
+      </div>
+      <div class="field">
+        <label for="ref-contact">Email or UK mobile</label>
+        <input type="text" id="ref-contact" autocomplete="username" maxlength="160" placeholder="you@example.com or 07123 …" />
       </div>
       <button type="submit" class="btn btn-blue btn-block">Track this order</button>
       <p class="err" id="ref-err" role="status"></p>
@@ -323,9 +328,13 @@ label{display:block;font-size:.75rem;font-weight:700;color:#374151;margin:0 0 6p
   var emptyEl = document.getElementById("empty");
   var loadingEl = document.getElementById("loading");
 
+  var refContactEl = document.getElementById("ref-contact");
+  var trackPollTimer = null;
+
   var q = new URLSearchParams(location.search);
   if (q.get("email")) emEl.value = q.get("email").trim();
   else { try { var s = localStorage.getItem(LS_EMAIL); if (s) emEl.value = s; } catch (e) {} }
+  if (q.get("email") && refContactEl) refContactEl.value = q.get("email").trim();
   if (q.get("ref")) refEl.value = q.get("ref").trim().toUpperCase();
 
   // ---------- helpers ----------
@@ -361,10 +370,12 @@ label{display:block;font-size:.75rem;font-weight:700;color:#374151;margin:0 0 6p
     return o.fulfillment === "delivery" ? "Delivery" : "Collection";
   }
   function etaLine(o) {
+    var prep = o.estimatedPrepMinutes != null && !isNaN(Number(o.estimatedPrepMinutes)) ? Number(o.estimatedPrepMinutes) : 25;
+    var del = o.estimatedDeliveryMinutes != null && !isNaN(Number(o.estimatedDeliveryMinutes)) ? Number(o.estimatedDeliveryMinutes) : 45;
     if (o.fulfillment === "delivery") {
-      return "ETA approx. 30–60 minutes once the store confirms — they'll WhatsApp you the time.";
+      return "Estimated delivery window ~ " + del + " minutes once the store marks it “on the way” (they’ll WhatsApp updates).";
     }
-    return "Ready in approx. 2 hours once the store confirms on WhatsApp.";
+    return "Estimated ready for collection in ~ " + prep + " minutes once the store confirms.";
   }
   function lineItems(cart) {
     if (!cart || !cart.length) return "—";
@@ -378,7 +389,23 @@ label{display:block;font-size:.75rem;font-weight:700;color:#374151;margin:0 0 6p
     return u;
   }
 
-  // ---------- tracker ----------
+  function histTimeISO(o, statusKey) {
+    var hist = o.orderStageHistory;
+    if (!hist || !hist.length) return "";
+    var best = "";
+    for (var i = 0; i < hist.length; i++) {
+      if (!hist[i] || hist[i].status !== statusKey) continue;
+      if (hist[i].at && (!best || String(hist[i].at).localeCompare(best) > 0)) best = String(hist[i].at);
+    }
+    if (!best) return "";
+    var d = new Date(best);
+    if (isNaN(d.getTime())) return "";
+    try {
+      return d.toLocaleString("en-GB", { weekday: "short", day: "numeric", month: "short", hour: "2-digit", minute: "2-digit" });
+    } catch (e2) {
+      return best.slice(0, 16);
+    }
+  }
   function trackerHTML(o) {
     var st = o.storeStage || "new";
     var isDel = o.fulfillment === "delivery";
@@ -413,10 +440,11 @@ label{display:block;font-size:.75rem;font-weight:700;color:#374151;margin:0 0 6p
       var cls = "tstep";
       if (j < curIdx) cls += " done";
       else if (j === curIdx) cls += " current";
+      var ts = histTimeISO(o, steps[j].key);
       cols += '<div class="' + cls + '" role="listitem">'
             + '<div class="dot" aria-hidden="true">' + (j < curIdx ? "✓" : steps[j].dot) + '</div>'
             + '<span class="lbl">' + esc(steps[j].lbl) + '</span>'
-            + '<span class="sub">' + esc(steps[j].sub) + '</span>'
+            + '<span class="sub">' + esc(ts ? (steps[j].sub + " · " + ts) : steps[j].sub) + '</span>'
             + '</div>';
     }
     cols += '</div>';
@@ -552,6 +580,10 @@ label{display:block;font-size:.75rem;font-weight:700;color:#374151;margin:0 0 6p
 
   function loadByEmail(opts) {
     opts = opts || {};
+    if (trackPollTimer) {
+      clearInterval(trackPollTimer);
+      trackPollTimer = null;
+    }
     var m = (emEl.value || "").trim();
     emailErr.textContent = "";
     if (m.length < 5 || m.indexOf("@") < 1) {
@@ -584,6 +616,10 @@ label{display:block;font-size:.75rem;font-weight:700;color:#374151;margin:0 0 6p
     window._single = order ? [order] : [];
     if (!order) {
       singleWrap.style.display = "none";
+      if (trackPollTimer) {
+        clearInterval(trackPollTimer);
+        trackPollTimer = null;
+      }
       return;
     }
     singleWrap.style.display = "block";
@@ -591,25 +627,90 @@ label{display:block;font-size:.75rem;font-weight:700;color:#374151;margin:0 0 6p
     document.getElementById("single").innerHTML = cardHTML(order, { singleView: true });
   }
 
+  function liveTrackFetchUrl(raw) {
+    var token = (
+      new URLSearchParams(location.search).get("t") ||
+      new URLSearchParams(location.search).get("track") ||
+      ""
+    ).trim();
+    var url = "/api/order-public?ref=" + encodeURIComponent(raw);
+    if (token.length >= 16) return url + "&track=" + encodeURIComponent(token);
+    var contact = refContactEl ? (refContactEl.value || "").trim() : "";
+    if (contact.indexOf("@") > 0) return url + "&email=" + encodeURIComponent(contact);
+    return url + "&phone=" + encodeURIComponent(contact);
+  }
+
+  function startTrackPoll(raw) {
+    if (trackPollTimer) {
+      clearInterval(trackPollTimer);
+      trackPollTimer = null;
+    }
+    trackPollTimer = setInterval(function () {
+      if (singleWrap.style.display === "none") return;
+      fetch(liveTrackFetchUrl(raw))
+        .then(function (r) {
+          return r.json();
+        })
+        .then(function (j) {
+          if (!j || !j.ok || !j.order) return;
+          var o = j.order;
+          o.status = "paid";
+          o.storeActive = true;
+          renderSingle(o);
+        })
+        .catch(function () {});
+    }, 12000);
+  }
+
   function loadByRef(opts) {
     opts = opts || {};
     var raw = (refEl.value || "").trim().toUpperCase();
     refErr.textContent = "";
-    if (!/^CS-[A-Z0-9]{4,}$/.test(raw)) {
-      refErr.textContent = "Enter a valid Order ID (format CS-XXXXXXXX).";
+    if (!/^(CS-[A-Z0-9]{4,}|CLS-[0-9]{4}-[0-9]{5})$/.test(raw)) {
+      refErr.textContent = "Enter a valid Order ID (CLS-YYYY-XXXXX or CS-…).";
       return;
     }
     refEl.value = raw;
+
+    var token = (
+      new URLSearchParams(location.search).get("t") ||
+      new URLSearchParams(location.search).get("track") ||
+      ""
+    ).trim();
+    var contact = refContactEl ? (refContactEl.value || "").trim() : "";
+    var needContact = !token || token.length < 16;
+    if (needContact && !contact) {
+      refErr.textContent = "Enter the email or UK mobile you used when you ordered.";
+      return;
+    }
+    if (needContact && contact.indexOf("@") < 0 && contact.replace(/\D/g, "").length < 10) {
+      refErr.textContent = "Enter a valid email or UK mobile number.";
+      return;
+    }
+
+    var url = "/api/order-public?ref=" + encodeURIComponent(raw);
+    if (token.length >= 16) url += "&track=" + encodeURIComponent(token);
+    else if (contact.indexOf("@") > 0) url += "&email=" + encodeURIComponent(contact);
+    else url += "&phone=" + encodeURIComponent(contact);
+
     if (!opts.silent) {
-      history.replaceState(null, "", "/customer/orders/?ref=" + encodeURIComponent(raw));
+      var qs = "ref=" + encodeURIComponent(raw);
+      if (token.length >= 16) qs += "&t=" + encodeURIComponent(token);
+      else if (contact.indexOf("@") > 0) qs += "&email=" + encodeURIComponent(contact);
+      history.replaceState(null, "", "/customer/orders/?" + qs);
     }
     loadingEl.style.display = "block";
-    fetch("/api/order-public?ref=" + encodeURIComponent(raw))
-      .then(function (r) { return r.json(); })
+    fetch(url)
+      .then(function (r) {
+        return r.json();
+      })
       .then(function (j) {
         loadingEl.style.display = "none";
         if (!j || !j.ok || !j.order) {
-          refErr.textContent = (j && j.error) || "We couldn't find that order. Double-check the ID.";
+          refErr.textContent =
+            j && j.code === "verify_contact"
+              ? j.error || "We need your email or mobile to show this order."
+              : (j && j.error) || "We couldn't find that order. Double-check the details.";
           renderSingle(null);
           return;
         }
@@ -619,6 +720,7 @@ label{display:block;font-size:.75rem;font-weight:700;color:#374151;margin:0 0 6p
         emailWrap.style.display = "none";
         emptyEl.style.display = "none";
         renderSingle(o);
+        startTrackPoll(raw);
       })
       .catch(function () {
         loadingEl.style.display = "none";
