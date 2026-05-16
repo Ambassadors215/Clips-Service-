@@ -141,8 +141,13 @@ th{color:var(--muted);font-weight:600;font-size:11px;text-transform:uppercase}
   <h3 style="font-family:'Playfair Display',serif;margin-bottom:12px">Add product</h3>
   <div class="label">Product name *</div>
   <input class="input" id="pf-name" />
-  <div class="label" style="margin-top:10px">Price (£) *</div>
+  <div class="label" style="margin-top:10px">Price (£) * — usual price customers compare against</div>
   <input class="input" id="pf-price" type="number" min="0" step="0.01" />
+  <div class="label" style="margin-top:10px">Sale price (£) — optional</div>
+  <input class="input" id="pf-sale" type="number" min="0" step="0.01" placeholder="Lower price → shows SALE on your shop" />
+  <div class="label" style="margin-top:10px">Sold by</div>
+  <select class="input" id="pf-unit"><option value="each">Each / pack</option><option value="kg">Per kg (e.g. rice, meat)</option><option value="g">Per 100g (small produce)</option><option value="l">Per litre (liquids)</option></select>
+  <p style="font-size:12px;color:#5C4033;margin:-4px 0 0">Customers see weights on your storefront (e.g. £3.40 / kg). Use clear product names such as “Pepper 0.5 kg” if you sell fixed weights.</p>
   <div class="label" style="margin-top:10px">Category</div>
   <select class="input" id="pf-cat"></select>
   <div class="label" style="margin-top:10px">Description</div>
@@ -160,7 +165,20 @@ th{color:var(--muted);font-weight:600;font-size:11px;text-transform:uppercase}
 <script>
 (function(){
 const $ = (id) => document.getElementById(id);
-const CATEGORIES = ['fresh-produce','meat-fish','groceries-staples','snacks-drinks','hair-beauty','fashion-fabric','halal-products','other'];
+const CATEGORY_OPTS = [
+  { v: 'fresh-produce', lab: 'Fruits & vegetables' },
+  { v: 'meat-fish', lab: 'Meat & fish' },
+  { v: 'staples-grains', lab: 'Rice & staples' },
+  { v: 'spices-ingredients', lab: 'Spices' },
+  { v: 'oils-condiments', lab: 'Oils & condiments' },
+  { v: 'drinks-beverages', lab: 'Beverages' },
+  { v: 'hair-beauty', lab: 'Hair & beauty products' },
+  { v: 'fashion-fabrics', lab: 'Fashion & fabric' },
+  { v: 'ready-meals', lab: 'Ready meals' },
+  { v: 'snacks-sweets', lab: 'Snacks' },
+  { v: 'halal-products', lab: 'Halal' },
+  { v: 'groceries', lab: 'Groceries / other' },
+];
 let store = null, dash = null, charts = {}, editingProductId = null;
 
 function esc(s){ return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;'); }
@@ -311,17 +329,22 @@ function renderProducts() {
       <button type="button" class="btn btn-primary" id="addProdBtn">➕ Add product</button>
     </div>
     <div class="card table-wrap">
-    ${prods.length ? `<table><thead><tr><th></th><th>Photo</th><th>Name</th><th>Price</th><th>Category</th><th>Stock</th><th>Featured</th><th></th></tr></thead><tbody>
-    ${prods.map(p => `<tr>
+    ${prods.length ? `<table><thead><tr><th></th><th>Photo</th><th>Name</th><th>Price</th><th>Sale</th><th>Category</th><th>Stock</th><th>Featured</th><th></th></tr></thead><tbody>
+    ${prods.map(p => {
+      const sp = Number(p.salePrice);
+      const rr = Number(p.price);
+      const onSale = Number.isFinite(sp) && Number.isFinite(rr) && sp > 0 && sp < rr;
+      return `<tr>
       <td><input type="checkbox" class="bulk-cb" value="${esc(p.id)}"/></td>
       <td>${p.photoData ? '<span style=font-size:20px>🖼️</span>' : '—'}</td>
       <td>${esc(p.name)}</td>
-      <td>£${Number(p.price).toFixed(2)}</td>
+      <td>${onSale ? `<span style="text-decoration:line-through;color:#78716c">£${rr.toFixed(2)}</span> ` : ''}£${(onSale?sp:rr).toFixed(2)}${p.pricingUnit && p.pricingUnit !== 'each' ? `<span style="font-size:11px;color:var(--muted)">/${esc(p.pricingUnit)}</span>` : ''}</td>
+      <td>${onSale ? '✓' : '—'}</td>
       <td>${esc(p.category)}</td>
       <td>${p.inStock!==false?'In stock':'Out'}</td>
       <td>${p.featured?'⭐':''}</td>
       <td><button type="button" class="btn btn-ghost del-p" data-id="${esc(p.id)}" style="padding:4px 8px;font-size:12px">Delete</button></td>
-    </tr>`).join('')}
+    </tr>`;}).join('')}
     </tbody></table>
     <div style="margin-top:12px;display:flex;gap:8px;flex-wrap:wrap">
       <button type="button" class="btn btn-ghost" id="bulk-oos">Mark selected out of stock</button>
@@ -355,8 +378,9 @@ async function bulkDelete() {
 
 function openProductModal() {
   editingProductId = null;
-  $('pf-name').value = ''; $('pf-price').value = ''; $('pf-desc').value = '';
-  $('pf-cat').innerHTML = CATEGORIES.map(c => `<option value="${c}">${c}</option>`).join('');
+  $('pf-name').value = ''; $('pf-price').value = ''; $('pf-sale').value = ''; $('pf-desc').value = '';
+  $('pf-cat').innerHTML = CATEGORY_OPTS.map(c => `<option value="${esc(c.v)}">${esc(c.lab)}</option>`).join('');
+  $('pf-unit').value = 'each';
   $('pf-file').value = '';
   $('pf-stock').classList.add('on'); $('pf-feat').classList.remove('on');
   $('productModal').classList.add('show');
@@ -367,14 +391,27 @@ $('pf-feat').onclick = function(){ this.classList.toggle('on'); };
 
 $('pf-save').onclick = async () => {
   const name = $('pf-name').value.trim();
-  const price = parseFloat($('pf-price').value);
+  const basePrice = parseFloat($('pf-price').value);
+  const saleRaw = $('pf-sale').value.trim();
+  const saleParsed = saleRaw === '' ? NaN : parseFloat(saleRaw);
   const file = $('pf-file').files[0];
-  if (!name || !price || !file) { alert('Name, price and photo are required'); return; }
+  if (!name || !Number.isFinite(basePrice) || basePrice <= 0 || !file) { alert('Name, a valid usual price, and a photo are required'); return; }
   if (file.size > 5*1024*1024) { alert('Photo max 5MB'); return; }
   const b64 = await new Promise((res,rej) => { const r = new FileReader(); r.onload = () => res(r.result.split(',')[1]); r.onerror = rej; r.readAsDataURL(file); });
   const id = 'p-' + Math.random().toString(36).slice(2,10);
   const cur = store.listing.storeProducts || [];
-  const np = { id, name, price, category: $('pf-cat').value, description: $('pf-desc').value, photoData: b64, inStock: $('pf-stock').classList.contains('on'), featured: $('pf-feat').classList.contains('on') };
+  const np = {
+    id,
+    name,
+    price: basePrice,
+    category: $('pf-cat').value,
+    description: $('pf-desc').value,
+    photoData: b64,
+    inStock: $('pf-stock').classList.contains('on'),
+    featured: $('pf-feat').classList.contains('on'),
+    pricingUnit: $('pf-unit').value,
+  };
+  if (Number.isFinite(saleParsed) && saleParsed > 0 && saleParsed < basePrice) np.salePrice = saleParsed;
   await api('/api/store-owner', { method:'POST', body: JSON.stringify({ action:'save-products', products: cur.concat([np]), listingId: store.listingId }) });
   $('productModal').classList.remove('show');
   await loadAll(); navTo('products');

@@ -3,38 +3,405 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Shop by category | Clip Services</title>
-<meta name="description" content="Browse food, hair, beauty and more from African, Caribbean and Asian independents on Clip Services.">
+<title>All categories · Greater Manchester | Clip Services</title>
+<meta name="description" content="Browse African, Caribbean and Asian product categories across live Manchester stores. Filter by area, community, delivery or collection — then open verified storefronts on Clip Services.">
 <meta name="theme-color" content="#8B3A3A">
+<link rel="canonical" href="https://clipservice.app/categories/">
 <link rel="manifest" href="/manifest.webmanifest">
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Inter:wght@500;600;700&display=swap" rel="stylesheet">
 <style>
-:root{--t:#8B3A3A;--c:#F5F0E8;--b:#2C1810;--g:#D4A017;--w:#fff;}
-*{box-sizing:border-box}body{margin:0;font-family:Inter,system-ui,sans-serif;background:var(--c);color:var(--b);line-height:1.6;padding:20px;min-height:100vh;font-size:16px}
-.wrap{max-width:720px;margin:0 auto}
-h1{font-family:Playfair Display,Georgia,serif;color:var(--t);font-size:1.75rem}
-a{color:var(--t);font-weight:600}
-.grid{display:grid;gap:12px;margin-top:20px}
-.btn{display:block;padding:16px 20px;border-radius:12px;background:var(--t);color:var(--w);text-align:center;font-weight:700;text-decoration:none;min-height:48px}
-.tag{font-size:13px;color:#5c4033;margin-top:8px}
+:root{--t:#8B3A3A;--cream:#F5F0E8;--brown:#2C1810;--gold:#D4A017;--w:#fff;--muted:#5c4033;--border:#e8dfd4;}
+*{box-sizing:border-box}
+body{margin:0;font-family:Inter,system-ui,sans-serif;background:var(--cream);color:var(--brown);line-height:1.55;font-size:16px;padding:0;}
+a{color:var(--t);font-weight:700}
+.wrap{max-width:1120px;margin:0 auto;padding:20px 18px 80px;display:grid;gap:20px;}
+@media(min-width:900px){.wrap{grid-template-columns:minmax(0,260px) 1fr;align-items:flex-start}}
+h1{font-family:Playfair Display,Georgia,serif;color:var(--t);font-size:1.65rem;margin:0 0 8px}
+.lead{font-size:.95rem;color:var(--muted);margin:0}
+.filter-card{background:#fff;border:1px solid #ddd2c4;border-radius:14px;padding:16px;position:relative}
+@media(min-width:900px){.filter-card{position:sticky;top:12px}}
+.filter-card h2{font-family:Playfair Display,Georgia,serif;font-size:1.05rem;margin:0 0 14px;color:var(--t)}
+.lab{display:block;font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);margin:12px 0 6px}
+.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+select,input{width:100%;padding:11px 12px;border-radius:10px;border:1px solid #ccc;font:inherit;font-size:15px}
+.row2{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:4px}
+.btn-big{display:flex;justify-content:center;align-items:center;width:100%;min-height:50px;margin-top:14px;padding:14px;border:none;border-radius:12px;background:var(--t);color:var(--w);font:inherit;font-weight:800;font-size:1rem;cursor:pointer}
+.btn-big:active{opacity:.93}
+.chk{display:flex;align-items:center;gap:10px;font-weight:600;font-size:.92rem;margin-top:14px;padding:12px;background:var(--cream);border-radius:10px;border:1px solid #e8dfd4;}
+.areas{display:flex;flex-wrap:wrap;gap:10px;margin:16px 0 18px;}
+.area-p{display:inline-flex;align-items:center;padding:11px 16px;background:#fff;border:1px solid #ddd2c4;border-radius:999px;text-decoration:none;font-size:.92rem;color:var(--t)}
+.area-p:focus-visible,.btn-big:focus-visible{outline:3px solid var(--gold)}
+.cat-grid{display:grid;gap:12px;}
+@media(min-width:560px){.cat-grid{grid-template-columns:repeat(2,1fr)}}
+.cat-card{display:flex;flex-direction:column;justify-content:center;text-decoration:none;background:#fff;color:inherit;border-radius:14px;padding:18px 16px;border:1px solid #e8dfd4;min-height:52px}
+.cat-card:hover{border-color:rgba(139,58,58,.35)}
+.cat-card strong{font-family:Playfair Display,Georgia,serif;color:var(--t);font-size:1.12rem;display:block;margin-bottom:4px;}
+.cat-card span{font-size:.86rem;color:var(--muted);font-weight:500}
+.note{font-size:.84rem;color:var(--muted);margin:10px 0 0;line-height:1.45;}
+.res-h{font-family:Playfair Display,Georgia,serif;font-size:1.2rem;margin:22px 0 10px;color:var(--t)}
+.store-cards{display:grid;gap:12px}
+.store-card{background:#fff;border-radius:12px;padding:14px;border:1px solid #e8dfd4;display:block;color:inherit;text-decoration:none}
+.store-card:hover{border-color:var(--t)}
+.store-card strong{color:var(--t);display:block;margin-bottom:6px}
+.store-card span{font-size:.88rem;color:var(--muted)}
+.empty{border:2px dashed #ddd2c4;border-radius:14px;padding:24px;text-align:center;color:var(--muted);margin-top:8px;background:#fdfaf6}
+.sk{color:var(--muted);font-weight:700;font-size:.78rem;display:block;margin-top:14px;text-transform:uppercase;letter-spacing:.05em}
 </style>
 </head>
 <body>
 <div class="wrap">
-  <p><a href="/">← Home</a></p>
-  <h1>Popular categories &amp; products</h1>
-  <p class="tag">Discover stores with these product types — you’ll go to a filtered browse or search.</p>
-  <div class="grid">
-    <a class="btn" href="/search?q=plantain+rice+spices">Groceries &amp; ingredients</a>
-    <a class="btn" href="/search?q=halal+meat">Halal &amp; meat</a>
-    <a class="btn" href="/search?q=hair+beauty">Hair &amp; beauty</a>
-    <a class="btn" href="/search?q=fabric+fashion">Fabric &amp; fashion</a>
-    <a class="btn" href="/search?q=ready+meals">Ready meals &amp; snacks</a>
-    <a class="btn" href="/stores">All stores</a>
+  <div>
+    <p><a href="/">← Home</a></p>
+    <h1>All categories</h1>
+    <p class="lead">Clip Services operates in Greater Manchester only right now — every store below is a live onboarding listing serving local collection or delivery where shown.</p>
+    <span class="sk">Browse by area</span>
+    <div class="areas" id="areas"></div>
+
+    <h2 style="font-family:Playfair Display,Georgia,serif;font-size:1.25rem;color:var(--t);margin-bottom:14px;">Shop categories</h2>
+    <div class="cat-grid">
+      <a class="cat-card" href="/categories/fresh-produce"><strong>Fruits &amp; vegetables</strong><span>Plantain, pepper, greens, produce</span></a>
+      <a class="cat-card" href="/categories/meat-fish"><strong>Meat &amp; fish</strong><span>Halal meat, poultry, seafood</span></a>
+      <a class="cat-card" href="/categories/staples-grains"><strong>Rice &amp; staples</strong><span>Rice, grains, pulses</span></a>
+      <a class="cat-card" href="/categories/spices-ingredients"><strong>Spices</strong><span>Seasonings, dried ingredients</span></a>
+      <a class="cat-card" href="/categories/oils-condiments"><strong>Oils &amp; condiments</strong><span>Cooking oils, sauces</span></a>
+      <a class="cat-card" href="/categories/drinks-beverages"><strong>Beverages</strong><span>Drinks &amp; mixers</span></a>
+      <a class="cat-card" href="/categories/hair-beauty"><strong>Hair &amp; beauty</strong><span>Hair products &amp; cosmetics</span></a>
+      <a class="cat-card" href="/categories/fashion-fabrics"><strong>Fashion &amp; fabric</strong><span>Textiles &amp; dress</span></a>
+      <a class="cat-card" href="/categories/halal-products"><strong>Halal</strong><span>Tagged halal lines</span></a>
+      <a class="cat-card" href="/categories/snacks-sweets"><strong>Snacks &amp; sweets</strong><span>Packaged snacks</span></a>
+      <a class="cat-card" href="/categories/ready-meals"><strong>Ready meals</strong><span>Prepared chilled &amp; frozen</span></a>
+      <a class="cat-card" href="/stores"><strong>Shop all live stores →</strong><span>See every storefront in Manchester</span></a>
+    </div>
+
+    <h2 id="browse-res" class="res-h">Filtered storefronts</h2>
+    <div id="store-results"></div>
+
+    <p class="note">Tip: SSR category pages (<code>/categories/…</code>) list stores by keyword match across profiles; use the filters here to narrow by suburb, fulfilment mode, and catalogue samples.</p>
   </div>
+
+  <aside class="filter-card" aria-labelledby="filt-h">
+    <h2 id="filt-h">Filters</h2>
+    <label class="sr-only lab" for="f-search">Keyword</label>
+    <input type="search" id="f-search" placeholder="Store or product keywords…" autocomplete="off" />
+    <span class="lab">Store</span>
+    <select id="f-store" aria-label="Filter by storefront">
+      <option value="">All live stores</option>
+    </select>
+    <span class="lab">Product keyword</span>
+    <select id="f-product" aria-label="Product type filter">
+      <option value="">Any</option>
+      <option value="fruits-veg">Fruits &amp; vegetables</option>
+      <option value="pepper">Pepper / chillies</option>
+      <option value="rice">Rice</option>
+      <option value="plantain">Plantain</option>
+      <option value="meat">Meat</option>
+      <option value="fish">Fish</option>
+      <option value="drinks">Beverages</option>
+      <option value="hair">Hair products</option>
+      <option value="kitchen">Pots &amp; pans</option>
+      <option value="spices">Spices</option>
+      <option value="oil">Oils</option>
+      <option value="fashion">Fashion</option>
+      <option value="fabric">Fabric</option>
+      <option value="beauty">Beauty</option>
+    </select>
+    <span class="lab">Community</span>
+    <select id="f-community">
+      <option value="">Any</option>
+      <option value="african">African</option>
+      <option value="caribbean">Caribbean</option>
+      <option value="asian">Asian</option>
+    </select>
+    <span class="lab">Greater Manchester area</span>
+    <select id="f-area">
+      <option value="">All areas</option>
+      <option value="moss-side">Moss Side</option>
+      <option value="hulme">Hulme</option>
+      <option value="longsight">Longsight</option>
+      <option value="rusholme">Rusholme</option>
+      <option value="cheetham-hill">Cheetham Hill</option>
+      <option value="fallowfield">Fallowfield</option>
+      <option value="withington">Withington</option>
+      <option value="chorlton">Chorlton</option>
+      <option value="salford">Salford</option>
+      <option value="old-trafford">Old Trafford</option>
+    </select>
+    <span class="lab">Fulfillment</span>
+    <select id="f-fulfil">
+      <option value="both">Delivery &amp; collection</option>
+      <option value="delivery">Delivery</option>
+      <option value="collection">Collection</option>
+    </select>
+    <div class="row2">
+      <div>
+        <span class="lab">Min £ (menu)</span>
+        <input type="number" id="f-min" min="0" step="1" placeholder="Min" />
+      </div>
+      <div>
+        <span class="lab">Max £</span>
+        <input type="number" id="f-max" min="0" step="1" placeholder="Max" />
+      </div>
+    </div>
+    <label class="chk"><input type="checkbox" id="f-open"/> Open now (stores accepting orders)</label>
+    <button type="button" class="btn-big" id="btn-apply">Update results</button>
+    <p class="note" style="margin-top:14px;margin-bottom:0">Filters mirror the Manchester directory logic on <a href="/stores">All stores</a>.</p>
+  </aside>
 </div>
-<script>try{if(/[?&]src=wa(?:&|$)/.test(location.search))sessionStorage.setItem("clipOrderSource","wa")}catch(_e){}</script>
+<script>
+(function () {
+  var AREAS = [
+    { slug: "moss-side", label: "Moss Side" },
+    { slug: "hulme", label: "Hulme" },
+    { slug: "longsight", label: "Longsight" },
+    { slug: "rusholme", label: "Rusholme" },
+    { slug: "cheetham-hill", label: "Cheetham Hill" },
+    { slug: "fallowfield", label: "Fallowfield" },
+    { slug: "withington", label: "Withington" },
+    { slug: "chorlton", label: "Chorlton" },
+    { slug: "salford", label: "Salford" },
+    { slug: "old-trafford", label: "Old Trafford" }
+  ];
+  var GM_TERMS = {
+    "moss-side": ["moss side", "mossside", "m14"],
+    hulme: ["hulme", "m15"],
+    longsight: ["longsight", "m12", "m13"],
+    rusholme: ["rusholme", "curry mile", "m14"],
+    "cheetham-hill": ["cheetham hill", "cheetham", "m8"],
+    fallowfield: ["fallowfield", "m14"],
+    withington: ["withington", "m20"],
+    chorlton: ["chorlton", "m21"],
+    salford: ["salford", "eccles", "m3", "m5", "m6", "m7"],
+    "old-trafford": ["old trafford", "trafford", "m16"]
+  };
+  var PRODUCT_TERMS = {
+    "fruits-veg": ["fruit", "vegetable", "veg", "greens"],
+    pepper: ["pepper", "scotch", "habanero", "chilli"],
+    rice: ["rice", "basmati"],
+    plantain: ["plantain"],
+    meat: ["meat", "lamb", "goat", "beef", "chicken"],
+    fish: ["fish", "salmon", "seafood"],
+    drinks: ["drink", "juice", "beverage"],
+    hair: ["hair", "braid"],
+    kitchen: ["pan", "pot", "cookware"],
+    spices: ["spice", "season"],
+    oil: ["oil", "palm"],
+    fashion: ["fashion", "clothing"],
+    fabric: ["fabric", "lace", "ankara"],
+    beauty: ["beauty", "cosmetic", "makeup"]
+  };
+  var COMM = {
+    african: ["african", "nigeria", "ghan", "somali"],
+    caribbean: ["caribbean", "jamaica", "jerk", "plantain"],
+    asian: ["asian", "indian", "pakistani", "bengali", "halal", "basmati"]
+  };
+  document.getElementById("areas").innerHTML = AREAS.map(function (a) {
+    return (
+      '<a class="area-p" href="?area=' +
+      encodeURIComponent(a.slug) +
+      '">' +
+      a.label +
+      "</a>"
+    );
+  }).join(" ");
+
+  function productBlob(it) {
+    var pv = Array.isArray(it.productPreview) ? it.productPreview : [];
+    var s = "";
+    pv.forEach(function (r) {
+      s += " " + (r.item || "") + " " + (r.price || "");
+    });
+    return (it.role + " " + it.bio + " " + (it.services || []).join(" ") + it.category + s).toLowerCase();
+  }
+  function areaMatch(it, slug) {
+    if (!slug) return true;
+    var terms = GM_TERMS[slug];
+    if (!terms) return true;
+    var b = (
+      String(it.city || "") +
+      " " +
+      String(it.bio || "") +
+      " " +
+      String(it.role || "") +
+      " " +
+      String(it.postcode || "")
+    ).toLowerCase();
+    return terms.some(function (t) {
+      return b.indexOf(t) >= 0;
+    });
+  }
+  function commMatch(it, k) {
+    if (!k) return true;
+    var words = COMM[k];
+    var b = (it.role + " " + it.bio + " ").toLowerCase();
+    return words.some(function (w) {
+      return b.indexOf(w) >= 0;
+    });
+  }
+  function prodKeyMatch(it, key) {
+    if (!key) return true;
+    var terms = PRODUCT_TERMS[key];
+    if (!terms) return true;
+    var b = productBlob(it);
+    return terms.some(function (t) {
+      return b.indexOf(t) >= 0;
+    });
+  }
+  function fulfMatch(it, f) {
+    if (!f || f === "both") return true;
+    if (f === "delivery") return it.deliveryEnabled !== false;
+    if (f === "collection") return it.collectionEnabled !== false;
+    return true;
+  }
+  function priceBand(it, amin, amax) {
+    var rows = Array.isArray(it.productPreview) ? it.productPreview : [];
+    if (!((amin > 0) || (amax > 0))) return true;
+    if (!rows.length) return true;
+    return rows.some(function (r) {
+      var n = parseFloat(String(r.price || "").replace(/[^0-9.]/g, ""));
+      if (!(n > 0)) return false;
+      if (amin > 0 && n < amin) return false;
+      if (amax > 0 && n > amax) return false;
+      return true;
+    });
+  }
+
+  function render(items) {
+    var q = (document.getElementById("f-search").value || "").trim().toLowerCase();
+    var storeSlug = document.getElementById("f-store").value;
+    var pk = document.getElementById("f-product").value;
+    var comm = document.getElementById("f-community").value;
+    var area = document.getElementById("f-area").value;
+    var fulf = document.getElementById("f-fulfil").value;
+    var amin = parseFloat(document.getElementById("f-min").value);
+    var amax = parseFloat(document.getElementById("f-max").value);
+    var open = document.getElementById("f-open").checked;
+    var out = items.filter(function (it) {
+      if (it.verified === false) return false;
+      if (storeSlug && String(it.storeSlug || "") !== storeSlug) return false;
+      var pb = productBlob(it);
+      if (q && pb.indexOf(q) < 0) return false;
+      if (!prodKeyMatch(it, pk)) return false;
+      if (!commMatch(it, comm)) return false;
+      if (!areaMatch(it, area)) return false;
+      if (!fulfMatch(it, fulf)) return false;
+      if (open && it.storeOpen === false) return false;
+      return priceBand(
+        it,
+        Number.isFinite(amin) ? amin : 0,
+        Number.isFinite(amax) ? amax : 0
+      );
+    });
+    var el = document.getElementById("store-results");
+    if (!out.length) {
+      el.innerHTML =
+        '<div class="empty">No stores match these filters yet. Try widening the area or product type.</div>';
+      return;
+    }
+    el.innerHTML =
+      '<div class="store-cards">' +
+      out
+        .map(function (it) {
+          var href = it.storeSlug
+            ? "/stores/" + encodeURIComponent(it.storeSlug)
+            : "/stores";
+          var bio = String(it.bio || "").slice(0, 120);
+          return (
+            '<a class="store-card" href="' +
+            href +
+            '"><strong>' +
+            escapeHtml(it.role || "Store") +
+            "</strong><span>" +
+            escapeHtml(bio) +
+            (String(it.city || "").trim()
+              ? " · " + escapeHtml(String(it.city))
+              : "") +
+            "</span></a>"
+          );
+        })
+        .join("") +
+      "</div>";
+  }
+  function escapeHtml(s) {
+    var d = document.createElement("div");
+    d.textContent = s;
+    return d.innerHTML;
+  }
+
+  function go() {
+    fetch("/api/listings")
+      .then(function (r) {
+        return r.json();
+      })
+      .then(function (j) {
+        var items = j.ok && Array.isArray(j.items) ? j.items : [];
+        var sel = document.getElementById("f-store");
+        var prev = sel ? sel.value : "";
+        if (sel) {
+          sel.innerHTML =
+            '<option value="">All live stores</option>' +
+            items
+              .filter(function (it) {
+                return it.verified !== false;
+              })
+              .map(function (it) {
+                var slug = String(it.storeSlug || "").trim();
+                var name = String(it.role || "Store").trim();
+                if (!slug) return "";
+                return (
+                  '<option value="' +
+                  slug.replace(/"/g, "&quot;") +
+                  '">' +
+                  name.replace(/</g, "&lt;").replace(/&/g, "&amp;") +
+                  "</option>"
+                );
+              })
+              .join("");
+          try {
+            if (prev && Array.prototype.some.call(sel.options, function (o) { return o.value === prev; })) {
+              sel.value = prev;
+            }
+            if (/store=([^&]+)/.test(location.search)) {
+              var want = decodeURIComponent(RegExp.$1).split("&")[0] || "";
+              if (
+                want &&
+                sel &&
+                Array.prototype.some.call(sel.options, function (o) {
+                  return o.value === want;
+                })
+              )
+                sel.value = want;
+            }
+          } catch (e1) {}
+        }
+        render(items);
+      })
+      .catch(function () {
+        document.getElementById("store-results").innerHTML =
+          '<div class="empty">Could not load storefronts.</div>';
+      });
+  }
+
+  ["f-search", "f-store", "f-product", "f-community", "f-area", "f-fulfil", "f-min", "f-max"].forEach(function (
+    id
+  ) {
+    var e = document.getElementById(id);
+    if (e) {
+      e.addEventListener(id === "f-search" || id === "f-min" || id === "f-max" ? "input" : "change", go);
+    }
+  });
+  document.getElementById("f-open").addEventListener("change", go);
+  document.getElementById("btn-apply").addEventListener("click", go);
+  go();
+
+  try {
+    if (/area=([^&]+)/.test(location.search))
+      document.getElementById("f-area").value =
+        decodeURIComponent(RegExp.$1).split("&")[0] || "";
+  } catch (e) {}
+})();
+</script>
 <script src="/js/pwa-core.js" defer></script>
 <script src="/js/clip-whatsapp-float.js" defer></script>
+<noscript><p>This page needs JavaScript to filter live storefronts.</p></noscript>
 </body>
 </html>

@@ -3,14 +3,14 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>African, Caribbean &amp; Asian Stores Across the UK | Clip Services</title>
-<meta name="description" content="Browse independent African, Caribbean and Asian stores across the UK. Filter by community, city and category. Secure Stripe checkout, WhatsApp updates — Clip Services marketplace.">
+<title>African, Caribbean &amp; Asian Stores in Greater Manchester | Clip Services</title>
+<meta name="description" content="Browse live, onboarded African, Caribbean and Asian independents in Greater Manchester. Filter by area, community, products and collection or delivery — pay securely with Stripe.">
 <meta name="theme-color" content="#8B3A3A">
 <link rel="manifest" href="/manifest.webmanifest">
 <link rel="canonical" href="https://clipservice.app/stores">
 <meta property="og:type" content="website">
-<meta property="og:title" content="Browse African, Caribbean &amp; Asian Stores UK | Clip Services">
-<meta property="og:description" content="Browse independent African, Caribbean and Asian stores across the UK. Secure payments, WhatsApp updates, PWA.">
+<meta property="og:title" content="Manchester African, Caribbean &amp; Asian Marketplace | Clip Services">
+<meta property="og:description" content="Live stores across Greater Manchester — Moss Side, Rusholme, Cheetham Hill, Salford and more. Secure checkout and local collection or delivery where offered.">
 <meta property="og:url" content="https://clipservice.app/stores">
 <meta property="og:image" content="https://clipservice.app/icons/og-cover.svg">
 <meta property="og:image:type" content="image/svg+xml">
@@ -22,7 +22,7 @@
 <link rel="sitemap" type="application/xml" href="/sitemap.xml">
 <link rel="manifest" href="/manifest.webmanifest">
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"WebSite","name":"Clip Services","url":"https://clipservice.app","description":"UK marketplace for African, Caribbean and Asian independent stores","potentialAction":{"@type":"SearchAction","target":"https://clipservice.app/stores?q={search_term_string}","query-input":"required name=search_term_string"}}
+{"@context":"https://schema.org","@type":"WebSite","name":"Clip Services","url":"https://clipservice.app","description":"Greater Manchester marketplace for African, Caribbean and Asian independent stores","potentialAction":{"@type":"SearchAction","target":"https://clipservice.app/stores?q={search_term_string}","query-input":"required name=search_term_string"}}
 </script>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;800&family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="/css/global-search.css">
@@ -36,6 +36,8 @@ h1{font-family:"Playfair Display",Georgia,serif;font-size:clamp(1.75rem,4vw,2.25
 .lead{color:var(--muted);margin-bottom:20px;}
 .toolbar{display:flex;flex-wrap:wrap;gap:10px;margin-bottom:20px;align-items:center;}
 .toolbar input,.toolbar select{padding:10px 12px;border:1px solid #ccc;border-radius:8px;font-size:15px;min-width:200px;}
+.toolbar input[type="number"]{min-width:92px}
+.toolbar input[type="checkbox"]{width:18px;height:18px}
 .grid{display:grid;gap:16px;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));max-width:1100px;margin:0 auto;}
 .card{background:var(--white);border-radius:14px;padding:18px;border:1px solid #E8DFD4;box-shadow:0 4px 20px rgba(0,0,0,.06);}
 .card h2{font-size:1.1rem;margin-bottom:6px;}
@@ -63,29 +65,66 @@ h1{font-family:"Playfair Display",Georgia,serif;font-size:clamp(1.75rem,4vw,2.25
     <a href="/customer/orders/">Track order</a>
     <a class="btn" href="/store-owner">List your store</a>
   </div>
-  <h1 id="mission">African, Caribbean &amp; Asian Stores Across the UK</h1>
-  <p class="lead" id="intro">Clip Services is the marketplace for diaspora-led independents: grocers, beauty suppliers, fabric sellers and market traders. Whether you’re searching for <strong>Nigerian ingredients in London</strong>, <strong>halal meat in Manchester</strong>, or <strong>Caribbean staples in Birmingham</strong>, browse stores by community and city — then pay securely with Stripe and get WhatsApp updates from many sellers. We’re growing UK-wide: every listing is a real independent you can order from, not a gig-economy middleman.</p>
-  <p class="lead" id="categories">Independent African, Caribbean and Asian sellers across the UK. Pay securely with Stripe; order updates via WhatsApp and PWA.</p>
+  <h1 id="mission">Shop Independent Stores in Greater Manchester</h1>
+  <p class="lead" id="intro">Clip Services is the city&rsquo;s African, Caribbean &amp; Asian marketplace — <strong>Moss Side</strong>, <strong>Rusholme</strong>, <strong>Cheetham Hill</strong>, <strong>Salford</strong>, <strong>Longsight</strong> and more. Every listing here is a <strong>live, onboarded store</strong> serving Greater Manchester: pay securely with Stripe, then collect or get local delivery where the seller offers it.</p>
+  <p class="lead" id="categories">Filter by neighbourhood, community (African · Caribbean · Asian), fulfilment, prices from product menus, and stores that are open now.</p>
   <p class="lead" id="active-filters" style="margin-bottom:16px;display:none" aria-live="polite"></p>
-  <h2 id="cities" style="font-size:1.1rem;margin-bottom:10px;font-family:'Playfair Display',Georgia,serif">Filter</h2>
+  <h2 id="cities" style="font-size:1.1rem;margin-bottom:10px;font-family:'Playfair Display',Georgia,serif">Filters</h2>
   <div class="toolbar">
     <label class="sr-only" for="q">Search</label>
-    <input type="search" id="q" placeholder="Search stores…" autocomplete="off">
+    <input type="search" id="q" placeholder="Search stores and products…" autocomplete="off">
     <select id="community" aria-label="Community">
       <option value="">All communities</option>
       <option value="african">African</option>
       <option value="caribbean">Caribbean</option>
       <option value="asian">Asian</option>
     </select>
+    <select id="prod-cat" aria-label="Product category">
+      <option value="">Product type (any)</option>
+      <option value="fruits-veg">Fruits &amp; vegetables</option>
+      <option value="pepper">Pepper &amp; chillies</option>
+      <option value="rice">Rice</option>
+      <option value="plantain">Plantain</option>
+      <option value="meat">Meat</option>
+      <option value="fish">Fish</option>
+      <option value="drinks">Beverages</option>
+      <option value="hair">Hair products</option>
+      <option value="kitchen">Pots &amp; pans</option>
+      <option value="spices">Spices</option>
+      <option value="oil">Oils</option>
+      <option value="fashion">Fashion</option>
+      <option value="fabric">Fabric</option>
+      <option value="beauty">Beauty products</option>
+    </select>
+    <label class="sr-only" for="pmin">Minimum price</label>
+    <input type="number" id="pmin" min="0" step="1" placeholder="Min £" aria-label="Minimum product price">
+    <label class="sr-only" for="pmax">Maximum price</label>
+    <input type="number" id="pmax" min="0" step="1" placeholder="Max £" aria-label="Maximum product price">
+    <select id="fulfil" aria-label="Collection or delivery">
+      <option value="both">Delivery + collection</option>
+      <option value="delivery">Delivery</option>
+      <option value="collection">Collection</option>
+    </select>
+    <label style="display:flex;align-items:center;gap:8px;font-size:14px;font-weight:600;color:var(--muted)">
+      <input type="checkbox" id="openNow" /> Open now
+    </label>
     <select id="sort" aria-label="Sort">
       <option value="featured">Sort: Featured</option>
       <option value="name">Name A–Z</option>
-      <option value="nearest">Sort: Nearest (use location)</option>
+      <option value="nearest">Sort: Nearest area</option>
     </select>
-    <select id="city" aria-label="Filter by city">
-      <option value="">All cities</option>
-      <option>Manchester</option><option>London</option><option>Birmingham</option><option>Leeds</option><option>Leicester</option>
-      <option>Bradford</option><option>Bristol</option><option>Liverpool</option><option>Sheffield</option><option>Nottingham</option>
+    <select id="area" aria-label="Manchester area">
+      <option value="">All areas</option>
+      <option value="moss-side">Moss Side</option>
+      <option value="hulme">Hulme</option>
+      <option value="longsight">Longsight</option>
+      <option value="rusholme">Rusholme</option>
+      <option value="cheetham-hill">Cheetham Hill</option>
+      <option value="fallowfield">Fallowfield</option>
+      <option value="withington">Withington</option>
+      <option value="chorlton">Chorlton</option>
+      <option value="salford">Salford</option>
+      <option value="old-trafford">Old Trafford</option>
     </select>
   </div>
 </header>
@@ -94,26 +133,74 @@ h1{font-family:"Playfair Display",Georgia,serif;font-size:clamp(1.75rem,4vw,2.25
 
 <section class="mission">
   <h2 style="font-family:'Playfair Display',Georgia,serif;margin-bottom:10px;">Our mission</h2>
-  <p>Clip Services is the UK’s dedicated digital home for African, Caribbean and Asian independent stores and market traders — fair fees, Stripe-powered checkout, and community-first discovery.</p>
+  <p>Clip Services is the marketplace for African, Caribbean and Asian independent stores in <strong>Greater Manchester</strong> — Stripe checkout, fair fees, WhatsApp updates, and community-led discovery.</p>
 </section>
 
 <section class="faq" id="faq">
   <h2>FAQ</h2>
   <details><summary>How do I pay?</summary><p>Secure card checkout via Stripe. You’ll receive confirmation by email and can track orders from your account flow where enabled.</p></details>
-  <details><summary>Do you deliver nationwide?</summary><p>Delivery options are set by each store. Many offer collection or local delivery first; we’re expanding UK coverage as stores join.</p></details>
+  <details><summary>Do you deliver nationwide?</summary><p>No — we are live in Greater Manchester first. Each store sets collection and local delivery coverage on their own page.</p></details>
   <details><summary>How do I sell on Clip Services?</summary><p>Apply from <a href="/store-owner">List your store</a>. We review listings, verify identity, and publish your catalogue — usually within 48 hours.</p></details>
 </section>
 
 <script>
 (function(){
   const params = new URLSearchParams(location.search);
-  const preCity = params.get("city") || "";
+  const preArea = params.get("area") || "";
   var catSlugFromUrl = String(params.get("category") || "").toLowerCase().trim();
   const preEvent = params.get("event") || "";
   const preQ = params.get("q") || "";
-  if(preCity) document.getElementById("city").value = preCity;
+  if(preArea) document.getElementById("area").value = preArea;
   if(preQ) document.getElementById("q").value = preQ;
   if(params.get("sort")==="nearest"){ document.getElementById("sort").value = "nearest"; }
+
+  var GM_AREAS = [
+    { slug: "moss-side", terms: ["moss side", "mossside", "m14"] },
+    { slug: "hulme", terms: ["hulme", "m15"] },
+    { slug: "longsight", terms: ["longsight", "m12", "m13"] },
+    { slug: "rusholme", terms: ["rusholme", "curry mile", "m14"] },
+    { slug: "cheetham-hill", terms: ["cheetham hill", "cheetham", "m8"] },
+    { slug: "fallowfield", terms: ["fallowfield", "m14"] },
+    { slug: "withington", terms: ["withington", "m20"] },
+    { slug: "chorlton", terms: ["chorlton", "chorlton-cum-hardy", "m21"] },
+    { slug: "salford", terms: ["salford", "eccles", "m3", "m5", "m6", "m7"] },
+    { slug: "old-trafford", terms: ["old trafford", "m16", "trafford"] }
+  ];
+
+  var PRODUCT_TERMS = {
+    "fruits-veg": ["fruit", "vegetable", "veg", "greens", "salad"],
+    pepper: ["pepper", "scotch bonnet", "habanero", "chilli", "hot pepper"],
+    rice: ["rice", "basmati", "jollof"],
+    plantain: ["plantain"],
+    meat: ["meat", "lamb", "goat", "beef", "chicken", "mutton"],
+    fish: ["fish", "salmon", "tilapia", "seafood"],
+    drinks: ["drink", "juice", "malt", "beverage", "wine"],
+    hair: ["hair", "relaxer", "braid", "wig", "weave"],
+    kitchen: ["pan", "pot", "kitchen", "cookware"],
+    spices: ["spice", "seasoning", "masala", "blend"],
+    oil: ["oil", "groundnut", "palm oil", "olive"],
+    fashion: ["fashion", "clothing", "dress"],
+    fabric: ["fabric", "lace", "ankara", "textile"],
+    beauty: ["beauty", "cosmetic", "makeup", "skincare"],
+  };
+
+  function productBlob(it) {
+    var prev = Array.isArray(it.productPreview) ? it.productPreview : [];
+    var s = "";
+    prev.forEach(function (r) {
+      s += " " + (r.item || "") + " " + (r.price || "");
+    });
+    return (
+      String(it.role || "") +
+      " " +
+      String(it.bio || "") +
+      " " +
+      (it.services || []).join(" ") +
+      " " +
+      String(it.category || "") +
+      s
+    ).toLowerCase();
+  }
 
   var CAT_HAIR_BEAUTY = { label: "Hair & Beauty", terms: ["beauty", "hair", "cosmetic", "shea", "salon", "skincare", "makeup", "relaxer", "braids", "beard"] };
   var CATEGORY_BY_SLUG = {
@@ -144,13 +231,41 @@ h1{font-family:"Playfair Display",Georgia,serif;font-size:clamp(1.75rem,4vw,2.25
     return cfg.terms.some(function (t) { return blob.indexOf(String(t || "").toLowerCase()) >= 0; });
   }
 
-  function cityMatches(it, citySel) {
-    if (!citySel) return true;
-    var sel = citySel.trim().toLowerCase();
-    var listed = String(it.city || "").trim().toLowerCase();
-    if (listed && listed === sel) return true;
-    var blob = (it.role + " " + it.bio + " " + (it.services || []).join(" ")).toLowerCase();
-    return blob.indexOf(sel) >= 0;
+  function matchesProductKey(it, key) {
+    if (!key) return true;
+    var terms = PRODUCT_TERMS[key];
+    if (!terms) return true;
+    var blob = productBlob(it);
+    return terms.some(function (t) {
+      return blob.indexOf(String(t || "").toLowerCase()) >= 0;
+    });
+  }
+
+  function areaMatches(it, areaSlug) {
+    if (!areaSlug) return true;
+    var a = GM_AREAS.find(function (x) {
+      return x.slug === areaSlug;
+    });
+    if (!a) return true;
+    var blob = (
+      String(it.city || "") +
+      " " +
+      String(it.bio || "") +
+      " " +
+      String(it.role || "") +
+      " " +
+      String(it.postcode || "")
+    ).toLowerCase();
+    return a.terms.some(function (t) {
+      return blob.indexOf(String(t || "").toLowerCase()) >= 0;
+    });
+  }
+
+  function fulfMatches(it, f) {
+    if (!f || f === "both") return true;
+    if (f === "delivery") return it.deliveryEnabled !== false;
+    if (f === "collection") return it.collectionEnabled !== false;
+    return true;
   }
 
   const COMM = {
@@ -210,17 +325,53 @@ h1{font-family:"Playfair Display",Georgia,serif;font-size:clamp(1.75rem,4vw,2.25
       }
     }
 
-    const q = (document.getElementById("q").value || "").toLowerCase();
-    const city = document.getElementById("city").value;
+    const qRaw = document.getElementById("q").value || "";
+    const q = qRaw.trim().toLowerCase();
+    const area = document.getElementById("area").value;
     const comm = document.getElementById("community").value;
     const sort = document.getElementById("sort").value;
-    const favs = getFav();
-    let filtered = items.filter(function(it){
-      var blob = (it.role+" "+it.bio+" "+(it.services||[]).join(" ")).toLowerCase();
-      if(q && blob.indexOf(q) < 0) return false;
-      if(catSlugFromUrl && !matchesCategory(it, categoryCfg)) return false;
-      if(city && !cityMatches(it, city)) return false;
-      if(!matchesComm(it, comm)) return false;
+    const pk = document.getElementById("prod-cat").value;
+    const pminEl = parseFloat(document.getElementById("pmin").value);
+    const pmaxEl = parseFloat(document.getElementById("pmax").value);
+    const fulfil = document.getElementById("fulfil").value;
+    const wantOpen = document.getElementById("openNow").checked;
+
+    var favs = getFav();
+    let filtered = items.filter(function (it) {
+      if (it.verified === false) return false;
+      var blobStore = (
+        String(it.role || "") +
+        " " +
+        String(it.bio || "") +
+        " " +
+        (it.services || []).join(" ")
+      ).toLowerCase();
+      var blobFull = blobStore + " " + productBlob(it).replace(blobStore, "");
+      if (q && blobFull.indexOf(q) < 0) return false;
+      if (catSlugFromUrl && !matchesCategory(it, categoryCfg)) return false;
+      if (pk && !matchesProductKey(it, pk)) return false;
+      if (area && !areaMatches(it, area)) return false;
+      if (!matchesComm(it, comm)) return false;
+      if (wantOpen && it.storeOpen === false) return false;
+      if (!fulfMatches(it, fulfil)) return false;
+      var rows = Array.isArray(it.productPreview) ? it.productPreview : [];
+      if (
+        (Number.isFinite(pminEl) && pminEl > 0) ||
+        (Number.isFinite(pmaxEl) && pmaxEl > 0)
+      ) {
+        if (!rows.length) {
+          /* no menu prices yet — don’t hide store on numeric filters */
+        } else {
+          var hitsBand = rows.some(function (r) {
+            var n = parseFloat(String(r.price || "").replace(/[^0-9.]/g, ""));
+            if (!(n > 0)) return false;
+            if (Number.isFinite(pminEl) && pminEl > 0 && n < pminEl) return false;
+            if (Number.isFinite(pmaxEl) && pmaxEl > 0 && n > pmaxEl) return false;
+            return true;
+          });
+          if (!hitsBand) return false;
+        }
+      }
       return true;
     });
     if (sort === "featured") filtered = filtered.slice().sort(function(a,b){ return ((b.popular===true)?1:0)-((a.popular===true)?1:0) || String(a.role||"").localeCompare(String(b.role||"")); });
@@ -248,23 +399,16 @@ h1{font-family:"Playfair Display",Georgia,serif;font-size:clamp(1.75rem,4vw,2.25
       empt.style.display = "none";
     }
     g.innerHTML = filtered.map(card).join("") || "";
-
-    function fillSection(key, elId){
-      var el = document.getElementById(elId);
-      if (!el) return;
-      var sub = items.filter(function(it){ return matchesComm(it, key); });
-      if (q) sub = sub.filter(function(it){ var b = (it.role+" "+it.bio+" ").toLowerCase(); return b.indexOf(q) >= 0; });
-      if (city) sub = sub.filter(function(it){ return cityMatches(it, city); });
-      if (categoryCfg && catSlugFromUrl) sub = sub.filter(function(it){ return matchesCategory(it, categoryCfg); });
-      el.innerHTML = sub.slice(0,6).map(card).join("") || '<p class="card">No matches — try <a href="/community/'+key+'">'+key+' hub</a>.</p>';
-    }
-    fillSection("african","grid-african");
-    fillSection("caribbean","grid-caribbean");
-    fillSection("asian","grid-asian");
   }
-  document.getElementById("q").addEventListener("input", load);
-  document.getElementById("city").addEventListener("change", load);
-  document.getElementById("community").addEventListener("change", load);
+  ["q", "pmin", "pmax"].forEach(function (id) {
+    var el = document.getElementById(id);
+    if (el) el.addEventListener("input", load);
+  });
+  ["community", "prod-cat", "area", "fulfil"].forEach(function (id) {
+    var el = document.getElementById(id);
+    if (el) el.addEventListener("change", load);
+  });
+  document.getElementById("openNow").addEventListener("change", load);
   document.getElementById("sort").addEventListener("change", function() {
     if (document.getElementById("sort").value === "nearest") {
       if (!navigator.geolocation) { load(); return; }
@@ -272,12 +416,26 @@ h1{font-family:"Playfair Display",Georgia,serif;font-size:clamp(1.75rem,4vw,2.25
         fetch("https://nominatim.openstreetmap.org/reverse?lat=" + pos.coords.latitude + "&lon=" + pos.coords.longitude + "&format=jsonv2&accept-language=en")
           .then(function (r) { return r.json(); })
           .then(function (j) {
-            var city = (j && j.address && (j.address.city || j.address.town || j.address.village)) || "";
-            if (city) {
-              var sel = document.getElementById("city");
-              for (var i = 0; i < sel.options.length; i++) {
-                if (String(sel.options[i].value).toLowerCase() && city.toLowerCase().indexOf(String(sel.options[i].value).toLowerCase()) >= 0) {
-                  sel.selectedIndex = i; break;
+            var suburb =
+              (j &&
+                j.address &&
+                (j.address.suburb ||
+                  j.address.neighbourhood ||
+                  j.address.village ||
+                  j.address.city)) ||
+              "";
+            if (suburb) {
+              var sel = document.getElementById("area");
+              var low = suburb.toLowerCase();
+              for (var i = 0; i < GM_AREAS.length; i++) {
+                var slug = GM_AREAS[i].slug;
+                if (
+                  GM_AREAS[i].terms.some(function (t) {
+                    return low.indexOf(t) >= 0;
+                  })
+                ) {
+                  sel.value = slug;
+                  break;
                 }
               }
             }

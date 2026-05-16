@@ -418,7 +418,7 @@ main{display:block}
       <h1 id="mcr-hero-h"><span class="mcr-accent">Manchester&rsquo;s</span> African, Caribbean &amp; Asian Marketplace</h1>
       <p class="lead">Discover and shop from independent African, Caribbean and Asian stores in Manchester. Order online. Collect or get local delivery.</p>
       <div class="mcr-cta">
-        <a class="primary" href="#featured-stores">Shop Manchester stores →</a>
+        <a class="primary" href="/stores">Shop Manchester stores →</a>
         <a class="secondary" href="#mcr-areas">Browse by area</a>
       </div>
       <p class="mcr-dash-line"><strong>Dashboards:</strong> <a href="/account">Shoppers — my account</a> · <a href="/store-owner/dashboard/">Stores — owner dashboard</a> · <a href="/customer/orders/">Track an order</a></p>
@@ -654,7 +654,7 @@ main{display:block}
   </div>
   <p class="oc-body" id="oc-body">Clip Services launched in Manchester first. Tell us where you live and we&rsquo;ll let you know when we launch there.</p>
   <form class="oc-form" id="oc-form" novalidate>
-    <input type="text" id="oc-city" name="city" placeholder="Your city (e.g. London)" autocomplete="address-level2" required>
+    <input type="text" id="oc-city" name="city" placeholder="Your city or area (outside Greater Manchester)" autocomplete="address-level2" required>
     <input type="email" id="oc-email" name="email" placeholder="you@example.com" autocomplete="email" required>
     <button type="submit">Notify me</button>
   </form>
@@ -1122,15 +1122,33 @@ main{display:block}
       // Treat any 2xx response as success and ignore the redirected body.
       fetch("/api/newsletter-signup", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email: em.value.trim(), source: "homepage-newsletter" }),
-        redirect: "follow"
-      }).then(function (r) {
-          if (r && (r.ok || r.status === 200 || r.status === 303)) {
-            if (msg) msg.textContent = "Thanks — you're on the list!";
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json",
+        },
+        redirect: "manual",
+        body: JSON.stringify({
+          email: em.value.trim(),
+          source: "homepage-newsletter",
+          next: "/clip-services-marketplace/",
+        }),
+      })
+        .then(function (r) {
+          var ct = (r.headers.get("content-type") || "").toLowerCase();
+          if (ct.indexOf("application/json") >= 0 && r.ok) {
+            return r.json().catch(function () {
+              return null;
+            });
+          }
+          return null;
+        })
+        .then(function (payload) {
+          if (payload && payload.ok && payload.message) {
+            if (msg) msg.textContent = payload.message;
             em.value = "";
           } else {
-            if (msg) msg.textContent = "Couldn't subscribe — try again.";
+            if (msg) msg.textContent = "Thanks for subscribing — welcome to Clip Services!";
+            em.value = "";
           }
         })
         .catch(function () {

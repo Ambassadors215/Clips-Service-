@@ -409,6 +409,8 @@ img{max-width:100%;display:block}
       <button type="button" data-tab="addresses"><span class="nav-emo">📍</span> Addresses</button>
       <button type="button" data-tab="profile"><span class="nav-emo">👤</span> Profile</button>
       <button type="button" data-tab="notifications"><span class="nav-emo">🔔</span> Notifications</button>
+      <button type="button" data-tab="cart"><span class="nav-emo">🛒</span> My cart</button>
+      <button type="button" data-tab="help"><span class="nav-emo">❓</span> Help &amp; FAQ</button>
       <div class="nav-foot">Signed in via one-time code.<br>Data lives on our private servers.</div>
     </nav>
 
@@ -578,6 +580,34 @@ img{max-width:100%;display:block}
         </div>
 
         <p class="status" id="notifStatus" aria-live="polite" style="margin-top:10px"></p>
+      </section>
+
+      <!-- ===== My cart (local baskets per store on this device) ===== -->
+      <section id="sec-cart" class="sec">
+        <h2>My cart</h2>
+        <p style="color:var(--muted);font-size:.85rem;margin-bottom:14px">Baskets save per store on this browser or phone. Open a store to change quantities or checkout. Order history stays under <button type="button" class="btn btn-ghost" data-go-tab="orders" style="padding:4px 8px;font-size:.78rem;vertical-align:baseline;display:inline-flex">Orders</button>.</p>
+        <div id="myCartMount" class="loading">Loading…</div>
+      </section>
+
+      <!-- ===== FAQ ===== -->
+      <section id="sec-help" class="sec">
+        <h2>Help &amp; FAQ</h2>
+        <p style="color:var(--muted);font-size:.85rem;margin-bottom:18px">Quick answers for shoppers and independent store owners in Greater Manchester.</p>
+
+        <div class="card" style="margin-bottom:14px">
+          <h3>Customer FAQ</h3>
+          <details style="margin-top:12px"><summary>How do I pay?</summary><p style="margin-top:10px;color:#374151">You pay securely by card via Stripe when you checkout from a live store — Apple Pay and Google Pay show when supported.</p></details>
+          <details style="margin-top:10px"><summary>Delivery and collection?</summary><p style="margin-top:10px;color:#374151">Each store chooses collection and local delivery rules. Availability is shown on the store page before you pay.</p></details>
+          <details style="margin-top:10px"><summary>Where does Clip Services operate?</summary><p style="margin-top:10px;color:#374151">Right now Clip Services lists only live onboarded stores in Greater Manchester.</p></details>
+          <details style="margin-top:10px"><summary>I don’t see my basket on another device</summary><p style="margin-top:10px;color:#374151">Carts save per browser or phone for faster checkout without forcing a login mid-shop. Signed-in customers see linked baskets listed here.</p></details>
+        </div>
+
+        <div class="card">
+          <h3>Store owner FAQ</h3>
+          <details style="margin-top:12px"><summary>How do I join?</summary><p style="margin-top:10px;color:#374151"><a href="/store-owner">Apply</a>. After approval you can publish products from the owner dashboard.</p></details>
+          <details style="margin-top:10px"><summary>Sale prices and weight-based items</summary><p style="margin-top:10px;color:#374151">Set a usual price plus an optional sale price in the dashboard. Choose sold by weight (per kg etc.) — your storefront shows SALE and unit pricing.</p></details>
+          <details style="margin-top:10px"><summary>Payouts and fees</summary><p style="margin-top:10px;color:#374151">Stripe handles card payments per order. Fees and payouts follow your Stripe Connect setup linked from the dashboard.</p></details>
+        </div>
       </section>
 
     </div>
@@ -1178,6 +1208,66 @@ img{max-width:100%;display:block}
     if (name === "orders") loadOrdersFull();
     if (name === "saved") loadSavedFull();
     if (name === "addresses" || name === "profile" || name === "notifications") loadProfile();
+    if (name === "cart") loadMyCart();
+  }
+
+  function loadMyCart() {
+    var mount = $("myCartMount");
+    if (!mount) return;
+    mount.textContent = "Loading…";
+    mount.className = "loading";
+    fetch("/api/listings")
+      .then(function (r) {
+        return r.json();
+      })
+      .then(function (j) {
+        var map = {};
+        if (j.ok && Array.isArray(j.items)) {
+          j.items.forEach(function (it) {
+            map[String(it.id)] = it;
+          });
+        }
+        var cards = [];
+        try {
+          for (var i = 0; i < localStorage.length; i++) {
+            var k = localStorage.key(i);
+            if (!k || k.indexOf("clipCart:") !== 0) continue;
+            var id = k.slice("clipCart:".length);
+            var cart = {};
+            try {
+              cart = JSON.parse(localStorage.getItem(k) || "{}");
+            } catch (e2) {}
+            var n = 0;
+            for (var line in cart) {
+              n += cart[line] | 0;
+            }
+            if (n < 1) continue;
+            var st = map[id];
+            var name = st && st.role ? st.role : "Store basket";
+            var href =
+              st && st.storeSlug ? "/stores/" + encodeURIComponent(st.storeSlug) : "/stores";
+            cards.push(
+              '<article class="card"><h3 style="margin-bottom:8px">' +
+                esc(name) +
+                '</h3><p style="color:var(--muted);font-size:.88rem;margin-bottom:12px">' +
+                esc(String(n)) +
+                " items saved on this device.</p>" +
+                '<div class="row-actions"><a class="btn btn-primary" href="' +
+                esc(href) +
+                '#basket">Open basket →</a></div></article>'
+            );
+          }
+        } catch (e) {}
+        mount.className = "";
+        mount.innerHTML = cards.length
+          ? '<div style="display:grid;gap:12px">' + cards.join("") + "</div>"
+          : '<div class="empty"><strong>No baskets here yet</strong><p>Add items from any store — we list each store’s basket you’ve started.</p><a href="/stores">Browse Manchester stores →</a></div>';
+      })
+      .catch(function () {
+        mount.className = "";
+        mount.innerHTML =
+          '<div class="empty"><p>Could not load store names. Try again or open <a href="/stores">/stores</a>.</p></div>';
+      });
   }
 
   document.addEventListener("click", function (e) {
@@ -1365,6 +1455,36 @@ img{max-width:100%;display:block}
     btn.setAttribute("aria-pressed", on ? "true" : "false");
   }
 
+  function mergeServerCartsIntoLocal(prof) {
+    try {
+      var mc = prof && prof.marketplaceCarts;
+      if (!mc || typeof mc !== "object") return;
+      for (var lid in mc) {
+        if (!Object.prototype.hasOwnProperty.call(mc, lid)) continue;
+        var lines = mc[lid];
+        if (!lines || typeof lines !== "object") continue;
+        var k = "clipCart:" + lid;
+        var loc = {};
+        try {
+          loc = JSON.parse(localStorage.getItem(k) || "{}");
+        } catch (e1) {
+          loc = {};
+        }
+        var out = {};
+        var keys = {};
+        for (var a in loc) keys[a] = 1;
+        for (var b in lines) keys[b] = 1;
+        for (var x in keys) {
+          var L = parseInt(String(loc[x] || 0), 10) || 0;
+          var S = parseInt(String(lines[x] || 0), 10) || 0;
+          var n = Math.max(L, S);
+          if (n > 0) out[x] = n;
+        }
+        localStorage.setItem(k, JSON.stringify(out));
+      }
+    } catch (e2) {}
+  }
+
   /* ============================================================ */
   /*  Network loaders                                              */
   /* ============================================================ */
@@ -1379,6 +1499,7 @@ img{max-width:100%;display:block}
         showSetup(r.body.email);
         return;
       }
+      if (r.body.profile) mergeServerCartsIntoLocal(r.body.profile);
       renderOverview(r.body);
       profileCache = r.body.profile || null;
     });

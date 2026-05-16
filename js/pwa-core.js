@@ -262,16 +262,6 @@
     if (!p) return "";
     if (/\b(greater )?manchester\b|\bsalford\b|\bstockport\b|\boldham\b|\bbolton\b|\bbury\b|\btrafford\b|\brochdale\b|\bwigan\b|\bcrewe\b|\btameside\b/.test(p))
       return "Manchester";
-    if (/\blondon\b|\bwestminster\b|\bcroydon\b|\bcamden\b|\bislington\b|\btower hamlets\b|\bhackney\b|\blambeth\b|\bsouthwark\b|\blewisham\b|\bgreenwich\b|\bnewham\b|\benfield\b|\bharingey\b|\bwaltham forest\b|\bredbridge\b|\bbarking\b|\bmerton\b|\bstreatham\b|\bpeckham\b|\bealing\b|\bhounslow\b/.test(p))
-      return "London";
-    if (/\bbirmingham\b/.test(p) || /\bwest midlands\b/.test(p)) return "Birmingham";
-    if (/\bleeds\b/.test(p)) return "Leeds";
-    if (/\bleicester\b/.test(p)) return "Leicester";
-    if (/\bbristol\b/.test(p)) return "Bristol";
-    if (/\bliverpool\b/.test(p)) return "Liverpool";
-    if (/\bsheffield\b/.test(p)) return "Sheffield";
-    if (/\bnottingham\b/.test(p)) return "Nottingham";
-    if (/\bbradford\b/.test(p)) return "Bradford";
     return "";
   }
 
