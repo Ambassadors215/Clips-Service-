@@ -52,7 +52,6 @@ async function main() {
   await get(`/api/store-html?slug=${encodeURIComponent(slug)}`);
 
   await get(`/search`);
-  await get(`/blog`);
 
   await get(`/cities/manchester`);
   await get(`/categories/fresh-produce`);

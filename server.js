@@ -339,33 +339,8 @@ const server = http.createServer(async (req, res) => {
       return pseo(stubReq(q), res);
     }
 
-    if (p === "/blog/rss.xml") {
-      const { default: blogRss } = await import("./lib/handlers/blog-rss.js");
-      return blogRss(stubReq("/api/blog-rss"), res);
-    }
-    if (p === "/blog/feed") {
-      const { default: rssLand } = await import("./lib/handlers/blog-rss-landing.js");
-      return rssLand(stubReq("/api/blog-rss-landing"), res);
-    }
-    if (p === "/blog") {
-      const { default: blogIndex } = await import("./lib/handlers/blog-html.js");
-      return blogIndex(stubReq("/api/blog-html"), res);
-    }
-    const mBlogCat = p.match(/^\/blog\/category\/([^/]+)$/);
-    if (mBlogCat) {
-      const { default: blogCatH } = await import("./lib/handlers/blog-html.js");
-      const q =
-        "/api/blog-html?blogCategory=" + encodeURIComponent(mBlogCat[1].toLowerCase());
-      return blogCatH(stubReq(q), res);
-    }
-    const mBlogPost = p.match(/^\/blog\/([^/]+)$/);
-    if (mBlogPost) {
-      const tail = mBlogPost[1];
-      const low = tail.toLowerCase();
-      if (low !== "category" && low !== "feed" && low !== "rss.xml") {
-        const { default: blogPost } = await import("./lib/handlers/blog-html.js");
-        return blogPost(stubReq("/api/blog-html?slug=" + encodeURIComponent(tail)), res);
-      }
+    if (p === "/blog" || p === "/blog/" || /^\/blog(\/|$)/.test(p)) {
+      return send(res, 301, { Location: "/" }, undefined);
     }
 
     if (p === "/sitemap.xml") {

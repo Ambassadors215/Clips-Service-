@@ -1118,7 +1118,7 @@ main{display:block}
         return;
       }
       if (msg) msg.textContent = "Subscribing…";
-      // The server-side endpoint replies with a 303 redirect; fetch follows it to /blog?newsletter=ok.
+      // The server-side endpoint may reply with a 303 redirect; fetch follows it to /?newsletter=ok.
       // Treat any 2xx response as success and ignore the redirected body.
       fetch("/api/newsletter-signup", {
         method: "POST",

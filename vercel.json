@@ -4,55 +4,24 @@
   "cleanUrls": true,
   "redirects": [
     { "source": "/index.html", "destination": "/", "permanent": true },
-    { "source": "/blog/", "destination": "/blog", "permanent": true },
-    { "source": "/blog/category/:cat/", "destination": "/blog/category/:cat", "permanent": true },
+    { "source": "/blog", "destination": "/", "permanent": true },
+    { "source": "/blog/", "destination": "/", "permanent": true },
+    { "source": "/blog/feed", "destination": "/", "permanent": true },
+    { "source": "/blog/feed/", "destination": "/", "permanent": true },
+    { "source": "/blog/rss", "destination": "/", "permanent": true },
+    { "source": "/blog/rss.xml", "destination": "/", "permanent": true },
+    { "source": "/blog/category/:cat", "destination": "/", "permanent": true },
+    { "source": "/blog/category/:cat/", "destination": "/", "permanent": true },
+    { "source": "/blog/:slug", "destination": "/", "permanent": true },
+    { "source": "/blog/:slug/", "destination": "/", "permanent": true },
+    { "source": "/admin/blog", "destination": "/admin", "permanent": true },
+    { "source": "/admin/blog/", "destination": "/admin", "permanent": true },
     { "source": "/categories/spices-staples", "destination": "/categories/spices-ingredients", "permanent": true },
     { "source": "/categories/fashion-fabric", "destination": "/categories/fashion-fabrics", "permanent": true },
     { "source": "/categories/drinks", "destination": "/categories/drinks-beverages", "permanent": true },
     { "source": "/categories/halal", "destination": "/categories/halal-products", "permanent": true },
     { "source": "/categories/meat-and-fish", "destination": "/categories/meat-fish", "permanent": true },
     { "source": "/categories/rice-grains-flour", "destination": "/categories/staples-grains", "permanent": true },
-    {
-      "source": "/blog/top-caribbean-ingredients-cooking-home",
-      "destination": "/blog/essential-caribbean-ingredients-order-online",
-      "permanent": true
-    },
-    {
-      "source": "/blog/caribbean-cooking-essential-ingredients-buy-online",
-      "destination": "/blog/essential-caribbean-ingredients-order-online",
-      "permanent": true
-    },
-    {
-      "source": "/blog/caribbean-cooking-ingredients-guide",
-      "destination": "/blog/essential-caribbean-ingredients-order-online",
-      "permanent": true
-    },
-    {
-      "source": "/blog/best-african-grocery-stores-manchester",
-      "destination": "/blog/guide-african-caribbean-asian-stores-manchester",
-      "permanent": true
-    },
-    {
-      "source": "/blog/african-caribbean-grocery-stores-manchester",
-      "destination": "/blog/guide-african-caribbean-asian-stores-manchester",
-      "permanent": true
-    },
-    {
-      "source": "/blog/halal-meat-online-birmingham",
-      "destination": "/blog/guide-african-caribbean-asian-stores-manchester",
-      "permanent": true
-    },
-    {
-      "source": "/blog/halal-meat-online-uk-guide",
-      "destination": "/blog/guide-african-caribbean-asian-stores-manchester",
-      "permanent": true
-    },
-    {
-      "source": "/blog/why-i-built-clip-services-founder-story",
-      "destination": "/blog",
-      "permanent": true
-    },
-    { "source": "/blog/rss", "destination": "/blog/feed", "permanent": false },
     { "source": "/market-stall", "destination": "/store-owner", "permanent": true },
     { "source": "/market-stall/", "destination": "/store-owner", "permanent": true },
     { "source": "/market-stall/apply", "destination": "/store-owner/apply", "permanent": true },
@@ -62,13 +31,6 @@
   ],
   "rewrites": [
     { "source": "/sitemap.xml", "destination": "/api/sitemap" },
-    { "source": "/blog/rss.xml", "destination": "/api/blog-rss" },
-    { "source": "/blog/feed/", "destination": "/api/blog-rss-landing" },
-    { "source": "/blog/feed", "destination": "/api/blog-rss-landing" },
-    { "source": "/blog/category/:cat", "destination": "/api/blog-html?blogCategory=:cat" },
-    { "source": "/blog/:slug", "destination": "/api/blog-html?slug=:slug" },
-    { "source": "/blog", "destination": "/api/blog-html" },
-    { "source": "/blog/", "destination": "/api/blog-html" },
     { "source": "/community/:slug", "destination": "/api/community-html?slug=:slug" },
     { "source": "/products/:slug", "destination": "/api/product-seo-html?slug=:slug" },
     { "source": "/search/:slug", "destination": "/search/index.html?landing=:slug" },
@@ -82,8 +44,6 @@
     { "source": "/", "destination": "/clip-services-marketplace" },
     { "source": "/admin", "destination": "/admin/index.html" },
     { "source": "/admin/", "destination": "/admin/index.html" },
-    { "source": "/admin/blog", "destination": "/admin/blog/index.html" },
-    { "source": "/admin/blog/", "destination": "/admin/blog/index.html" },
     { "source": "/provider", "destination": "/provider/index.html" },
     { "source": "/provider/", "destination": "/provider/index.html" },
     { "source": "/user", "destination": "/user/index.html" },
