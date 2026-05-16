@@ -264,7 +264,7 @@ img{max-width:100%;display:block}
   <div class="login-card">
     <span class="badge">Finish signing up</span>
     <h1 id="setupH">Complete your account</h1>
-    <p class="lead">Signed in as <strong id="setupEmailShown"></strong>. We need these details before you can use your dashboard (they also prefill checkout for Manchester deliveries).</p>
+    <p class="lead">Signed in as <strong id="setupEmailShown"></strong>. We need these details before you can use your dashboard, including your full street address for deliveries.</p>
     <form id="setupForm" novalidate>
       <div class="form-grid" style="margin-bottom:4px">
         <div class="field" style="grid-column:1 / -1">
@@ -295,10 +295,23 @@ img{max-width:100%;display:block}
             <option>Other / nearby</option>
           </select>
         </div>
+        <p style="font-size:.82rem;font-weight:700;color:var(--text-dark);margin:4px 0 2px;grid-column:1 / -1">Your delivery address</p>
         <div class="field" style="grid-column:1 / -1">
-          <label for="suPostcode">Usual delivery postcode <span class="hint">(required)</span></label>
+          <label for="suLine1">Address line 1 <span class="hint">(required)</span></label>
+          <input type="text" id="suLine1" name="address-line1" autocomplete="address-line1" placeholder="House number and street" required maxlength="120">
+        </div>
+        <div class="field" style="grid-column:1 / -1">
+          <label for="suLine2">Address line 2 <span class="hint">(optional)</span></label>
+          <input type="text" id="suLine2" name="address-line2" autocomplete="address-line2" placeholder="Flat, building, etc." maxlength="120">
+        </div>
+        <div class="field" style="grid-column:1 / -1">
+          <label for="suCity">Town or city <span class="hint">(required)</span></label>
+          <input type="text" id="suCity" name="address-level2" autocomplete="address-level2" value="Manchester" required maxlength="60">
+        </div>
+        <div class="field" style="grid-column:1 / -1">
+          <label for="suPostcode">Postcode <span class="hint">(required)</span></label>
           <input type="text" id="suPostcode" name="postal-code" autocomplete="postal-code" placeholder="e.g. M13 0LN" required maxlength="12">
-          <span class="hint">UK format. Helps stores plan delivery zones.</span>
+          <span class="hint">UK format. Saved to your address book for checkout.</span>
         </div>
       </div>
       <p class="optional-hint">Optional preferences</p>
@@ -600,11 +613,21 @@ img{max-width:100%;display:block}
       getJson("/api/customer-api?action=profile").then(function (r) {
         if (!r.body || !r.body.profile) return;
         var p = r.body.profile;
+        var homeId = "clip_primary_home";
+        var addrList = Array.isArray(p.addresses) ? p.addresses : [];
+        var home = null;
+        for (var ai = 0; ai < addrList.length; ai++) {
+          if (addrList[ai] && addrList[ai].id === homeId) { home = addrList[ai]; break; }
+        }
+        if (!home && addrList[0]) home = addrList[0];
         if ($("suFirst")) $("suFirst").value = p.firstName || "";
         if ($("suLast")) $("suLast").value = p.lastName || "";
         if ($("suPhone")) $("suPhone").value = p.phone || "";
         if ($("suArea") && p.preferredArea) $("suArea").value = p.preferredArea;
-        if ($("suPostcode")) $("suPostcode").value = p.preferredPostcode || "";
+        if ($("suLine1")) $("suLine1").value = (home && home.line1) || "";
+        if ($("suLine2")) $("suLine2").value = (home && home.line2) || "";
+        if ($("suCity")) $("suCity").value = (home && home.city) || "Manchester";
+        if ($("suPostcode")) $("suPostcode").value = (home && home.postcode) || p.preferredPostcode || "";
         if ($("suWa")) $("suWa").checked = !!p.whatsappOptIn;
         if ($("suMk")) $("suMk").checked = !!p.marketingOptIn;
       }).catch(function () { /* offline */ });
@@ -730,6 +753,9 @@ img{max-width:100%;display:block}
       phone: ($("suPhone").value || "").trim(),
       preferredArea: ($("suArea").value || "").trim(),
       preferredPostcode: ($("suPostcode").value || "").trim(),
+      addressLine1: ($("suLine1").value || "").trim(),
+      addressLine2: ($("suLine2").value || "").trim(),
+      city: ($("suCity").value || "").trim(),
       termsAccepted: true,
       whatsappOptIn: !!($("suWa") && $("suWa").checked),
       marketingOptIn: !!($("suMk") && $("suMk").checked),
