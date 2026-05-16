@@ -64,6 +64,10 @@ img{max-width:100%;display:block}
 .field input,.field select{padding:12px 14px;border:1px solid var(--mp-border);border-radius:10px;font:inherit;font-size:.95rem;background:#fff;color:var(--text-dark);width:100%}
 .field input:focus,.field select:focus{outline:2px solid rgba(37,99,235,.22);border-color:var(--oja-blue)}
 .field .hint{font-size:.72rem;color:var(--muted)}
+.field.check-row label{display:flex;align-items:flex-start;gap:10px;font-weight:500;font-size:.88rem;line-height:1.45;color:#374151}
+.field.check-row label a{font-weight:700}
+.field.check-row input[type=checkbox]{width:auto;margin-top:4px;flex-shrink:0;accent-color:var(--terracotta)}
+.optional-hint{font-size:.72rem;color:var(--muted);margin-top:-6px;margin-bottom:10px}
 .btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:12px 18px;border-radius:10px;font:inherit;font-weight:700;border:none;cursor:pointer;text-decoration:none;font-size:.92rem}
 .btn-primary{background:var(--terracotta);color:#fff}
 .btn-primary:hover{background:var(--terracotta-d)}
@@ -199,7 +203,7 @@ img{max-width:100%;display:block}
 <!-- ===== Header ===== -->
 <div class="mp-head">
   <div class="mp-announce">
-    🚀 <strong>Now live in Manchester</strong> · Sign in to track orders, save stores and reorder fast.
+    🚀 <strong>Now live in Manchester</strong> · Continue to your account to track orders, save stores and reorder fast.
   </div>
   <div class="mp-main">
     <div class="mp-main-inner">
@@ -221,19 +225,19 @@ img{max-width:100%;display:block}
   </div>
 </div>
 
-<!-- ===== LOGIN SCREEN ===== -->
+<!-- ===== LOGIN / SAME-PATH ACCOUNT ===== -->
 <section id="loginScreen" class="login" aria-labelledby="loginH">
   <div class="login-card">
-    <span class="badge">Customer sign-in</span>
-    <h1 id="loginH">Sign in to your account</h1>
-    <p class="lead">We&rsquo;ll email you a 6-digit code &mdash; no password to remember. New here? Same form &mdash; we&rsquo;ll create your account on the spot.</p>
+    <span class="badge">Customer account</span>
+    <h1 id="loginH">Sign in or create your account</h1>
+    <p class="lead">One step: enter your email and we&rsquo;ll send a 6-digit code. Returning shoppers and first-time customers use the same path &mdash; if you&rsquo;re new, we&rsquo;ll ask for a few details after you verify your email.</p>
     <div id="stepEmail">
       <div class="field">
         <label for="emailIn">Email address</label>
         <input type="email" id="emailIn" autocomplete="email" inputmode="email" placeholder="you@example.com" required>
-        <span class="hint">We use this to find your orders and send your code.</span>
+        <span class="hint">Used for sign-in, order updates, and your saved stores.</span>
       </div>
-      <button type="button" class="btn btn-primary btn-block" id="sendOtp">Email me a code</button>
+      <button type="button" class="btn btn-primary btn-block" id="sendOtp">Continue with email</button>
     </div>
     <div id="stepCode" style="display:none">
       <p style="font-size:.85rem;margin-bottom:14px">Code sent to <strong id="emailShown"></strong>. Check your inbox (and spam).</p>
@@ -252,6 +256,69 @@ img{max-width:100%;display:block}
     <a href="/terms">Terms</a> ·
     <a href="/privacy-policy">Privacy</a> ·
     <a href="/disclaimer">Disclaimer</a>
+  </p>
+</section>
+
+<!-- ===== POST-OTP: REQUIRED SIGNUP DETAILS ===== -->
+<section id="setupScreen" class="login" style="display:none" aria-labelledby="setupH">
+  <div class="login-card">
+    <span class="badge">Finish signing up</span>
+    <h1 id="setupH">Complete your account</h1>
+    <p class="lead">Signed in as <strong id="setupEmailShown"></strong>. We need these details before you can use your dashboard (they also prefill checkout for Manchester deliveries).</p>
+    <form id="setupForm" novalidate>
+      <div class="form-grid" style="margin-bottom:4px">
+        <div class="field" style="grid-column:1 / -1">
+          <label for="suFirst">First name <span class="hint">(required)</span></label>
+          <input type="text" id="suFirst" name="given-name" autocomplete="given-name" required maxlength="60">
+        </div>
+        <div class="field" style="grid-column:1 / -1">
+          <label for="suLast">Last name <span class="hint">(required)</span></label>
+          <input type="text" id="suLast" name="family-name" autocomplete="family-name" required maxlength="60">
+        </div>
+        <div class="field" style="grid-column:1 / -1">
+          <label for="suPhone">Mobile or phone (UK) <span class="hint">(required)</span></label>
+          <input type="tel" id="suPhone" name="tel" autocomplete="tel" inputmode="tel" placeholder="07… or landline" required maxlength="40">
+          <span class="hint">For delivery questions and WhatsApp updates if you opt in.</span>
+        </div>
+        <div class="field" style="grid-column:1 / -1">
+          <label for="suArea">Preferred Manchester area <span class="hint">(required)</span></label>
+          <select id="suArea" autocomplete="address-level4" required>
+            <option value="" disabled selected>Choose an area…</option>
+            <option>Longsight</option>
+            <option>Rusholme</option>
+            <option>Cheetham Hill</option>
+            <option>Moss Side</option>
+            <option>Whalley Range</option>
+            <option>Levenshulme</option>
+            <option>Salford</option>
+            <option>Stretford</option>
+            <option>Other / nearby</option>
+          </select>
+        </div>
+        <div class="field" style="grid-column:1 / -1">
+          <label for="suPostcode">Usual delivery postcode <span class="hint">(required)</span></label>
+          <input type="text" id="suPostcode" name="postal-code" autocomplete="postal-code" placeholder="e.g. M13 0LN" required maxlength="12">
+          <span class="hint">UK format. Helps stores plan delivery zones.</span>
+        </div>
+      </div>
+      <p class="optional-hint">Optional preferences</p>
+      <div class="field check-row">
+        <label><input type="checkbox" id="suWa"> WhatsApp order updates from stores (recommended)</label>
+      </div>
+      <div class="field check-row" style="margin-bottom:14px">
+        <label><input type="checkbox" id="suMk"> Email me occasional marketplace news and new Manchester stores</label>
+      </div>
+      <div class="field check-row">
+        <label><input type="checkbox" id="suTerms" required> I agree to the <a href="/terms" target="_blank" rel="noopener">Terms</a> and <a href="/privacy-policy" target="_blank" rel="noopener">Privacy policy</a>.</label>
+      </div>
+      <button type="submit" class="btn btn-primary btn-block" id="setupSubmit" style="margin-top:16px">Save and open my account</button>
+    </form>
+    <p class="status" id="setupStatus" aria-live="polite"></p>
+  </div>
+  <p class="footer-small">
+    <a href="/about">About</a> ·
+    <a href="/terms">Terms</a> ·
+    <a href="/privacy-policy">Privacy</a>
   </p>
 </section>
 
@@ -399,7 +466,12 @@ img{max-width:100%;display:block}
                   <option>Levenshulme</option>
                   <option>Salford</option>
                   <option>Stretford</option>
+                  <option>Other / nearby</option>
                 </select>
+              </div>
+              <div class="field">
+                <label for="pfPc">Preferred delivery postcode</label>
+                <input type="text" id="pfPc" autocomplete="postal-code" placeholder="e.g. M13 0LN" maxlength="12">
               </div>
             </div>
             <p class="status" id="profileStatus" aria-live="polite"></p>
@@ -503,26 +575,69 @@ img{max-width:100%;display:block}
   var emailShown = $("emailShown");
   var loginStatus = $("loginStatus");
   var loginScreen = $("loginScreen");
+  var setupScreen = $("setupScreen");
   var dashboard = $("dashboard");
   var topLogout = $("topLogout");
 
   function showDashboard(email) {
     loginScreen.style.display = "none";
+    if (setupScreen) setupScreen.style.display = "none";
     dashboard.style.display = "block";
     topLogout.style.display = "inline-flex";
     $("emailHeader").textContent = email || "";
     bootDashboard();
   }
 
+  function showSetup(email) {
+    loginScreen.style.display = "none";
+    dashboard.style.display = "none";
+    if (setupScreen) {
+      setupScreen.style.display = "block";
+      if ($("setupEmailShown")) $("setupEmailShown").textContent = email || "";
+      if ($("setupForm")) $("setupForm").reset();
+      if ($("suArea")) $("suArea").selectedIndex = 0;
+      setStatus($("setupStatus"), "");
+      getJson("/api/customer-api?action=profile").then(function (r) {
+        if (!r.body || !r.body.profile) return;
+        var p = r.body.profile;
+        if ($("suFirst")) $("suFirst").value = p.firstName || "";
+        if ($("suLast")) $("suLast").value = p.lastName || "";
+        if ($("suPhone")) $("suPhone").value = p.phone || "";
+        if ($("suArea") && p.preferredArea) $("suArea").value = p.preferredArea;
+        if ($("suPostcode")) $("suPostcode").value = p.preferredPostcode || "";
+        if ($("suWa")) $("suWa").checked = !!p.whatsappOptIn;
+        if ($("suMk")) $("suMk").checked = !!p.marketingOptIn;
+      }).catch(function () { /* offline */ });
+    }
+    topLogout.style.display = "inline-flex";
+  }
+
+  /** After cookie session exists — send shoppers to signup step or dashboard. */
+  function enterAccount(email) {
+    getJson("/api/customer-api?action=overview").then(function (r) {
+      if (!r.body || !r.body.ok) {
+        if (r.status === 401) showLogin();
+        else setStatus(loginStatus, "Could not load account. Try again.", "err");
+        return;
+      }
+      if (r.body.needsAccountSetup) showSetup(email);
+      else showDashboard(email);
+    }).catch(function () {
+      showLogin();
+    });
+  }
+
   function showLogin() {
     dashboard.style.display = "none";
     loginScreen.style.display = "block";
+    if (setupScreen) setupScreen.style.display = "none";
     topLogout.style.display = "none";
     stepCode.style.display = "none";
     stepEmail.style.display = "block";
     if (emailIn) emailIn.value = "";
     if (otpIn) otpIn.value = "";
     setStatus(loginStatus, "");
+    if ($("setupStatus")) setStatus($("setupStatus"), "");
   }
 
   function postJson(url, body) {
@@ -580,8 +695,8 @@ img{max-width:100%;display:block}
     postJson("/api/customer-auth", { action: "verify-otp", email: em, code: code }).then(function (r) {
       verifyOtpBtn.disabled = false;
       if (r.body && r.body.ok) {
-        setStatus(loginStatus, "Welcome back!", "ok");
-        showDashboard(r.body.email || em);
+        setStatus(loginStatus, "You're signed in.", "ok");
+        enterAccount(r.body.email || em);
       } else {
         setStatus(loginStatus, (r.body && r.body.error) || "Couldn't verify code.", "err");
       }
@@ -595,6 +710,41 @@ img{max-width:100%;display:block}
     stepCode.style.display = "none";
     stepEmail.style.display = "block";
     setStatus(loginStatus, "");
+  });
+
+  var setupFormEl = $("setupForm");
+  if (setupFormEl) setupFormEl.addEventListener("submit", function (e) {
+    e.preventDefault();
+    var chk = $("suTerms");
+    if (!chk || !chk.checked) {
+      setStatus($("setupStatus"), "Please accept the Terms and Privacy policy to continue.", "err");
+      return;
+    }
+    var sub = $("setupSubmit");
+    if (sub) sub.disabled = true;
+    setStatus($("setupStatus"), "Saving…");
+    postJson("/api/customer-api", {
+      action: "complete-account-setup",
+      firstName: ($("suFirst").value || "").trim(),
+      lastName: ($("suLast").value || "").trim(),
+      phone: ($("suPhone").value || "").trim(),
+      preferredArea: ($("suArea").value || "").trim(),
+      preferredPostcode: ($("suPostcode").value || "").trim(),
+      termsAccepted: true,
+      whatsappOptIn: !!($("suWa") && $("suWa").checked),
+      marketingOptIn: !!($("suMk") && $("suMk").checked),
+    }).then(function (r) {
+      if (sub) sub.disabled = false;
+      if (r.body && r.body.ok) {
+        var adr = $("setupEmailShown") ? $("setupEmailShown").textContent : "";
+        showDashboard(String(adr || "").trim());
+      } else {
+        setStatus($("setupStatus"), (r.body && r.body.error) || "Couldn't save — check the form and try again.", "err");
+      }
+    }).catch(function () {
+      if (sub) sub.disabled = false;
+      setStatus($("setupStatus"), "Network error. Try again.", "err");
+    });
   });
 
   function doLogout() {
@@ -799,6 +949,7 @@ img{max-width:100%;display:block}
     $("pfLast").value = prof.lastName || "";
     $("pfPhone").value = prof.phone || "";
     $("pfArea").value = prof.preferredArea || "";
+    if ($("pfPc")) $("pfPc").value = prof.preferredPostcode || "";
     setSwitch($("swWa"), !!prof.whatsappOptIn);
     setSwitch($("swMk"), !!prof.marketingOptIn);
   }
@@ -816,6 +967,10 @@ img{max-width:100%;display:block}
     getJson("/api/customer-api?action=overview").then(function (r) {
       if (!r.body || !r.body.ok) {
         if (r.status === 401) { showLogin(); return; }
+        return;
+      }
+      if (r.body.needsAccountSetup && r.body.email) {
+        showSetup(r.body.email);
         return;
       }
       renderOverview(r.body);
@@ -841,6 +996,10 @@ img{max-width:100%;display:block}
   function loadProfile() {
     getJson("/api/customer-api?action=profile").then(function (r) {
       if (!r.body || !r.body.ok) { if (r.status === 401) showLogin(); return; }
+      if (r.body.needsAccountSetup && r.body.profile && r.body.profile.email) {
+        showSetup(r.body.profile.email);
+        return;
+      }
       profileCache = r.body.profile || null;
       renderProfileForm(profileCache);
       renderAddresses((profileCache && profileCache.addresses) || []);
@@ -926,6 +1085,7 @@ img{max-width:100%;display:block}
       lastName: $("pfLast").value,
       phone: $("pfPhone").value,
       preferredArea: $("pfArea").value,
+      preferredPostcode: $("pfPc") ? $("pfPc").value : "",
       whatsappOptIn: $("swWa").classList.contains("on"),
       marketingOptIn: $("swMk").classList.contains("on"),
     };
@@ -995,7 +1155,7 @@ img{max-width:100%;display:block}
   /* ============================================================ */
   getJson("/api/customer-auth?action=whoami").then(function (r) {
     if (r.body && r.body.ok && r.body.email) {
-      showDashboard(r.body.email);
+      enterAccount(r.body.email);
     } else {
       showLogin();
     }
