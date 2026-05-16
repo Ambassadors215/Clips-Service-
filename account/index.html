@@ -269,6 +269,7 @@ img{max-width:100%;display:block}
     </div>
 
     <div id="paneVerify" style="display:none">
+      <div id="verifyFormBlock">
       <h1 style="font-family:&quot;Playfair Display&quot;,Georgia,serif;font-size:1.45rem;color:var(--text-dark);margin-bottom:8px">Verify your email</h1>
       <p style="font-size:.88rem;color:var(--muted);margin-bottom:14px">Enter the code we sent to <strong id="verifyEmailLbl"></strong></p>
       <div class="field"><label for="verifyCode">6-digit code</label><input type="text" id="verifyCode" inputmode="numeric" maxlength="6" autocomplete="one-time-code" pattern="[0-9]{6}"></div>
@@ -276,6 +277,11 @@ img{max-width:100%;display:block}
       <button type="button" class="btn btn-primary btn-block" id="btnVerifyEmail">Verify &amp; continue</button>
       <div class="row-actions" style="margin-top:12px"><button type="button" class="btn btn-ghost" id="btnResendVerify" style="flex:1;font-family:inherit;border-radius:10px;padding:11px;font-weight:700;cursor:pointer">Resend code</button><button type="button" class="btn btn-ghost" id="btnChangeVerifyEmail" style="font-family:inherit;border-radius:10px;padding:11px;font-weight:700;cursor:pointer">Change email</button></div>
       <p class="status" id="authStatusVerify" aria-live="polite"></p>
+      </div>
+      <div id="verifySuccessBlock" style="display:none;text-align:center;padding:8px 0 6px">
+        <p style="font-size:.95rem;font-weight:700;color:var(--text-dark);margin:10px 0 16px;line-height:1.45">Your account has been verified successfully 🎉</p>
+        <button type="button" class="btn btn-primary btn-block" id="btnVerifyContinue">Continue to Clip Services</button>
+      </div>
     </div>
 
     <div id="paneForgot" style="display:none">
@@ -654,6 +660,68 @@ img{max-width:100%;display:block}
   }
 
   var verifyPendingEmail = "";
+  var verifyResendCooldownTimer = null;
+  var verifyAutoRedirectTimer = null;
+
+  function clearVerifyUiTimers() {
+    if (verifyResendCooldownTimer) {
+      clearInterval(verifyResendCooldownTimer);
+      verifyResendCooldownTimer = null;
+    }
+    if (verifyAutoRedirectTimer) {
+      clearTimeout(verifyAutoRedirectTimer);
+      verifyAutoRedirectTimer = null;
+    }
+  }
+
+  /** After successful email verification — success screen then auto-opens account (or Continue). */
+  function showVerifySuccessAfterAuth(emailDest) {
+    var fb = $("verifyFormBlock");
+    var sb = $("verifySuccessBlock");
+    if (fb) fb.style.display = "none";
+    if (sb) sb.style.display = "block";
+    verifyAutoRedirectTimer = setTimeout(function () {
+      verifyAutoRedirectTimer = null;
+      enterAccount(emailDest);
+    }, 2400);
+  }
+
+  /** Resets verify pane UI when requesting a fresh code panel. */
+  function resetVerifyFormLayoutForNewCodeFlow() {
+    clearVerifyUiTimers();
+    var fb = $("verifyFormBlock");
+    var sb = $("verifySuccessBlock");
+    if (fb) fb.style.display = "block";
+    if (sb) sb.style.display = "none";
+    var br = $("btnResendVerify");
+    if (br) {
+      br.disabled = false;
+      br.textContent = "Resend code";
+    }
+  }
+
+  function beginVerifyResendCooldown(seconds) {
+    var br = $("btnResendVerify");
+    if (!br) return;
+    var n = Math.max(1, Math.floor(Number(seconds) || 30));
+    if (verifyResendCooldownTimer) {
+      clearInterval(verifyResendCooldownTimer);
+      verifyResendCooldownTimer = null;
+    }
+    br.disabled = true;
+    br.textContent = "Resend code (" + n + "s)";
+    verifyResendCooldownTimer = setInterval(function () {
+      n--;
+      if (n <= 0) {
+        clearInterval(verifyResendCooldownTimer);
+        verifyResendCooldownTimer = null;
+        br.disabled = false;
+        br.textContent = "Resend code";
+        return;
+      }
+      br.textContent = "Resend code (" + n + "s)";
+    }, 1000);
+  }
 
   function setGuestBrowseHint() {
     try {
@@ -698,6 +766,7 @@ img{max-width:100%;display:block}
 
   function showVerifyPanel(email) {
     verifyPendingEmail = String(email || "").trim().toLowerCase();
+    resetVerifyFormLayoutForNewCodeFlow();
     showAuthPanelsMain();
     if ($("paneSignIn")) $("paneSignIn").style.display = "none";
     if ($("paneRegister")) $("paneRegister").style.display = "none";
@@ -908,6 +977,7 @@ img{max-width:100%;display:block}
       if (r.body && r.body.ok && r.body.needsVerification) {
         setStatus($("authStatusRegister"), "", "");
         showVerifyPanel(payload.email);
+        beginVerifyResendCooldown(r.body.resendCooldownSec || 30);
         return;
       }
       if (r.body && r.body.fields) {
@@ -942,12 +1012,14 @@ img{max-width:100%;display:block}
     }).then(function (r) {
       if (btn) btn.disabled = false;
       if (r.body && r.body.ok) {
-        setStatus($("authStatusVerify"), "Verified — loading your account…", "ok");
-        restoreAuthTabsVisibility();
-        enterAccount(r.body.email || verifyPendingEmail);
+        showVerifySuccessAfterAuth(r.body.email || verifyPendingEmail);
         return;
       }
-      setStatus($("authStatusVerify"), (r.body && r.body.error) || "Invalid or expired code.", "err");
+      var msg = (r.body && r.body.error) || "We couldn't verify that code. Try again or request a new one.";
+      if (r.status >= 500) {
+        msg = "Something went wrong on our side. Please try again in a moment.";
+      }
+      setStatus($("authStatusVerify"), msg, "err");
     }).catch(function () {
       if (btn) btn.disabled = false;
       setStatus($("authStatusVerify"), "Network error.", "err");
@@ -959,12 +1031,24 @@ img{max-width:100%;display:block}
     postJson("/api/customer-auth", { action: "resend-verification", email: verifyPendingEmail }).then(function (r) {
       if (r.body && r.body.ok && r.body.sent) {
         setStatus($("authStatusVerify"), "New code sent. Check your inbox.", "ok");
+        beginVerifyResendCooldown(r.body.cooldownSec || 30);
       } else if (r.body && r.body.alreadyVerified) {
         setStatus($("authStatusVerify"), "Already verified — try signing in.", "ok");
+      } else if (r.body && r.body.code === "resend_cooldown" && r.body.retryAfterSec) {
+        setStatus($("authStatusVerify"), (r.body && r.body.error) || "Please wait before resending.", "err");
+        beginVerifyResendCooldown(r.body.retryAfterSec);
       } else {
         setStatus($("authStatusVerify"), (r.body && r.body.error) || "Could not resend right now.", "err");
       }
     }).catch(function () { setStatus($("authStatusVerify"), "Network error.", "err"); });
+  });
+
+  if ($("btnVerifyContinue")) $("btnVerifyContinue").addEventListener("click", function () {
+    if (verifyAutoRedirectTimer) {
+      clearTimeout(verifyAutoRedirectTimer);
+      verifyAutoRedirectTimer = null;
+    }
+    enterAccount(verifyPendingEmail);
   });
 
   if ($("btnChangeVerifyEmail")) $("btnChangeVerifyEmail").addEventListener("click", function () {
