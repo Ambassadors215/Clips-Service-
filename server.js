@@ -155,6 +155,18 @@ const server = http.createServer(async (req, res) => {
     const url = new URL(req.url || "/", `http://${req.headers.host || "localhost"}`);
     const apiPath = url.pathname.replace(/\/+$/, "") || "/";
 
+    if (
+      (req.method === "GET" || req.method === "HEAD") &&
+      (apiPath === "/market-stall" ||
+        apiPath === "/market-stalls" ||
+        apiPath === "/market-stall/apply")
+    ) {
+      const loc = apiPath === "/market-stall/apply" ? "/store-owner/apply" : "/store-owner";
+      res.writeHead(301, { Location: loc });
+      res.end();
+      return;
+    }
+
     // --- API (same modules as Vercel; needs KV_REDIS_URL + STRIPE_SECRET_KEY in .env.local for pay flow)
     if (apiPath === "/api/stripe-checkout" && req.method === "POST") {
       return runStripeCheckout(req, res);

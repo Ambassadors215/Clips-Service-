@@ -324,10 +324,8 @@ async function handleOnboardingStats(req, res) {
     const approvedCount = listings.filter((x) => x?.applicationStatus === "approved").length;
     const activatedCount = listings.filter((x) => x?.applicationStatus === "active").length;
     const vs = counters.viewsStoreApply || 0;
-    const vt = counters.viewsStallApply || 0;
     const ss = counters.submissionsStore || 0;
     const st = counters.submissionsStall || 0;
-    const viewsTotal = vs + vt;
     const subTotal = ss + st;
     const approvedPipeline = approvedCount + activatedCount;
     return endJson(res, 200, {
@@ -343,8 +341,6 @@ async function handleOnboardingStats(req, res) {
       },
       conversion: {
         storeViewsToSubmit: vs ? ((ss / vs) * 100).toFixed(2) : null,
-        stallViewsToSubmit: vt ? ((st / vt) * 100).toFixed(2) : null,
-        allViewsToSubmit: viewsTotal ? ((subTotal / viewsTotal) * 100).toFixed(2) : null,
         submitToApprovedPipeline: subTotal ? ((approvedPipeline / subTotal) * 100).toFixed(2) : null,
       },
       recentApplications: applications.slice(0, 40),

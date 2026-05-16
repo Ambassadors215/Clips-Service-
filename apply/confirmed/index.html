@@ -31,12 +31,7 @@ a{color:var(--t);font-weight:600}
 (function(){
   var p = new URLSearchParams(location.search);
   var ref = p.get("ref") || "";
-  var name = p.get("name") || "";
   var store = p.get("store") || "";
-  var flow = p.get("flow") || "store";
-  if (flow === "stall") {
-    document.getElementById("sub").textContent = "We will review your stall and contact you within 24–48 hours via WhatsApp.";
-  }
   if (ref) document.getElementById("refLine").textContent = "Reference: " + ref;
   var msg = "Hi 👋 We've received your application" + (store ? " to list " + store : "") + " on Clip Services. We'll review it and get back to you within 48 hours." + (ref ? " Ref: " + ref : "");
   var wa = "447487588706";

@@ -251,7 +251,7 @@
           <summary>For operators — full workflow reference</summary>
           <div class="operator-body">
             <ol>
-              <li><strong>Website store / stall applies:</strong> Each submission creates a <strong>KV marketplace listing</strong> with ID like <span class="mono">APP‑…</span> and status <strong>pending</strong> (hidden from the public directory). Open <strong>Store onboarding</strong> or <strong>Marketplace listings</strong> → <strong>Approve & publish</strong>. The owner receives WhatsApp and email when approved (if Meta / Brevo are configured). They sign in at <span class="mono">/store-owner/dashboard</span> with their application email.</li>
+              <li><strong>Website store applications:</strong> Each submission creates a <strong>KV marketplace listing</strong> with ID like <span class="mono">APP‑…</span> and status <strong>pending</strong> (hidden from the public directory). Open <strong>Store onboarding</strong> or <strong>Marketplace listings</strong> → <strong>Approve & publish</strong>. The owner receives WhatsApp and email when approved (if Meta / Brevo are configured). They sign in at <span class="mono">/store-owner/dashboard</span> with their application email.</li>
               <li><strong>Applications tab:</strong> Shown submissions are from the legacy <strong>contact</strong> form only — not the store apply wizard. Use <strong>Publish to site</strong> there only when inventing a new listing ID for that lead.</li>
               <li><strong>Marketplace listings tab:</strong> All KV profiles including drafts. Pending rows are sorted first. <strong>Remove</strong> deletes the listing entirely.</li>
               <li><strong>Stripe Connect tab:</strong> Create Connect with the <strong>same ID</strong> as the marketplace listing so card payments can route the store’s share automatically after the customer pays.</li>
@@ -392,7 +392,7 @@
 
             <div id="onboardingView" class="hide">
               <p class="muted" style="margin:0;padding:14px 20px;font-size:12px;line-height:1.55;border-bottom:1px solid var(--border);background:rgba(212,160,23,.08);">
-                <strong style="color:var(--amber)">Store &amp; stall onboarding</strong> — website applications create marketplace rows with status <strong>pending</strong> (not shown in /api/listings). Use <strong>Approve & publish</strong> on each row when review is complete. Owners receive WhatsApp and email on approval when configured.
+                <strong style="color:var(--amber)">Store onboarding</strong> — website applications create marketplace rows with status <strong>pending</strong> (not shown in /api/listings). Use <strong>Approve & publish</strong> on each row when review is complete. Owners receive WhatsApp and email on approval when configured.
               </p>
               <p class="muted" style="margin:0;padding:12px 20px 0;font-size:11px;color:var(--terracotta)"><strong>Platform overview</strong> — marketplace orders, GMV, and activation (stores with at least one product, excluding pending drafts).</p>
               <div id="platformMetrics" class="dash-grid" style="padding:16px 20px 8px;"></div>
@@ -483,7 +483,6 @@
                   <option value="hair-beauty">Hair &amp; beauty</option>
                   <option value="fashion">Fashion</option>
                   <option value="halal">Halal</option>
-                  <option value="stall">Market stall</option>
                   <option value="delivery">Delivery</option>
                   <option value="beauty">Beauty (legacy)</option>
                   <option value="tech">Tech</option>
@@ -860,22 +859,16 @@
         const lc = ob.listingCounts || {};
         const conv = ob.conversion || {};
         const vs = c.viewsStoreApply || 0;
-        const vt = c.viewsStallApply || 0;
         const ss = c.submissionsStore || 0;
-        const st = c.submissionsStall || 0;
         const fmt = (v) => (v == null ? "—" : `${v}%`);
         el.onboardingMetrics.innerHTML = `
           <div class="dash-card"><span class="dash-icon">👁</span><div class="dash-label c-cyan">Store form views</div><div class="dash-value">${vs}</div><div class="dash-status muted" style="font-size:11px">/store-owner/apply</div></div>
-          <div class="dash-card"><span class="dash-icon">👁</span><div class="dash-label c-purple">Stall form views</div><div class="dash-value">${vt}</div><div class="dash-status muted" style="font-size:11px">/market-stall/apply</div></div>
           <div class="dash-card"><span class="dash-icon">📥</span><div class="dash-label c-amber">Store submissions</div><div class="dash-value">${ss}</div><div class="dash-status muted" style="font-size:11px">Established stores</div></div>
-          <div class="dash-card"><span class="dash-icon">📥</span><div class="dash-label c-amber">Stall submissions</div><div class="dash-value">${st}</div><div class="dash-status muted" style="font-size:11px">Market traders</div></div>
           <div class="dash-card"><span class="dash-icon">⏳</span><div class="dash-label c-cyan">Pending drafts</div><div class="dash-value">${lc.pendingDrafts ?? "—"}</div><div class="dash-status muted" style="font-size:11px">KV listings</div></div>
           <div class="dash-card"><span class="dash-icon">✓</span><div class="dash-label" style="color:#6ee7b7">Approved</div><div class="dash-value">${lc.approvedCount ?? "—"}</div><div class="dash-status muted" style="font-size:11px">applicationStatus</div></div>
           <div class="dash-card"><span class="dash-icon">⚡</span><div class="dash-label" style="color:#fcd34d">Activated</div><div class="dash-value">${lc.activatedCount ?? "—"}</div><div class="dash-status muted" style="font-size:11px">Live storefronts</div></div>
-          <div class="dash-card"><span class="dash-icon">📊</span><div class="dash-label c-purple">View → submit</div><div class="dash-value" style="font-size:22px">${fmt(conv.allViewsToSubmit)}</div><div class="dash-status muted" style="font-size:11px">All views → all submissions</div></div>
+          <div class="dash-card"><span class="dash-icon">📊</span><div class="dash-label c-purple">View → submit</div><div class="dash-value" style="font-size:22px">${fmt(conv.storeViewsToSubmit)}</div><div class="dash-status muted" style="font-size:11px">Store apply views → submissions</div></div>
           <div class="dash-card"><span class="dash-icon">📊</span><div class="dash-label c-purple">Submit → approved</div><div class="dash-value" style="font-size:22px">${fmt(conv.submitToApprovedPipeline)}</div><div class="dash-status muted" style="font-size:11px">Approved+active vs submissions</div></div>
-          <div class="dash-card"><span class="dash-icon">🏪</span><div class="dash-label c-cyan">Store conv.</div><div class="dash-value" style="font-size:22px">${fmt(conv.storeViewsToSubmit)}</div><div class="dash-status muted" style="font-size:11px">Views → submissions</div></div>
-          <div class="dash-card"><span class="dash-icon">🛒</span><div class="dash-label c-cyan">Stall conv.</div><div class="dash-value" style="font-size:22px">${fmt(conv.stallViewsToSubmit)}</div><div class="dash-status muted" style="font-size:11px">Views → submissions</div></div>
         `;
         const apps = ob.recentApplications || [];
         el.onboardingTbody.innerHTML = apps.length === 0

@@ -87,7 +87,7 @@
       "</nav>" +
       '<div class="gs-field-wrap">' +
       '<div class="gs-input-wrap">' +
-      '<input type="search" class="gs-input" id="gs-q" name="q" placeholder="Search products, stores, or stalls…" autocomplete="off" aria-label="Search products, stores, or stalls" />' +
+      '<input type="search" class="gs-input" id="gs-q" name="q" placeholder="Search products and stores…" autocomplete="off" aria-label="Search products and stores" />' +
       "</div>" +
       '<div class="gs-dd" id="gs-dd"></div>' +
       "</div>" +
