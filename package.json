@@ -21,6 +21,7 @@
     "vercel:git-status": "node scripts/vercel-git-status.mjs"
   },
   "dependencies": {
+    "bcryptjs": "^2.4.3",
     "ioredis": "^5.4.2",
     "nodemailer": "^6.9.16",
     "stripe": "^17.5.0",

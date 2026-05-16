@@ -80,10 +80,12 @@ img{max-width:100%;display:block}
 .status{font-size:.85rem;color:var(--muted);min-height:1.2em;margin-top:8px;line-height:1.4}
 .status.ok{color:var(--ok)}
 .status.err{color:var(--red)}
-.muted-link{font-size:.82rem;color:var(--muted);font-weight:500}
-.muted-link a{color:var(--oja-blue);font-weight:600}
-
-/* ===== Dashboard layout ===== */
+/* ===== Authentication panes ===== */
+.auth-tabrow{display:flex;gap:6px;margin-bottom:18px;background:var(--card);border-radius:12px;padding:5px;border:1px solid var(--mp-border)}
+.auth-tabrow button{flex:1;padding:12px;font-weight:800;font-size:.86rem;border:none;background:transparent;border-radius:10px;cursor:pointer;color:#374151;font-family:inherit;touch-action:manipulation}
+.auth-tabrow button.active{background:#fff;color:var(--terracotta);box-shadow:0 1px 3px rgba(15,39,68,.09);border:1px solid rgba(212,160,23,.35)}
+.auth-pane .field-msg{font-size:.72rem;color:var(--red);min-height:1.05em;line-height:1.35}
+.divider{border-top:1px solid var(--mp-border);margin:18px 0;padding-top:16px;text-align:center}
 .dash{display:grid;grid-template-columns:1fr;gap:18px}
 @media(min-width:960px){.dash{grid-template-columns:240px 1fr;align-items:flex-start}}
 .side-nav{background:#fff;border:1px solid var(--mp-border);border-radius:14px;padding:14px 10px;display:flex;flex-direction:row;gap:6px;overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:thin}
@@ -225,31 +227,76 @@ img{max-width:100%;display:block}
   </div>
 </div>
 
-<!-- ===== LOGIN / SAME-PATH ACCOUNT ===== -->
-<section id="loginScreen" class="login" aria-labelledby="loginH">
+<!-- ===== AUTHENTICATION (PASSWORD + VERIFY) ===== -->
+<section id="authScreen" class="login" aria-label="Customer sign-in">
   <div class="login-card">
-    <span class="badge">Customer account</span>
-    <h1 id="loginH">Sign in or create your account</h1>
-    <p class="lead">One step: enter your email and we&rsquo;ll send a 6-digit code. Returning shoppers and first-time customers use the same path &mdash; if you&rsquo;re new, we&rsquo;ll ask for a few details after you verify your email.</p>
-    <div id="stepEmail">
-      <div class="field">
-        <label for="emailIn">Email address</label>
-        <input type="email" id="emailIn" autocomplete="email" inputmode="email" placeholder="you@example.com" required>
-        <span class="hint">Used for sign-in, order updates, and your saved stores.</span>
-      </div>
-      <button type="button" class="btn btn-primary btn-block" id="sendOtp">Continue with email</button>
+    <span class="badge">Clip Services shoppers</span>
+    <div class="auth-tabrow" role="tablist" aria-label="Account options">
+      <button type="button" id="tabSignIn" class="active" role="tab" aria-selected="true">Sign in</button>
+      <button type="button" id="tabRegister" role="tab" aria-selected="false">Create account</button>
     </div>
-    <div id="stepCode" style="display:none">
-      <p style="font-size:.85rem;margin-bottom:14px">Code sent to <strong id="emailShown"></strong>. Check your inbox (and spam).</p>
-      <div class="field">
-        <label for="otpIn">6-digit code</label>
-        <input type="text" id="otpIn" inputmode="numeric" maxlength="6" pattern="[0-9]{6}" placeholder="123456" autocomplete="one-time-code" required>
-      </div>
-      <button type="button" class="btn btn-primary btn-block" id="verifyOtp">Verify &amp; continue</button>
-      <button type="button" class="btn btn-ghost btn-block" id="backEmail" style="margin-top:8px">Use a different email</button>
+
+    <div id="paneSignIn" class="auth-pane" role="tabpanel">
+      <h1 style="font-family:&quot;Playfair Display&quot;,Georgia,serif;font-size:1.45rem;color:var(--text-dark);margin-bottom:10px">Welcome back</h1>
+      <form id="formSignIn" novalidate>
+        <div class="field"><label for="liEmail">Email</label><input type="email" id="liEmail" autocomplete="email" inputmode="email" required maxlength="254"><span class="field-msg" id="err_liEmail"></span></div>
+        <div class="field"><label for="liPw">Password</label><input type="password" id="liPw" autocomplete="current-password" required minlength="8"><span class="field-msg" id="err_liPw"></span></div>
+        <div class="field check-row"><label style="font-weight:600"><input type="checkbox" id="liRemember"> Remember me</label></div>
+        <button type="submit" class="btn btn-primary btn-block" id="btnSignIn">Sign in</button>
+        <p class="muted-link" style="margin-top:10px"><button type="button" class="btn btn-ghost" id="lnkForgot" style="padding:8px;width:100%;font-weight:700;border-radius:10px;font-family:inherit;cursor:pointer">Forgot password?</button></p>
+      </form>
+      <p class="status" id="authStatusSignIn" aria-live="polite"></p>
     </div>
-    <p class="status" id="loginStatus" aria-live="polite"></p>
-    <p class="muted-link" style="margin-top:14px">No order yet? <a href="/stores">Browse Manchester stores →</a></p>
+
+    <div id="paneRegister" class="auth-pane" style="display:none" role="tabpanel">
+      <h1 style="font-family:&quot;Playfair Display&quot;,Georgia,serif;font-size:1.45rem;color:var(--text-dark);margin-bottom:8px">Create account</h1>
+      <p style="color:var(--muted);font-size:.88rem;margin-bottom:14px">Track orders and save favourite Manchester stores securely.</p>
+      <form id="formRegister" novalidate>
+        <div class="form-grid" style="margin-bottom:8px">
+          <div class="field"><label for="regFirst">First name</label><input id="regFirst" autocomplete="given-name" maxlength="80" required><span class="field-msg" id="err_regFirst"></span></div>
+          <div class="field"><label for="regLast">Last name</label><input id="regLast" autocomplete="family-name" maxlength="80" required><span class="field-msg" id="err_regLast"></span></div>
+        </div>
+        <div class="field"><label for="regEmail">Email</label><input type="email" id="regEmail" autocomplete="email" maxlength="254" required><span class="field-msg" id="err_regEmail"></span></div>
+        <div class="field"><label for="regPw">Password (8+ characters)</label><input type="password" id="regPw" autocomplete="new-password" minlength="8" required><span class="field-msg" id="err_regPw"></span></div>
+        <div class="field"><label for="regPw2">Confirm password</label><input type="password" id="regPw2" autocomplete="new-password" minlength="8" required><span class="field-msg" id="err_regPw2"></span></div>
+        <div class="form-grid">
+          <div class="field"><label for="regPhone">Phone <span class="hint">optional</span></label><input type="tel" id="regPhone" autocomplete="tel" maxlength="40"></div>
+          <div class="field"><label for="regCity">City <span class="hint">optional</span></label><input id="regCity" autocomplete="address-level2" maxlength="80" placeholder="Manchester"></div>
+        </div>
+        <button type="submit" class="btn btn-primary btn-block" id="btnRegister">Create account</button>
+      </form>
+      <p class="status" id="authStatusRegister" aria-live="polite"></p>
+    </div>
+
+    <div id="paneVerify" style="display:none">
+      <h1 style="font-family:&quot;Playfair Display&quot;,Georgia,serif;font-size:1.45rem;color:var(--text-dark);margin-bottom:8px">Verify your email</h1>
+      <p style="font-size:.88rem;color:var(--muted);margin-bottom:14px">Enter the code we sent to <strong id="verifyEmailLbl"></strong></p>
+      <div class="field"><label for="verifyCode">6-digit code</label><input type="text" id="verifyCode" inputmode="numeric" maxlength="6" autocomplete="one-time-code" pattern="[0-9]{6}"></div>
+      <div class="field check-row"><label style="font-weight:600"><input type="checkbox" id="verifyRemember"> Stay signed in after verification</label></div>
+      <button type="button" class="btn btn-primary btn-block" id="btnVerifyEmail">Verify &amp; continue</button>
+      <div class="row-actions" style="margin-top:12px"><button type="button" class="btn btn-ghost" id="btnResendVerify" style="flex:1;font-family:inherit;border-radius:10px;padding:11px;font-weight:700;cursor:pointer">Resend code</button><button type="button" class="btn btn-ghost" id="btnChangeVerifyEmail" style="font-family:inherit;border-radius:10px;padding:11px;font-weight:700;cursor:pointer">Change email</button></div>
+      <p class="status" id="authStatusVerify" aria-live="polite"></p>
+    </div>
+
+    <div id="paneForgot" style="display:none">
+      <h1 style="font-family:&quot;Playfair Display&quot;,Georgia,serif;font-size:1.45rem;color:var(--text-dark);margin-bottom:8px">Reset password</h1>
+      <div id="forgotPhase1">
+        <p style="font-size:.88rem;color:var(--muted);margin-bottom:12px">We&rsquo;ll email you a reset code.</p>
+        <div class="field"><label for="fgEmail">Email</label><input type="email" id="fgEmail" autocomplete="email"></div>
+        <button type="button" class="btn btn-primary btn-block" id="btnForgotSend">Send reset code</button>
+      </div>
+      <div id="forgotPhase2" style="display:none">
+        <div class="field"><label for="fgCode">6-digit code</label><input type="text" id="fgCode" inputmode="numeric" maxlength="6"></div>
+        <div class="field"><label for="fgPw">New password</label><input type="password" id="fgPw" autocomplete="new-password" minlength="8"></div>
+        <div class="field"><label for="fgPw2">Confirm new password</label><input type="password" id="fgPw2" autocomplete="new-password" minlength="8"></div>
+        <button type="button" class="btn btn-primary btn-block" id="btnForgotReset">Save new password</button>
+      </div>
+      <p class="status" id="authStatusForgot" aria-live="polite"></p>
+      <p style="margin-top:12px"><button type="button" class="btn btn-ghost" id="lnkBackSignInFb" style="width:100%;font-weight:700;border-radius:10px;font-family:inherit;cursor:pointer">← Back to sign in</button></p>
+    </div>
+
+    <div class="divider muted-link"><a href="/stores" id="linkGuestBrowse">Continue as guest — browse &amp; checkout without an account</a></div>
+    <p class="muted-link" style="text-align:center;margin-top:6px;font-size:.8rem"><a href="/customer/orders/">Track order</a> · <a href="/terms">Terms</a></p>
   </div>
   <p class="footer-small">
     <a href="/about">About</a> ·
@@ -259,7 +306,7 @@ img{max-width:100%;display:block}
   </p>
 </section>
 
-<!-- ===== POST-OTP: REQUIRED SIGNUP DETAILS ===== -->
+<!-- ===== POST-AUTH PROFILE COMPLETION ===== -->
 <section id="setupScreen" class="login" style="display:none" aria-labelledby="setupH">
   <div class="login-card">
     <span class="badge">Finish signing up</span>
@@ -576,24 +623,109 @@ img{max-width:100%;display:block}
   }
 
   /* ============================================================ */
-  /*  Auth flow                                                   */
+  /*  Auth — passwords, email verification, guest browse          */
   /* ============================================================ */
-  var emailIn = $("emailIn");
-  var otpIn = $("otpIn");
-  var sendOtpBtn = $("sendOtp");
-  var verifyOtpBtn = $("verifyOtp");
-  var backEmailBtn = $("backEmail");
-  var stepEmail = $("stepEmail");
-  var stepCode = $("stepCode");
-  var emailShown = $("emailShown");
-  var loginStatus = $("loginStatus");
-  var loginScreen = $("loginScreen");
+  var authScreen = $("authScreen");
   var setupScreen = $("setupScreen");
   var dashboard = $("dashboard");
   var topLogout = $("topLogout");
 
+  function captureReturnDestination() {
+    try {
+      var u = new URLSearchParams(window.location.search).get("return") || new URLSearchParams(window.location.search).get("next");
+      if (u && u.charAt(0) === "/" && u.indexOf("//") !== 0 && u.length < 512) {
+        sessionStorage.setItem("clip_return_after_auth", u.split("#")[0]);
+      }
+    } catch (e) { /* ignore */ }
+  }
+  captureReturnDestination();
+
+  function maybeRedirectAfterLogin() {
+    var rp = null;
+    try {
+      rp = sessionStorage.getItem("clip_return_after_auth");
+    } catch (e) { /* ignore */ }
+    if (!rp || rp.charAt(0) !== "/" || rp.indexOf("//") === 0) return false;
+    try {
+      sessionStorage.removeItem("clip_return_after_auth");
+    } catch (e2) { /* ignore */ }
+    window.location.replace(rp);
+    return true;
+  }
+
+  var verifyPendingEmail = "";
+
+  function setGuestBrowseHint() {
+    try {
+      sessionStorage.setItem("clipservice_continue_guest", "1");
+    } catch (e) { /* ignore */ }
+  }
+
+  function clearInlineAuthErrors() {
+    ["err_liEmail", "err_liPw", "err_regFirst", "err_regLast", "err_regEmail", "err_regPw", "err_regPw2"].forEach(function (id) {
+      var z = $(id);
+      if (z) z.textContent = "";
+    });
+  }
+
+  function activateTab(which) {
+    var tIn = $("tabSignIn");
+    var tUp = $("tabRegister");
+    var pIn = $("paneSignIn");
+    var pUp = $("paneRegister");
+    if (!tIn || !tUp || !pIn || !pUp) return;
+    var isUp = which === "up";
+    tIn.classList.toggle("active", !isUp);
+    tUp.classList.toggle("active", isUp);
+    tIn.setAttribute("aria-selected", isUp ? "false" : "true");
+    tUp.setAttribute("aria-selected", isUp ? "true" : "false");
+    pIn.style.display = isUp ? "none" : "block";
+    pUp.style.display = isUp ? "block" : "none";
+    setStatus($("authStatusSignIn"), "");
+    setStatus($("authStatusRegister"), "");
+    clearInlineAuthErrors();
+  }
+
+  function showAuthPanelsMain() {
+    if ($("paneVerify")) $("paneVerify").style.display = "none";
+    if ($("paneForgot")) $("paneForgot").style.display = "none";
+    clearInlineAuthErrors();
+    setStatus($("authStatusVerify"), "");
+    setStatus($("authStatusForgot"), "");
+    if ($("forgotPhase1")) $("forgotPhase1").style.display = "block";
+    if ($("forgotPhase2")) $("forgotPhase2").style.display = "none";
+  }
+
+  function showVerifyPanel(email) {
+    verifyPendingEmail = String(email || "").trim().toLowerCase();
+    showAuthPanelsMain();
+    if ($("paneSignIn")) $("paneSignIn").style.display = "none";
+    if ($("paneRegister")) $("paneRegister").style.display = "none";
+    var row0 = document.querySelector(".auth-tabrow");
+    if (row0) row0.style.display = "none";
+    if ($("paneVerify")) $("paneVerify").style.display = "block";
+    if ($("verifyEmailLbl")) $("verifyEmailLbl").textContent = verifyPendingEmail;
+    if ($("verifyCode")) $("verifyCode").value = "";
+    setStatus($("authStatusVerify"), "Check your inbox for the verification code.", "ok");
+    setTimeout(function () { if ($("verifyCode")) $("verifyCode").focus(); }, 60);
+  }
+
+  function restoreAuthTabsVisibility() {
+    var row = document.querySelector(".auth-tabrow");
+    if (row) row.style.display = "flex";
+  }
+
+  function showForgotFlow() {
+    showAuthPanelsMain();
+    var row1 = document.querySelector(".auth-tabrow");
+    if (row1) row1.style.display = "none";
+    if ($("paneSignIn")) $("paneSignIn").style.display = "none";
+    if ($("paneRegister")) $("paneRegister").style.display = "none";
+    if ($("paneForgot")) $("paneForgot").style.display = "block";
+  }
+
   function showDashboard(email) {
-    loginScreen.style.display = "none";
+    if (authScreen) authScreen.style.display = "none";
     if (setupScreen) setupScreen.style.display = "none";
     dashboard.style.display = "block";
     topLogout.style.display = "inline-flex";
@@ -602,7 +734,7 @@ img{max-width:100%;display:block}
   }
 
   function showSetup(email) {
-    loginScreen.style.display = "none";
+    if (authScreen) authScreen.style.display = "none";
     dashboard.style.display = "none";
     if (setupScreen) {
       setupScreen.style.display = "block";
@@ -635,16 +767,20 @@ img{max-width:100%;display:block}
     topLogout.style.display = "inline-flex";
   }
 
-  /** After cookie session exists — send shoppers to signup step or dashboard. */
+  /** After cookie session exists — profile completion or dashboard. */
   function enterAccount(email) {
     getJson("/api/customer-api?action=overview").then(function (r) {
       if (!r.body || !r.body.ok) {
         if (r.status === 401) showLogin();
-        else setStatus(loginStatus, "Could not load account. Try again.", "err");
+        else setStatus($("authStatusSignIn"), "Could not load account. Try again.", "err");
         return;
       }
-      if (r.body.needsAccountSetup) showSetup(email);
-      else showDashboard(email);
+      if (r.body.needsAccountSetup) {
+        showSetup(email);
+        return;
+      }
+      if (maybeRedirectAfterLogin()) return;
+      showDashboard(email);
     }).catch(function () {
       showLogin();
     });
@@ -652,14 +788,14 @@ img{max-width:100%;display:block}
 
   function showLogin() {
     dashboard.style.display = "none";
-    loginScreen.style.display = "block";
+    if (authScreen) authScreen.style.display = "block";
     if (setupScreen) setupScreen.style.display = "none";
     topLogout.style.display = "none";
-    stepCode.style.display = "none";
-    stepEmail.style.display = "block";
-    if (emailIn) emailIn.value = "";
-    if (otpIn) otpIn.value = "";
-    setStatus(loginStatus, "");
+    restoreAuthTabsVisibility();
+    showAuthPanelsMain();
+    activateTab("in");
+    setStatus($("authStatusSignIn"), "");
+    setStatus($("authStatusRegister"), "");
     if ($("setupStatus")) setStatus($("setupStatus"), "");
   }
 
@@ -687,52 +823,212 @@ img{max-width:100%;display:block}
     });
   }
 
-  if (sendOtpBtn) sendOtpBtn.addEventListener("click", function () {
-    var em = (emailIn.value || "").trim().toLowerCase();
-    if (!em || em.indexOf("@") < 0) { setStatus(loginStatus, "Enter a valid email.", "err"); return; }
-    sendOtpBtn.disabled = true;
-    setStatus(loginStatus, "Sending code…");
-    postJson("/api/customer-auth", { action: "request-otp", email: em }).then(function (r) {
-      sendOtpBtn.disabled = false;
-      if (r.body && r.body.ok) {
-        stepEmail.style.display = "none";
-        stepCode.style.display = "block";
-        emailShown.textContent = em;
-        setStatus(loginStatus, "Code sent. Check your inbox.", "ok");
-        setTimeout(function () { if (otpIn) otpIn.focus(); }, 60);
-      } else {
-        setStatus(loginStatus, (r.body && r.body.error) || "Couldn't send the code. Try again.", "err");
-      }
-    }).catch(function () {
-      sendOtpBtn.disabled = false;
-      setStatus(loginStatus, "Network error. Try again.", "err");
-    });
+  if ($("tabSignIn")) $("tabSignIn").addEventListener("click", function () {
+    showAuthPanelsMain();
+    activateTab("in");
+  });
+  if ($("tabRegister")) $("tabRegister").addEventListener("click", function () {
+    showAuthPanelsMain();
+    activateTab("up");
   });
 
-  if (verifyOtpBtn) verifyOtpBtn.addEventListener("click", function () {
-    var em = (emailShown.textContent || "").trim().toLowerCase();
-    var code = (otpIn.value || "").replace(/\D/g, "");
-    if (code.length !== 6) { setStatus(loginStatus, "Enter the 6-digit code.", "err"); return; }
-    verifyOtpBtn.disabled = true;
-    setStatus(loginStatus, "Verifying…");
-    postJson("/api/customer-auth", { action: "verify-otp", email: em, code: code }).then(function (r) {
-      verifyOtpBtn.disabled = false;
+  if ($("linkGuestBrowse")) $("linkGuestBrowse").addEventListener("click", setGuestBrowseHint);
+
+  function applyHashAuth() {
+    var h = (location.hash || "").replace(/^#/, "").toLowerCase();
+    if (h === "register" || h === "create") {
+      showAuthPanelsMain();
+      activateTab("up");
+    } else if (h === "forgot") {
+      showForgotFlow();
+    } else if (h === "signin" || h === "login") {
+      showLogin();
+    }
+  }
+  window.addEventListener("hashchange", applyHashAuth);
+
+  if ($("formSignIn")) $("formSignIn").addEventListener("submit", function (e) {
+    e.preventDefault();
+    clearInlineAuthErrors();
+    var em = ($("liEmail").value || "").trim().toLowerCase();
+    var pw = $("liPw").value || "";
+    if (!em || em.indexOf("@") < 0) { if ($("err_liEmail")) $("err_liEmail").textContent = "Valid email required"; return; }
+    if (pw.length < 8) { if ($("err_liPw")) $("err_liPw").textContent = "Password required"; return; }
+    var btn = $("btnSignIn");
+    if (btn) btn.disabled = true;
+    setStatus($("authStatusSignIn"), "Signing in…");
+    var ret = "/";
+    try { ret = sessionStorage.getItem("clip_return_after_auth") || "/"; } catch (e2) { /* ignore */ }
+    postJson("/api/customer-auth", {
+      action: "login",
+      email: em,
+      password: pw,
+      rememberMe: !!($("liRemember") && $("liRemember").checked),
+      returnUrl: ret,
+    }).then(function (r) {
+      if (btn) btn.disabled = false;
       if (r.body && r.body.ok) {
-        setStatus(loginStatus, "You're signed in.", "ok");
+        setStatus($("authStatusSignIn"), "Welcome back!", "ok");
         enterAccount(r.body.email || em);
-      } else {
-        setStatus(loginStatus, (r.body && r.body.error) || "Couldn't verify code.", "err");
+        return;
       }
+      if (r.body && r.body.code === "unverified_email") {
+        setStatus($("authStatusSignIn"), "Please verify your email first.", "err");
+        showVerifyPanel(r.body.email || em);
+        return;
+      }
+      setStatus($("authStatusSignIn"), (r.body && r.body.error) || "Could not sign in.", "err");
     }).catch(function () {
-      verifyOtpBtn.disabled = false;
-      setStatus(loginStatus, "Network error. Try again.", "err");
+      if (btn) btn.disabled = false;
+      setStatus($("authStatusSignIn"), "Network error. Try again.", "err");
     });
   });
 
-  if (backEmailBtn) backEmailBtn.addEventListener("click", function () {
-    stepCode.style.display = "none";
-    stepEmail.style.display = "block";
-    setStatus(loginStatus, "");
+  if ($("formRegister")) $("formRegister").addEventListener("submit", function (e) {
+    e.preventDefault();
+    clearInlineAuthErrors();
+    var payload = {
+      action: "register",
+      firstName: ($("regFirst").value || "").trim(),
+      lastName: ($("regLast").value || "").trim(),
+      email: ($("regEmail").value || "").trim().toLowerCase(),
+      password: $("regPw").value || "",
+      confirmPassword: $("regPw2").value || "",
+      phone: ($("regPhone").value || "").trim(),
+      city: ($("regCity").value || "").trim(),
+    };
+    var ret = "/";
+    try { ret = sessionStorage.getItem("clip_return_after_auth") || "/"; } catch (e2) { /* ignore */ }
+    payload.returnUrl = ret;
+    var btn = $("btnRegister");
+    if (btn) btn.disabled = true;
+    setStatus($("authStatusRegister"), "Creating your account…");
+    postJson("/api/customer-auth", payload).then(function (r) {
+      if (btn) btn.disabled = false;
+      if (r.body && r.body.ok && r.body.needsVerification) {
+        setStatus($("authStatusRegister"), "", "");
+        showVerifyPanel(payload.email);
+        return;
+      }
+      if (r.body && r.body.fields) {
+        var f = r.body.fields;
+        if (f.firstName && $("err_regFirst")) $("err_regFirst").textContent = "Required";
+        if (f.lastName && $("err_regLast")) $("err_regLast").textContent = "Required";
+        if (f.email && $("err_regEmail")) $("err_regEmail").textContent = "Check email";
+        if (f.password === "min8" && $("err_regPw")) $("err_regPw").textContent = "At least 8 characters";
+        if (f.confirmPassword === "mismatch" && $("err_regPw2")) $("err_regPw2").textContent = "Must match password";
+      }
+      setStatus($("authStatusRegister"), (r.body && r.body.error) || "Could not create account.", "err");
+    }).catch(function () {
+      if (btn) btn.disabled = false;
+      setStatus($("authStatusRegister"), "Network error. Try again.", "err");
+    });
+  });
+
+  if ($("btnVerifyEmail")) $("btnVerifyEmail").addEventListener("click", function () {
+    var code = ($("verifyCode").value || "").replace(/\D/g, "");
+    if (code.length !== 6) { setStatus($("authStatusVerify"), "Enter the 6-digit code.", "err"); return; }
+    var btn = $("btnVerifyEmail");
+    if (btn) btn.disabled = true;
+    setStatus($("authStatusVerify"), "Verifying…");
+    var ret = "/";
+    try { ret = sessionStorage.getItem("clip_return_after_auth") || "/"; } catch (e2) { /* ignore */ }
+    postJson("/api/customer-auth", {
+      action: "verify-email",
+      email: verifyPendingEmail,
+      code: code,
+      rememberMe: !!($("verifyRemember") && $("verifyRemember").checked),
+      returnUrl: ret,
+    }).then(function (r) {
+      if (btn) btn.disabled = false;
+      if (r.body && r.body.ok) {
+        setStatus($("authStatusVerify"), "Verified — loading your account…", "ok");
+        restoreAuthTabsVisibility();
+        enterAccount(r.body.email || verifyPendingEmail);
+        return;
+      }
+      setStatus($("authStatusVerify"), (r.body && r.body.error) || "Invalid or expired code.", "err");
+    }).catch(function () {
+      if (btn) btn.disabled = false;
+      setStatus($("authStatusVerify"), "Network error.", "err");
+    });
+  });
+
+  if ($("btnResendVerify")) $("btnResendVerify").addEventListener("click", function () {
+    setStatus($("authStatusVerify"), "Sending…");
+    postJson("/api/customer-auth", { action: "resend-verification", email: verifyPendingEmail }).then(function (r) {
+      if (r.body && r.body.ok && r.body.sent) {
+        setStatus($("authStatusVerify"), "New code sent. Check your inbox.", "ok");
+      } else if (r.body && r.body.alreadyVerified) {
+        setStatus($("authStatusVerify"), "Already verified — try signing in.", "ok");
+      } else {
+        setStatus($("authStatusVerify"), (r.body && r.body.error) || "Could not resend right now.", "err");
+      }
+    }).catch(function () { setStatus($("authStatusVerify"), "Network error.", "err"); });
+  });
+
+  if ($("btnChangeVerifyEmail")) $("btnChangeVerifyEmail").addEventListener("click", function () {
+    restoreAuthTabsVisibility();
+    showAuthPanelsMain();
+    activateTab("up");
+    if ($("regEmail")) $("regEmail").value = verifyPendingEmail || "";
+  });
+
+  if ($("lnkForgot")) $("lnkForgot").addEventListener("click", function (ev) {
+    ev.preventDefault();
+    showForgotFlow();
+  });
+
+  if ($("btnForgotSend")) $("btnForgotSend").addEventListener("click", function () {
+    var em = ($("fgEmail").value || "").trim().toLowerCase();
+    if (!em || em.indexOf("@") < 0) { setStatus($("authStatusForgot"), "Enter your account email.", "err"); return; }
+    setStatus($("authStatusForgot"), "Sending reset code…");
+    postJson("/api/customer-auth", { action: "forgot-password", email: em }).then(function (r) {
+      if (!r.body || !r.body.ok) {
+        setStatus($("authStatusForgot"), (r.body && r.body.error) || "Couldn't send.", "err");
+        return;
+      }
+      verifyPendingEmail = em;
+      if ($("forgotPhase1")) $("forgotPhase1").style.display = "none";
+      if ($("forgotPhase2")) $("forgotPhase2").style.display = "block";
+      setStatus($("authStatusForgot"), "Code sent — check your inbox.", "ok");
+    }).catch(function () { setStatus($("authStatusForgot"), "Network error.", "err"); });
+  });
+
+  if ($("btnForgotReset")) $("btnForgotReset").addEventListener("click", function () {
+    var code = ($("fgCode").value || "").replace(/\D/g, "");
+    var p1 = $("fgPw").value || "";
+    var p2 = $("fgPw2").value || "";
+    if (code.length !== 6 || p1.length < 8 || p1 !== p2) {
+      setStatus($("authStatusForgot"), "Code and matching passwords required (8+ characters).", "err");
+      return;
+    }
+    var ret = "/";
+    try { ret = sessionStorage.getItem("clip_return_after_auth") || "/"; } catch (e2) { /* ignore */ }
+    setStatus($("authStatusForgot"), "Updating password…");
+    postJson("/api/customer-auth", {
+      action: "reset-password",
+      email: verifyPendingEmail || ($("fgEmail").value || "").trim().toLowerCase(),
+      code: code,
+      newPassword: p1,
+      confirmPassword: p2,
+      returnUrl: ret,
+    }).then(function (r) {
+      if (r.body && r.body.ok) {
+        setStatus($("authStatusForgot"), "Password updated.", "ok");
+        if (r.body.signInRequired) {
+          showLogin();
+          return;
+        }
+        enterAccount(r.body.email || verifyPendingEmail);
+        return;
+      }
+      setStatus($("authStatusForgot"), (r.body && r.body.error) || "Reset failed.", "err");
+    }).catch(function () { setStatus($("authStatusForgot"), "Network error.", "err"); });
+  });
+
+  if ($("lnkBackSignInFb")) $("lnkBackSignInFb").addEventListener("click", function () {
+    showLogin();
   });
 
   var setupFormEl = $("setupForm");
@@ -1184,8 +1480,12 @@ img{max-width:100%;display:block}
       enterAccount(r.body.email);
     } else {
       showLogin();
+      applyHashAuth();
     }
-  }).catch(showLogin);
+  }).catch(function () {
+    showLogin();
+    applyHashAuth();
+  });
 })();
 </script>
 </body>
